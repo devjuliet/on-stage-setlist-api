@@ -6,81 +6,59 @@ import {
   Column,
   Model,
   DataType,
-  /* CreatedAt,
-  UpdatedAt, */
-  DeletedAt,
-  BeforeUpdate,
   BeforeCreate,
-  BelongsTo,
-  HasOne
 } from 'sequelize-typescript';
-/* import { Band } from './band.entity'; */
 
 @Table({
-  tableName: 'usuarios',
+  tableName: 'users',
 })
 export class User extends Model<User> {
   @Column({
-    type: DataType.INTEGER({length : 10}),
+    type: DataType.INTEGER({ length: 11 }),
     allowNull: false,
     primaryKey: true,
     autoIncrement: true,
+    field: 'id_user',
   })
-  public idusuarios : number;
+  public idUser: number;
 
   /* @HasOne(() => Band, 'user_id')
   band: Band; */
-
-  @Column({
-    type: DataType.STRING(45),
-    allowNull: false,
-  })
-  usuario : string;
-  
   @Column({
     type: DataType.STRING(100),
     allowNull: false,
   })
-  nombre : string;
+  name: string;
 
   @Column({
     type: DataType.STRING(100),
     allowNull: false,
   })
-  apellidos : string;
+  email: string;
+
+  @Column({
+    type: DataType.STRING(150),
+    allowNull: false,
+  })
+  password: string;
+
+  @Column({
+    type: DataType.INTEGER({ length: 11 }),
+    allowNull: false,
+    defaultValue: '0',
+    comment: 'Si el usuario es de tipo 0 es que no es manager ni live designer',
+    field: 'type',
+  })
+  type: string;
 
   @Column({
     type: DataType.STRING(100),
     allowNull: false,
   })
-  password : string;
+  username: string;
 
-  @Column({
-    type: DataType.STRING(45),
-    allowNull: false,
-  })
-  entidad : string;
-
-  @Column({
-    type: DataType.STRING(45),
-    allowNull: false,
-  })
-  extension : string;
-
-  @Column({
-    type: DataType.INTEGER({length : 10}),
-    allowNull: false,
-  })
-  rolusuario : number;
-
-  @Column({
-    type: DataType.STRING(200),
-    allowNull: false,
-  })
-  email : string;
-  
   @BeforeCreate
-  public static async hashPassword( user : User ) {
+  public static async hashPassword(user: User) {
     // Generate a salt and use it to hash the user's password
     user.password = await bcrypt.hash(user.password, bcrypt.genSaltSync(10));
     //a partir de aqui se hacen las acciones posteriores
