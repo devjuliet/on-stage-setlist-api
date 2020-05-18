@@ -1,11 +1,11 @@
 import { Injectable, Inject } from '@nestjs/common';
 // import { USER_REPOSITORY } from '../utils/constants';
-import { User } from '../../models/users.entity';
 //Normalmente se usa para formatear el objeto que recibimos en el request
 import { CreateUserDto } from './dto/createUser.dto';
-import { validators } from '../../utils/validators';
-import { LoginUserDto } from './dto/loginUser.dto';
-import { ServerMessage } from '../../utils/dtos/serverMessages.dto';
+import { validators } from '../../utils/validators.util';
+import { ServerMessages } from '../../utils/serverMessages.util';
+import { UserClass } from './../../classes/user.class';
+import { User } from '../../models/users.entity';
 
 @Injectable()
 export class UserService {
@@ -17,7 +17,6 @@ export class UserService {
 
   /* async consultaEjemplo() {
     let response: any = {};
-
     try {
       response.newband = await this.bandRepository.findAll<Band>({
         attributes: ['band_id', 'name', 'photo', 'base_price', 'reviews', 'score'],
@@ -52,7 +51,6 @@ export class UserService {
             state_name: band.state.name
           })
       });
-
       return response;
     } catch (error) {
       return error;
@@ -63,65 +61,78 @@ export class UserService {
     return await this.userRepository.findOne<User>({include: [Band] ,where: {username: bandId}});
     //return await this.bandRepository.findOne<Band>({include: [User] ,where: {band_id: bandId}});
   }
-
   
-
   async findOneByEmail(useremail : string): Promise<User> {
     return await this.userRepository.findOne<User>({where: {email: useremail}});
   } */
 
   async findOneByUsername(username: string): Promise<User> {
     return await this.userRepository.findOne<User>({
-      attributes: [
-        'idusuarios',
-        'usuario',
-        'nombre',
-        'apellidos',
-        'password',
-        'entidad',
-        'extension',
-        'rolusuario',
-      ],
-      where: { usuario: username },
+      attributes: ['idUser', 'name', 'email', 'password', 'type', 'username'],
+      where: { username: username },
     });
   }
 
-  async getAllUsers(): Promise<ServerMessage> {
+  async getAllUsers(): Promise<ServerMessages> {
     try {
       var userList = await this.userRepository.findAll<User>();
-      return new ServerMessage(false, 'Lista de usuarios obtenida', userList);
+      return new ServerMessages(false, 'Lista de usuarios obtenida', userList);
     } catch (error) {
-      return new ServerMessage(true, 'Error obteniendo lista de usuarios', {});
+      return new ServerMessages(true, 'Error obteniendo lista de usuarios', {});
     }
   }
 
-  async registerUser(createUser: CreateUserDto): Promise<ServerMessage> {
+  async registerUser(createUser: CreateUserDto): Promise<ServerMessages> {
     if (
-      !createUser.usuario ||
-      !createUser.nombre ||
-      !createUser.apellidos ||
+      !createUser.name ||
+      !createUser.email ||
       !createUser.password ||
-      !createUser.extension ||
-      !createUser.entidad ||
-      !createUser.rolusuario ||
-      !createUser.email
+      !createUser.type ||
+      !createUser.username
     ) {
-      return new ServerMessage(true, 'Peticion incompleta', {});
+      return new ServerMessages(true, 'Peticion incompleta', {});
+    } else if (createUser.password.length < 8) {
+      return new ServerMessages(
+        true,
+        'La contraseña debe contener almenos 8 caracteres.',
+        {},
+      );
+    } else if (createUser.username.length < 8) {
+      return new ServerMessages(
+        true,
+        'El nombre de usuario debe contener almenos 8 caracteres.',
+        {},
+      );
     }
-    var user = await this.findOneByUsername(createUser.usuario);
+    //Con esto se evitan incidencias en los nombres
+    createUser.username = createUser.username.toLowerCase();
+    createUser.email = createUser.email.toLowerCase();
 
-    if (!user) {
+    var user = await this.findOneByUsername(createUser.username);
+
+    var userEmail = await this.userRepository.findOne<User>({
+      attributes: ['email'],
+      where: { email: createUser.email },
+    });
+
+    if (user) {
+      return new ServerMessages(
+        true,
+        'Nombre de usuario actualmente registrado',
+        {},
+      );
+    } else if (userEmail) {
+      return new ServerMessages(true, 'Correo actualmente registrado', {});
+    } else {
       try {
         var newUser: User = await this.userRepository.create<User>(
           createUser,
           {},
         );
-        return new ServerMessage(false, 'Usuario creado con exito', newUser);
+        return new ServerMessages(false, 'Usuario creado con exito', newUser);
       } catch (error) {
-        return new ServerMessage(true, 'A ocurrido un error', error);
+        return new ServerMessages(true, 'A ocurrido un error', error);
       }
-    } else {
-      return new ServerMessage(true, 'Usuario actualmente registrado', {});
     }
   }
 }

@@ -10,7 +10,7 @@ import {
 import { UserService } from './user.service';
 import { User } from '../../models/users.entity';
 import { AuthGuard } from '@nestjs/passport';
-import { ServerMessage } from './../../utils/dtos/serverMessages.dto';
+import { ServerMessages } from '../../utils/serverMessages.util';
 
 @Controller('user')
 export class UserController {
@@ -18,13 +18,13 @@ export class UserController {
 
   @Get('user-list')
   @UseGuards(AuthGuard())
-  public async getUsers(): Promise<ServerMessage> {
+  public async getUsers(): Promise<ServerMessages> {
     return this.userService.getAllUsers();
   }
 
   @Post('register')
-  @UseGuards(AuthGuard())
-  public async registerUser(@Body() body): Promise<ServerMessage> {
+  /* @UseGuards(AuthGuard()) */
+  public async registerUser(@Body() body): Promise<ServerMessages> {
     return this.userService.registerUser(body);
   }
 

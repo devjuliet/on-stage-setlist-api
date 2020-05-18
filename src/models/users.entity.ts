@@ -23,14 +23,16 @@ export class User extends Model<User> {
     allowNull: false,
     primaryKey: true,
     autoIncrement: true,
+    unique: true,
     field: 'id_user',
   })
   public idUser: number;
 
   /* @HasOne(() => Band, 'user_id')
   band: Band; */
+
   @Column({
-    type: DataType.STRING(100),
+    type: DataType.STRING(45),
     allowNull: false,
   })
   name: string;
@@ -38,6 +40,7 @@ export class User extends Model<User> {
   @Column({
     type: DataType.STRING(100),
     allowNull: false,
+    unique: true,
   })
   email: string;
 
@@ -50,15 +53,15 @@ export class User extends Model<User> {
   @Column({
     type: DataType.INTEGER({ length: 11 }),
     allowNull: false,
-    defaultValue: '0',
+    defaultValue: 0,
     comment: 'Si el usuario es de tipo 0 es que no es manager ni live designer',
-    field: 'type',
   })
   type: string;
 
   @Column({
     type: DataType.STRING(100),
     allowNull: false,
+    unique: true,
   })
   username: string;
 

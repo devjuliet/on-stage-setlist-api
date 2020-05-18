@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { ServerMessage } from '../../utils/dtos/serverMessages.dto';
+import { ServerMessages } from '../../utils/serverMessages.util';
 import { Sequelize } from 'sequelize';
 
 @Injectable()

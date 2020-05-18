@@ -1,6 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { CatalogsService } from './catalogs.service';
-import { ServerMessage } from '../../utils/dtos/serverMessages.dto';
+import { ServerMessages } from '../../utils/serverMessages.util';
 
 @Controller('catalogs')
 export class CatalogsController {
