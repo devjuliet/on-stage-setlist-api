@@ -4,6 +4,7 @@ import {
   Model,
   DataType,
   ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { User } from './users.entity';
 import { Band } from './bands.entity';
@@ -29,6 +30,9 @@ export class LiveDesigner extends Model<LiveDesigner> {
   })
   public idBand: number;
 
+  @BelongsTo(() => Band, 'idBand')
+  band: Band;
+
   @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER({ length: 11 }),
@@ -36,4 +40,7 @@ export class LiveDesigner extends Model<LiveDesigner> {
     field: 'id_user_designer',
   })
   public idUserDesigner: number;
+
+  @BelongsTo(() => User, 'idUser')
+  user: User;
 }

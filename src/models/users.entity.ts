@@ -1,5 +1,9 @@
 //import { Sequelize, DataType } from 'sequelize';
 import * as bcrypt from 'bcrypt';
+import { BandMember } from './band-members.entity';
+import { Band } from './bands.entity';
+import { UserHistory } from './user-history.entity';
+import { LiveDesigner } from './live-designers.entity';
 
 import {
   Table,
@@ -7,6 +11,7 @@ import {
   Model,
   DataType,
   BeforeCreate,
+  HasMany,
 } from 'sequelize-typescript';
 
 @Table({
@@ -56,6 +61,18 @@ export class User extends Model<User> {
     allowNull: false,
   })
   username: string;
+
+  @HasMany(() => BandMember, 'idUser')
+  bandMembers: BandMember[];
+
+  @HasMany(() => Band, 'idUserManager')
+  managers: Band[];
+
+  @HasMany(() => UserHistory, 'idUser')
+  userHistories: UserHistory[];
+
+  @HasMany(() => LiveDesigner, 'idUserDesigener')
+  liveDesigners: LiveDesigner[];
 
   @BeforeCreate
   public static async hashPassword(user: User) {

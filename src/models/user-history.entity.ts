@@ -4,6 +4,7 @@ import {
   Model,
   DataType,
   ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { User } from './users.entity';
 import sequelize = require('sequelize');
@@ -47,4 +48,7 @@ export class UserHistory extends Model<UserHistory> {
     field: 'id_user',
   })
   public idUser: string;
+
+  @BelongsTo(() => User, 'idUser')
+  user: User;
 }

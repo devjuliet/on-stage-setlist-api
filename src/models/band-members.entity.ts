@@ -4,6 +4,7 @@ import {
   Model,
   DataType,
   ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { User } from './users.entity';
 import { Band } from './bands.entity';
@@ -34,6 +35,9 @@ export class BandMember extends Model<BandMember> {
   })
   public idUser: string;
 
+  @BelongsTo(() => User, 'idUser')
+  user: User;
+
   @ForeignKey(() => Band)
   @Column({
     type: DataType.INTEGER({ length: 11 }),
@@ -41,4 +45,7 @@ export class BandMember extends Model<BandMember> {
     field: 'id_band',
   })
   public idBand: string;
+
+  @BelongsTo(() => Band, 'idBand')
+  band: User;
 }

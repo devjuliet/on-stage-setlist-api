@@ -4,8 +4,14 @@ import {
   Model,
   DataType,
   ForeignKey,
+  BelongsTo,
+  HasMany,
 } from 'sequelize-typescript';
 import { User } from './users.entity';
+import { Setlist } from './setlists.entity';
+import { LiveEvent } from './live-events.entity';
+import { BandMember } from './band-members.entity';
+import { LiveDesigner } from './live-designers.entity';
 @Table({
   tableName: 'bands',
 })
@@ -45,4 +51,19 @@ export class Band extends Model<Band> {
     field: 'id_user_manager',
   })
   public idUserManager: string;
+
+  @BelongsTo(() => User, 'idUser')
+  user: User;
+
+  @HasMany(() => Setlist, 'idSetlist')
+  setlists: Setlist[];
+
+  @HasMany(() => LiveEvent, 'idLiveEvent')
+  liveEvents: LiveEvent[];
+
+  @HasMany(() => BandMember, 'idBand')
+  bandMembers: BandMember[];
+
+  @HasMany(() => LiveDesigner, 'idBand')
+  LiveDesigners: LiveDesigner[];
 }

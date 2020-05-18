@@ -4,8 +4,11 @@ import {
   Model,
   DataType,
   ForeignKey,
+  BelongsTo,
+  HasMany,
 } from 'sequelize-typescript';
 import { Band } from './bands.entity';
+import { Setlist } from './setlists.entity';
 import sequelize = require('sequelize');
 
 @Table({
@@ -65,4 +68,10 @@ export class LiveEvent extends Model<LiveEvent> {
     field: 'id_band',
   })
   public idBand: number;
+
+  @BelongsTo(() => Band, 'idBand')
+  band: Band;
+
+  @HasMany(() => Setlist, 'idSetlist')
+  setlists: Setlist[];
 }

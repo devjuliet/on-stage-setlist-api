@@ -4,6 +4,7 @@ import {
   Model,
   DataType,
   ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { Band } from './bands.entity';
 import { LiveEvent } from './live-events.entity';
@@ -34,6 +35,9 @@ export class Setlist extends Model<Setlist> {
   })
   public idLiveEvent: number;
 
+  @BelongsTo(() => LiveEvent, 'idLiveEvent')
+  liveEvent: LiveEvent;
+
   @ForeignKey(() => Band)
   @Column({
     type: DataType.INTEGER({ length: 11 }),
@@ -41,4 +45,7 @@ export class Setlist extends Model<Setlist> {
     field: 'id_band',
   })
   public idBand: number;
+
+  @BelongsTo(() => Band, 'idBand')
+  band: Band;
 }
