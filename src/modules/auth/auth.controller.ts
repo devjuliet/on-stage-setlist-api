@@ -1,4 +1,4 @@
-import { Controller, Body, Post } from '@nestjs/common';
+/*import { Controller, Body, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginUserDto } from '../user/dto/loginUser.dto';
 
@@ -11,3 +11,4 @@ export class AuthController {
         return await this.authService.validateUserByPassword(loginUserDto);
     }
 }
+*/
