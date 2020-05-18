@@ -3,9 +3,9 @@ import { Injectable, Inject } from '@nestjs/common';
 import { User } from '../../models/user.entity';
 //Normalmente se usa para formatear el objeto que recibimos en el request
 import { CreateUserDto } from './dto/createUser.dto';
-import { validators } from '../../utils/validators'
-import { LoginUserDto } from './dto/loginUser.dto';
-import { ServerMessage } from '../../utils/dtos/serverMessages.dto';
+import { validators } from '../../utils/validators.util'
+import { ServerMessages } from '../../utils/serverMessages.util';
+import { UserClass } from './../../classes/user.class';
 
 @Injectable()
 export class UserService {
@@ -72,36 +72,51 @@ export class UserService {
 
   async findOneByUsername(username: string): Promise<User> {
     return await this.userRepository.findOne<User>({
-      attributes: ['idusuarios', 'usuario', 'nombre', 'apellidos', 'password', 'entidad', 'extension', 'rolusuario'],
-      where: { usuario: username }
+      attributes: ['id_user', 'name', 'email', 'password', 'type', 'username'],
+      where: { username: username }
     });
   }
 
-  async getAllUsers(): Promise<ServerMessage> {
+  async getAllUsers(): Promise<ServerMessages> {
     try {
       var userList = await this.userRepository.findAll<User>();
-      return new ServerMessage(false, "Lista de usuarios obtenida", userList);
+      return new ServerMessages(false, "Lista de usuarios obtenida", userList);
     } catch (error) {
-      return new ServerMessage(true, "Error obteniendo lista de usuarios", {});
+      return new ServerMessages(true, "Error obteniendo lista de usuarios", {});
     }
   }
 
-  async registerUser(createUser: CreateUserDto): Promise<ServerMessage> {
-    if (!createUser.usuario || !createUser.nombre || !createUser.apellidos || !createUser.password || !createUser.extension
-      || !createUser.entidad || !createUser.rolusuario || !createUser.email) {
-      return new ServerMessage(true, "Peticion incompleta", {});
+  async registerUser(createUser: CreateUserDto): Promise<ServerMessages> {
+    if ( !createUser.name || !createUser.email || !createUser.password
+      || !createUser.type || !createUser.username) {
+      return new ServerMessages(true, "Peticion incompleta", {});
+    }else if(createUser.password.length < 8){
+      return new ServerMessages(true, "La contraseña debe contener almenos 8 caracteres.", {});
+    }else if(createUser.username.length < 8){
+      return new ServerMessages(true, "El nombre de usuario debe contener almenos 8 caracteres.", {});
     }
-    var user = await this.findOneByUsername(createUser.usuario);
+    //Con esto se evitan incidencias en los nombres
+    createUser.username = createUser.username.toLowerCase();
+    createUser.email = createUser.email.toLowerCase();
 
-    if (!user) {
+    var user = await this.findOneByUsername(createUser.username);
+
+    var userEmail = await this.userRepository.findOne<User>({
+      attributes: ['email'],
+      where: { email: createUser.email }
+    });
+    
+    if(user) {
+      return new ServerMessages(true, "Nombre de usuario actualmente registrado", {});
+    }else if(userEmail){
+      return new ServerMessages(true, "Correo actualmente registrado", {});
+    }else{
       try {
         var newUser: User = await this.userRepository.create<User>(createUser, {});
-        return new ServerMessage(false, "Usuario creado con exito", newUser);
+        return new ServerMessages(false, "Usuario creado con exito", newUser);
       } catch (error) {
-        return new ServerMessage(true, "A ocurrido un error", error);
+        return new ServerMessages(true, "A ocurrido un error", error);
       }
-    } else {
-      return new ServerMessage(true, "Usuario actualmente registrado", {});
-    }
+    } 
   }
 }

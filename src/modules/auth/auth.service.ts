@@ -5,7 +5,7 @@ import { UserService } from '../user/user.service';
 import { JwtPayload } from './interfaces/jwtPayload.interface';
 import { User } from '../../models/user.entity';
 
-import { ServerMessages } from './../../utils/serverMessages';
+import { ServerMessages } from './../../utils/serverMessages.util';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +15,7 @@ export class AuthService {
 
     async validateUserByPassword(loginAttempt: LoginUserDto) {
         // This will be used for the initial login
-        let userToAttempt: User = await this.usersService.findOneByUsername(loginAttempt.username);
+        let userToAttempt: User = await this.usersService.findOneByUsername(loginAttempt.username.toLowerCase());
 
         return new Promise(async (resolve, reject) => {
             let response: any;
@@ -26,7 +26,7 @@ export class AuthService {
                 let checPass = await userToAttempt.validPassword(loginAttempt.password);
                 if (checPass) {
                     // If there is a successful match, generate a JWT for the user
-                    response = this.createJwtPayload(userToAttempt.usuario);
+                    response = this.createJwtPayload(userToAttempt.username);
                     response.user = userToAttempt;
 
                     resolve(new ServerMessages(false, "Inicio Exitoso", response));
@@ -56,18 +56,13 @@ export class AuthService {
     }
 
     createJwtPayload(usuario) {
-
         let data: JwtPayload = {
             usuario: usuario
         };
-
         let jwt = this.jwtService.sign(data);
-
         return {
             expiresIn: 60 * 60 * 24 * 365, //Token de un año de vida para evitar guardar datos personales en los dispositivos
             token: jwt
         }
-
     }
-
 }

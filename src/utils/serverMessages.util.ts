@@ -1,5 +1,3 @@
-
-
 export class ServerMessages {
   error: Boolean;
   message: String;
