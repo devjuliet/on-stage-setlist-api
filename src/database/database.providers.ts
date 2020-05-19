@@ -6,7 +6,17 @@ import { Sequelize } from 'sequelize-typescript';
  * without being subject to human error.
  */
 //import { SEQUELIZE } from '../utils/constants';
-import { User } from '../models/user.entity';
+import { User } from '../models/users.entity';
+import { BandMember } from '../models/band-members.entity';
+import { Band } from '../models/bands.entity';
+import { LiveDesigner } from '../models/live-designers.entity';
+import { Genre } from '../models/genres.entity';
+import { LiveEvent } from '../models/live-events.entity';
+import { Setlist } from '../models/setlists.entity';
+import { Set } from '../models/sets.entity';
+import { Song } from 'src/models/songs.entity';
+import { Tag } from '../models/tags.entity';
+import { UserHistory } from '../models/user-history.entity';
 
 export const databaseProviders = [
   {
@@ -15,9 +25,9 @@ export const databaseProviders = [
       const sequelize = new Sequelize({
         dialect: 'mysql',
         define: {
-          timestamps: false
+          timestamps: false,
         },
-        logging : false,
+        logging: false,
         host: 'localhost',
         port: 3306,
         username: 'ux_user',
@@ -28,15 +38,25 @@ export const databaseProviders = [
       /**
        * Add Models Here
        * ===============
-       * You can add the models to 
+       * You can add the models to
        * Sequelize later on.
        */
       sequelize.addModels([
         User,
+        BandMember,
+        Band,
+        LiveDesigner,
+        Genre,
+        LiveEvent,
+        Setlist,
+        Set,
+        Song,
+        Tag,
+        UserHistory,
       ]);
 
       await sequelize.sync();
-      
+
       return sequelize;
     },
   },

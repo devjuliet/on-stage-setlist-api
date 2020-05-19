@@ -1,20 +1,18 @@
 //import { Sequelize, DataType } from 'sequelize';
 import * as bcrypt from 'bcrypt';
+import { BandMember } from './band-members.entity';
+import { Band } from './bands.entity';
+import { UserHistory } from './user-history.entity';
+import { LiveDesigner } from './live-designers.entity';
 
 import {
   Table,
   Column,
   Model,
   DataType,
-  /* CreatedAt,
-  UpdatedAt, */
-  DeletedAt,
-  BeforeUpdate,
   BeforeCreate,
-  BelongsTo,
-  HasOne
+  HasMany,
 } from 'sequelize-typescript';
-/* import { Band } from './band.entity'; */
 
 @Table({
   tableName: 'users',
@@ -25,9 +23,10 @@ export class User extends Model<User> {
     allowNull: false,
     primaryKey: true,
     autoIncrement: true,
-    unique: true
+    unique: true,
+    field: 'id_user',
   })
-  public id_user: number;
+  public idUser: number;
 
   /* @HasOne(() => Band, 'user_id')
   band: Band; */
@@ -41,7 +40,7 @@ export class User extends Model<User> {
   @Column({
     type: DataType.STRING(100),
     allowNull: false,
-    unique: true
+    unique: true,
   })
   email: string;
 
@@ -55,16 +54,28 @@ export class User extends Model<User> {
     type: DataType.INTEGER({ length: 11 }),
     allowNull: false,
     defaultValue: 0,
-    comment: "Si el usuario es de tipo 0 es que no es manager ni live designer",
+    comment: 'Si el usuario es de tipo 0 es que no es manager ni live designer',
   })
   type: string;
 
   @Column({
     type: DataType.STRING(100),
     allowNull: false,
-    unique: true
+    unique: true,
   })
   username: string;
+
+  @HasMany(() => BandMember, 'idUser')
+  bandMembers: BandMember[];
+
+  @HasMany(() => Band, 'idUserManager')
+  managers: Band[];
+
+  @HasMany(() => UserHistory, 'idUser')
+  userHistories: UserHistory[];
+
+  @HasMany(() => LiveDesigner, 'idUserDesigener')
+  liveDesigners: LiveDesigner[];
 
   @BeforeCreate
   public static async hashPassword(user: User) {
