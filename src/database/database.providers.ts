@@ -22,7 +22,7 @@ import { LiveEventTag } from '../models/live-event-tags.entity';
 import { SetlistSet } from '../models/setlist-sets.entity';
 import { SetSong } from '../models/set-songs.entity';
 import { SetlistTag } from '../models/setlist-tags.entity';
-import { SongTag } from '../models/songs-tags.entity';
+import { SongTag } from '../models/song-tags.entity';
 
 export const databaseProviders = [
   {

@@ -1,7 +1,7 @@
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
 import { LiveEventTag } from './live-event-tags.entity';
 import { SetlistTag } from './setlist-tags.entity';
-import { SongTag } from './songs-tags.entity';
+import { SongTag } from './song-tags.entity';
 
 @Table({
   tableName: 'tags',

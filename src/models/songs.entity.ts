@@ -1,5 +1,5 @@
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
-import { SongTag } from './songs-tags.entity';
+import { SongTag } from './song-tags.entity';
 import { SetSong } from './set-songs.entity';
 @Table({
   tableName: 'songs',
