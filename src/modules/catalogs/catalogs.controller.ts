@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { CatalogsService } from './catalogs.service';
 import { ServerMessages } from '../../utils/serverMessages.util';
 
