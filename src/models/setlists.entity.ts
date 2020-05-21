@@ -8,6 +8,9 @@ import {
 } from 'sequelize-typescript';
 import { Band } from './bands.entity';
 import { LiveEvent } from './live-events.entity';
+import { SetlistTag } from './setlist-tags.entity';
+import { HasMany } from 'sequelize-typescript';
+import { SetlistSet } from './setlist-sets.entity';
 @Table({
   tableName: 'setlists',
 })
@@ -48,4 +51,10 @@ export class Setlist extends Model<Setlist> {
 
   @BelongsTo(() => Band, 'idBand')
   band: Band;
+
+  @HasMany(() => SetlistSet, 'idSetlistSet')
+  setlistSets: SetlistSet[];
+
+  @HasMany(() => SetlistTag, 'idSetlistTag')
+  setlistTags: SetlistTag[];
 }

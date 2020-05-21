@@ -1,4 +1,6 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
+import { SetSong } from './set-songs.entity';
+import { SetlistSet } from './setlist-sets.entity';
 
 @Table({
   tableName: 'sets',
@@ -18,4 +20,10 @@ export class Set extends Model<Set> {
     allowNull: false,
   })
   public name: string;
+
+  @HasMany(() => SetlistSet, 'idSetlistSet')
+  setlistSets: SetlistSet[];
+
+  @HasMany(() => SetSong, 'idSetSong')
+  setSongs: SetSong[];
 }

@@ -1,4 +1,7 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
+import { LiveEventTag } from './live-event-tags.entity';
+import { SetlistTag } from './setlist-tags.entity';
+import { SongTag } from './songs-tags.entity';
 
 @Table({
   tableName: 'tags',
@@ -18,4 +21,13 @@ export class Tag extends Model<Tag> {
     allowNull: false,
   })
   public name: string;
+
+  @HasMany(() => LiveEventTag, 'idLiveEventTag')
+  liveEventTags: LiveEventTag[];
+
+  @HasMany(() => SetlistTag, 'idSetlistTag')
+  setlistTags: SetlistTag[];
+
+  @HasMany(() => SongTag, 'idSongTag')
+  songTags: SongTag[];
 }

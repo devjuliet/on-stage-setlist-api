@@ -1,4 +1,5 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
+import { BandGenre } from './band-genres.entity';
 
 @Table({
   tableName: 'genres',
@@ -18,4 +19,7 @@ export class Genre extends Model<Genre> {
     allowNull: false,
   })
   public name: string;
+
+  @HasMany(() => BandGenre, 'idBandGenre')
+  bandGenres: BandGenre[];
 }

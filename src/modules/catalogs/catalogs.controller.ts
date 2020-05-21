@@ -4,11 +4,11 @@ import { ServerMessages } from '../../utils/serverMessages.util';
 
 @Controller('catalogs')
 export class CatalogsController {
+  constructor(private readonly catalogService: CatalogsService) {}
 
-    constructor(private readonly catalogService: CatalogsService) {}
-
-    /* @Get('genres')
-    async getAllGenres(): Promise<ServerMessage>{
-        
-    } */
+  @Get('genres')
+  ///@UseGuards(AuthGuard())//
+  async getAllGenres(): Promise<ServerMessages> {
+    return await this.catalogService.getAllGenres();
+  }
 }
