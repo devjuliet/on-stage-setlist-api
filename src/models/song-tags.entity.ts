@@ -6,31 +6,31 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
-import { Setlist } from './setlists.entity';
 import { Tag } from './tags.entity';
+import { Song } from './songs.entity';
 @Table({
-  tableName: 'setlist_tags',
+  tableName: 'song_tags',
 })
-export class SetlistTag extends Model<SetlistTag> {
+export class SongTag extends Model<SongTag> {
   @Column({
     type: DataType.INTEGER({ length: 11 }),
     allowNull: false,
     primaryKey: true,
     autoIncrement: true,
-    field: 'id_setlist_tag',
+    field: 'id_song_tag',
   })
-  public idSetlistTag: number;
+  public idSongTag: number;
 
-  @ForeignKey(() => Setlist)
+  @ForeignKey(() => Song)
   @Column({
     type: DataType.INTEGER({ length: 11 }),
     allowNull: false,
-    field: 'id_setlist',
+    field: 'id_song',
   })
-  public idSetlist: number;
+  public idSong: number;
 
-  @BelongsTo(() => Setlist, 'idSetlist')
-  setlist: Setlist;
+  @BelongsTo(() => Song, 'idSong')
+  song: Song;
 
   @ForeignKey(() => Tag)
   @Column({
