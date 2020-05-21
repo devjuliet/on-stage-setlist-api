@@ -11,4 +11,10 @@ export class CatalogsController {
   async getAllGenres(): Promise<ServerMessages> {
     return await this.catalogService.getAllGenres();
   }
+
+  @Get('tags')
+  ///@UseGuards(AuthGuard())//
+  async getAllTags(): Promise<ServerMessages> {
+    return await this.catalogService.getAllTags();
+  }
 }
