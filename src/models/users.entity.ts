@@ -56,7 +56,7 @@ export class User extends Model<User> {
     defaultValue: 0,
     comment: 'Si el usuario es de tipo 0 es que no es manager ni live designer',
   })
-  type: string;
+  type: number;
 
   @Column({
     type: DataType.STRING(100),
