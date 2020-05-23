@@ -12,6 +12,7 @@ import { Setlist } from './setlists.entity';
 import { LiveEvent } from './live-events.entity';
 import { BandMember } from './band-members.entity';
 import { LiveDesigner } from './live-designers.entity';
+import { BandGenre } from './band-genres.entity';
 @Table({
   tableName: 'bands',
 })
@@ -52,8 +53,8 @@ export class Band extends Model<Band> {
   })
   public idUserManager: string;
 
-  @BelongsTo(() => User, 'idUser')
-  user: User;
+  /*@BelongsTo(() => User, 'id_user')
+  user: User;*/
 
   @HasMany(() => Setlist, 'idSetlist')
   setlists: Setlist[];
@@ -65,5 +66,8 @@ export class Band extends Model<Band> {
   bandMembers: BandMember[];
 
   @HasMany(() => LiveDesigner, 'idBand')
-  LiveDesigners: LiveDesigner[];
+  liveDesigners: LiveDesigner[];
+
+  @HasMany(() => BandGenre, 'idBandGenre')
+  bandGenres: BandGenre[];
 }

@@ -1,4 +1,6 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
+import { SongTag } from './song-tags.entity';
+import { SetSong } from './set-songs.entity';
 @Table({
   tableName: 'songs',
 })
@@ -83,4 +85,10 @@ export class Song extends Model<Song> {
     allowNull: false,
   })
   public tempo: number;
+
+  @HasMany(() => SongTag, 'idSongTag')
+  songTags: SongTag[];
+
+  @HasMany(() => SetSong, 'idSetSong')
+  setSongs: SetSong[];
 }

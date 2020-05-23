@@ -9,6 +9,7 @@ import {
 } from 'sequelize-typescript';
 import { Band } from './bands.entity';
 import { Setlist } from './setlists.entity';
+import { LiveEventTag } from './live-event-tags.entity';
 import sequelize = require('sequelize');
 
 @Table({
@@ -74,4 +75,7 @@ export class LiveEvent extends Model<LiveEvent> {
 
   @HasMany(() => Setlist, 'idSetlist')
   setlists: Setlist[];
+
+  @HasMany(() => LiveEventTag, 'idLiveEventTag')
+  liveEventTags: LiveEventTag[];
 }
