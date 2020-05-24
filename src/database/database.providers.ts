@@ -14,7 +14,7 @@ import { Genre } from '../models/genres.entity';
 import { LiveEvent } from '../models/live-events.entity';
 import { Setlist } from '../models/setlists.entity';
 import { Set } from '../models/sets.entity';
-import { Song } from 'src/models/songs.entity';
+import { Song } from '../models/songs.entity';
 import { Tag } from '../models/tags.entity';
 import { UserHistory } from '../models/user-history.entity';
 import { BandGenre } from '../models/band-genres.entity';

@@ -28,6 +28,12 @@ export class UserController {
     return this.userService.registerUser(body);
   }
 
+  @Post('update-user')
+  /* @UseGuards(AuthGuard()) */
+  public async updateUser(@Body() body): Promise<ServerMessages> {
+    return this.userService.updateUser(body);
+  }
+
   /* @Post('testuserband')
   testUserWithBand( @Body() body : any){
     return this.userService.testUserWithBand(body.bandId);

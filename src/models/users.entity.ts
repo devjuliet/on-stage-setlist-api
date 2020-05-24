@@ -65,6 +65,14 @@ export class User extends Model<User> {
   })
   username: string;
 
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+    field: 'have_image',
+  })
+  haveImage: Boolean;
+
   @HasMany(() => BandMember, 'idUser')
   bandMembers: BandMember[];
 

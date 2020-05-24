@@ -6,6 +6,7 @@ import { validators } from '../../utils/validators.util';
 import { ServerMessages } from '../../utils/serverMessages.util';
 import { UserClass } from './../../classes/user.class';
 import { User } from '../../models/users.entity';
+import { UpdatedUserDto } from './dto/updatedUser.dto';
 
 @Injectable()
 export class UserService {
@@ -13,7 +14,7 @@ export class UserService {
     //Es una manera de dar de alta el repositorio de la tabla de usuarios
     @Inject('UserRepository')
     private readonly userRepository: typeof User /* @Inject('BandRepository') private readonly bandRepository: typeof Band, */,
-  ) {}
+  ) { }
 
   /* async consultaEjemplo() {
     let response: any = {};
@@ -68,7 +69,7 @@ export class UserService {
 
   async findOneByUsername(username: string): Promise<User> {
     return await this.userRepository.findOne<User>({
-      attributes: ['idUser', 'name', 'email', 'password', 'type', 'username'],
+      attributes: ['idUser', 'name', 'email', 'password', 'type', 'username', 'haveImage'],
       where: { username: username },
     });
   }
@@ -133,6 +134,41 @@ export class UserService {
       } catch (error) {
         return new ServerMessages(true, 'A ocurrido un error', error);
       }
+    }
+  }
+
+  async updateUser(updatedUser: UpdatedUserDto): Promise<ServerMessages> {
+    if (
+      !updatedUser.idUser ||
+      !updatedUser.name ||
+      !updatedUser.email ||
+      updatedUser.haveImage == undefined ||
+      updatedUser.haveImage == null ||
+      !updatedUser.username
+    ) {
+      return new ServerMessages(true, 'Peticion incompleta', {});
+    } else if (updatedUser.username.length < 8) {
+      return new ServerMessages(
+        true,
+        'El nombre de usuario debe contener almenos 8 caracteres.',
+        {},
+      );
+    }
+    //Con esto se evitan incidencias en los nombres
+    updatedUser.username = updatedUser.username.toLowerCase();
+    updatedUser.email = updatedUser.email.toLowerCase();
+
+    var user = await this.findOneByUsername(updatedUser.username.toString());
+    //TO DO - Falta verificar que el correo y el usuario no lo tenga otro usuario
+    try {
+      user.name = updatedUser.name.toString();
+      user.email = updatedUser.email.toString();
+      user.haveImage = updatedUser.haveImage;
+      user.username = updatedUser.username.toString();
+      user.save();
+      return new ServerMessages(false, 'Usuario actualizado con exito', user);
+    } catch (error) {
+      return new ServerMessages(true, 'A ocurrido un error', error);
     }
   }
 }
