@@ -9,7 +9,14 @@ import { SearchModule } from './modules/search/search.module';
 import { UploadsModule } from './modules/uploads/uploads.module';
 
 @Module({
-  imports: [DatabaseModule, UserModule, AuthModule, CatalogsModule,SearchModule, UploadsModule],
+  imports: [
+    DatabaseModule,
+    UserModule,
+    AuthModule,
+    CatalogsModule,
+    SearchModule,
+    UploadsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

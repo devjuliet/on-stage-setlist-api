@@ -18,7 +18,7 @@ import { LoginUserDto } from '../user/dto/loginUser.dto';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post()
+  @Post('')
   async login(@Body() loginUserDto: LoginUserDto) {
     return await this.authService.validateUserByPassword(loginUserDto);
   }

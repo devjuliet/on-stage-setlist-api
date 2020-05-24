@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { Band } from '../../models/bands.entity';
 import { User } from '../../models/users.entity';
 import { ServerMessages } from '../../utils/serverMessages.util';
-import { Op, Sequelize } from 'sequelize';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class SearchService {

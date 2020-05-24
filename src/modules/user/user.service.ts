@@ -15,7 +15,7 @@ export class UserService {
     //Es una manera de dar de alta el repositorio de la tabla de usuarios
     @Inject('UserRepository')
     private readonly userRepository: typeof User /* @Inject('BandRepository') private readonly bandRepository: typeof Band, */,
-  ) { }
+  ) {}
 
   /* async consultaEjemplo() {
     let response: any = {};
@@ -70,7 +70,15 @@ export class UserService {
 
   async findOneByUsername(username: string): Promise<User> {
     return await this.userRepository.findOne<User>({
-      attributes: ['idUser', 'name', 'email', 'password', 'type', 'username', 'haveImage'],
+      attributes: [
+        'idUser',
+        'name',
+        'email',
+        'password',
+        'type',
+        'username',
+        'haveImage',
+      ],
       where: { username: username },
     });
   }
@@ -173,13 +181,12 @@ export class UserService {
     }
   }
 
-  async updateUserPassword(newUserPassword: NewUserPassword): Promise<ServerMessages> {
+  async updateUserPassword(
+    newUserPassword: NewUserPassword,
+  ): Promise<ServerMessages> {
     console.log(newUserPassword);
-    
-    if (
-      !newUserPassword.idUser ||
-      !newUserPassword.newPassword
-    ) {
+
+    if (!newUserPassword.idUser || !newUserPassword.newPassword) {
       return new ServerMessages(true, 'Peticion incompleta', {});
     } else if (newUserPassword.newPassword.length < 8) {
       return new ServerMessages(
@@ -189,14 +196,26 @@ export class UserService {
       );
     }
 
-    var user =  await this.userRepository.findOne<User>({
-      attributes: ['idUser', 'name', 'email', 'password', 'type', 'username', 'haveImage'],
+    let user = await this.userRepository.findOne<User>({
+      attributes: [
+        'idUser',
+        'name',
+        'email',
+        'password',
+        'type',
+        'username',
+        'haveImage',
+      ],
       where: { idUser: newUserPassword.idUser },
     });
     try {
       user.password = await user.hashNewPassword(newUserPassword.newPassword);
       await user.save();
-      return new ServerMessages(false, 'Contraseña de usuario actualizada con exito', user);
+      return new ServerMessages(
+        false,
+        'Contraseña de usuario actualizada con exito',
+        user,
+      );
     } catch (error) {
       return new ServerMessages(true, 'A ocurrido un error', error);
     }

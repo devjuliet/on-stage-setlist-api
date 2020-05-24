@@ -5,7 +5,7 @@ export class UserClass {
   password: string;
   type: number;
   username: string;
-  haveImage: Boolean;
+  haveImage: boolean;
 
   constructor() {}
 
@@ -16,7 +16,7 @@ export class UserClass {
     pass: string,
     ty: number,
     user: string,
-    image : boolean
+    image: boolean,
   ) {
     this.idUser = id;
     this.name = nam;
