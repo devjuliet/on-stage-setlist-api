@@ -7,6 +7,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { CatalogsModule } from './modules/catalogs/catalogs.module';
 import { SearchModule } from './modules/search/search.module';
 import { UploadsModule } from './modules/uploads/uploads.module';
+import { ManagerModule } from './modules/manager/manager.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { UploadsModule } from './modules/uploads/uploads.module';
     CatalogsModule,
     SearchModule,
     UploadsModule,
+    ManagerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
