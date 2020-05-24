@@ -95,4 +95,10 @@ export class User extends Model<User> {
   public async validPassword(password) {
     return bcrypt.compare(password, this.password);
   }
+
+  public async hashNewPassword(newPassword : string) {
+    // Generate a salt and use it to hash the user's password
+    return await bcrypt.hash(newPassword, bcrypt.genSaltSync(10));
+    //a partir de aqui se hacen las acciones posteriores
+  }
 }

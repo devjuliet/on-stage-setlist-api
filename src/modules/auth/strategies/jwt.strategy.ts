@@ -20,7 +20,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     //Esta funcion es el middleware que se ejecuta cuando la ruta requiere el token en el header
     async validate(payload: JwtPayload){
         const user = await this.authService.validateUserByJwt(payload);
-        //console.log(response)
+        //console.log(user)
         if(!user){
             throw new UnauthorizedException();
         }

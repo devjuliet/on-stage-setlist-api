@@ -7,6 +7,7 @@ import { ServerMessages } from '../../utils/serverMessages.util';
 import { UserClass } from './../../classes/user.class';
 import { User } from '../../models/users.entity';
 import { UpdatedUserDto } from './dto/updatedUser.dto';
+import { NewUserPassword } from './dto/newUserPassword.dto';
 
 @Injectable()
 export class UserService {
@@ -167,6 +168,35 @@ export class UserService {
       user.username = updatedUser.username.toString();
       user.save();
       return new ServerMessages(false, 'Usuario actualizado con exito', user);
+    } catch (error) {
+      return new ServerMessages(true, 'A ocurrido un error', error);
+    }
+  }
+
+  async updateUserPassword(newUserPassword: NewUserPassword): Promise<ServerMessages> {
+    console.log(newUserPassword);
+    
+    if (
+      !newUserPassword.idUser ||
+      !newUserPassword.newPassword
+    ) {
+      return new ServerMessages(true, 'Peticion incompleta', {});
+    } else if (newUserPassword.newPassword.length < 8) {
+      return new ServerMessages(
+        true,
+        'La contraseña del usuario debe contener almenos 8 caracteres.',
+        {},
+      );
+    }
+
+    var user =  await this.userRepository.findOne<User>({
+      attributes: ['idUser', 'name', 'email', 'password', 'type', 'username', 'haveImage'],
+      where: { idUser: newUserPassword.idUser },
+    });
+    try {
+      user.password = await user.hashNewPassword(newUserPassword.newPassword);
+      await user.save();
+      return new ServerMessages(false, 'Contraseña de usuario actualizada con exito', user);
     } catch (error) {
       return new ServerMessages(true, 'A ocurrido un error', error);
     }

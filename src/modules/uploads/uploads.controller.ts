@@ -1,9 +1,10 @@
-import { Controller, Post, UseInterceptors, UploadedFiles, Body, Param, Get, Res} from '@nestjs/common';
+import { Controller, Post, UseInterceptors, UploadedFiles, Body, Param, Get, Res, UseGuards} from '@nestjs/common';
 import {  FilesInterceptor } from '@nestjs/platform-express';
 import * as path from 'path';
 import * as multer from 'multer';
 import * as fs from 'fs';
 import { ServerMessages } from '../../utils/serverMessages.util';
+import { AuthGuard } from '@nestjs/passport';
 
 var usersPath = './storage/users/';
 
@@ -24,10 +25,10 @@ var storageUsers = multer.diskStorage({
         if (!fs.existsSync('./storage/') ){
             fs.mkdirSync('./storage/');
         }
-        if (!fs.existsSync('./storage/users/') ){
-            fs.mkdirSync('./storage/users/');
+        if (!fs.existsSync(usersPath) ){
+            fs.mkdirSync(usersPath);
         }
-        cb(null, './storage/users/')
+        cb(null, usersPath)
     },
     filename: function (req, file, cb) {
         cb(null, file.originalname );
@@ -38,19 +39,21 @@ var storageUsers = multer.diskStorage({
 @Controller('uploads')
 export class UploadsController {
     constructor(){}
-    //////////////////////////////////////EMPRESAS/////////////////////////////////////////////////
+    //////////////////////////////////////USUARIOS/////////////////////////////////////////////////
     //Crea y guarda la imagen del usuario y su directorio
     @Post('user-image/')
-    @UseInterceptors(FilesInterceptor('files[]', 20, {
+    @UseGuards(AuthGuard())
+    @UseInterceptors(FilesInterceptor('files[]', 1, {
         fileFilter: jpgFileFilter,
         storage: storageUsers
     }))
     async companyImageFileUpload(@UploadedFiles() images): Promise<any> {
-        return new ServerMessages(false,"Imagen de la empresa " + images[0].originalname + " subida.",{});
+        return new ServerMessages(false,"Imagen del usuario " + images[0].originalname + " subida.",{});
     }
 
-    //URL que proporciona las imagenes de las empresas 
+    //URL que proporciona las imagenes de los usuarios 
     @Get('user-image/:idUser')
+    @UseGuards(AuthGuard())
     async serveCompanyImage(@Param('idUser') idUser : String, @Res() res): Promise<any> {
         try {
             res.sendFile( idUser+'.jpg' , { root: 'storage/users/'}, 
@@ -67,8 +70,9 @@ export class UploadsController {
         }
         
     }
-    //Elimina la imagen de la empresa
-    @Get('user-delete/:idUser')
+    //Elimina la imagen de un usuario
+    @Get('user-delete-image/:idUser')
+    @UseGuards(AuthGuard())
     async deleteCompanyImage(@Param('idUser') idUser : String): Promise<any> {
         fs.unlink( 'storage/users/'+idUser+'.jpg', (error) => {
             if (error) {

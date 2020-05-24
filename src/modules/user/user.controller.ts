@@ -23,15 +23,20 @@ export class UserController {
   }
 
   @Post('register')
-  /* @UseGuards(AuthGuard()) */
   public async registerUser(@Body() body): Promise<ServerMessages> {
     return this.userService.registerUser(body);
   }
 
   @Post('update-user')
-  /* @UseGuards(AuthGuard()) */
+  @UseGuards(AuthGuard())
   public async updateUser(@Body() body): Promise<ServerMessages> {
     return this.userService.updateUser(body);
+  }
+
+  @Post('change-user-pass')
+  @UseGuards(AuthGuard())
+  public async updateUserPassword(@Body() body): Promise<ServerMessages> {
+    return this.userService.updateUserPassword(body);
   }
 
   /* @Post('testuserband')
