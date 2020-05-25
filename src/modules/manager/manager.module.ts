@@ -23,6 +23,7 @@ import { songProviders } from '../../models/repositoriesModels/songs.providers';
     ...bandMemberProviders,
     ...userProviders,
     ...songProviders,
+    ...bandGenreProviders,
   ],
 })
 export class ManagerModule {}

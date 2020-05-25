@@ -10,4 +10,10 @@ export class ManagerController {
   async findAllEventsByManagerId(): Promise<ServerMessages> {
     return await this.managerService.findAllEventsByManagerId(1);
   }
+
+  @Get('bands')
+  ///@UseGuards(AuthGuard())//
+  async findAllBandsWithGenre(): Promise<ServerMessages> {
+    return await this.managerService.findAllBandsWithGenre(1);
+  }
 }
