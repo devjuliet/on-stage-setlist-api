@@ -15,6 +15,7 @@ import { BandMember } from './band-members.entity';
 import { LiveDesigner } from './live-designers.entity';
 import { BandGenre } from './band-genres.entity';
 import { Genre } from './genres.entity';
+import { Song } from './songs.entity';
 @Table({
   tableName: 'bands',
 })
@@ -66,6 +67,9 @@ export class Band extends Model<Band> {
 
   @HasMany(() => BandMember, 'idBand')
   bandMembers: BandMember[];
+
+  @HasMany(() => Song, 'idBand')
+  songs: Song[];
 
   @HasMany(() => LiveDesigner, 'idBand')
   liveDesigners: LiveDesigner[];

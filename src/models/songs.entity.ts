@@ -1,6 +1,15 @@
-import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  HasMany,
+  ForeignKey,
+  BelongsTo,
+} from 'sequelize-typescript';
 import { SongTag } from './song-tags.entity';
 import { SetSong } from './set-songs.entity';
+import { Band } from './bands.entity';
 @Table({
   tableName: 'songs',
 })
@@ -82,9 +91,21 @@ export class Song extends Model<Song> {
 
   @Column({
     type: DataType.INTEGER({ length: 11 }),
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   })
   public tempo: number;
+
+  @ForeignKey(() => Band)
+  @Column({
+    type: DataType.INTEGER({ length: 11 }),
+    allowNull: false,
+    field: 'id_band',
+  })
+  public idBand: string;
+
+  @BelongsTo(() => Band, 'idBand')
+  band: Band;
 
   @HasMany(() => SongTag, 'idSongTag')
   songTags: SongTag[];

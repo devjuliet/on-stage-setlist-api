@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { ManagerService } from './manager.service';
 import { ServerMessages } from '../../utils/serverMessages.util';
 
@@ -7,13 +7,21 @@ export class ManagerController {
   constructor(private readonly managerService: ManagerService) {}
   @Get('events')
   ///@UseGuards(AuthGuard())//
-  async findAllEventsByManagerId(): Promise<ServerMessages> {
-    return await this.managerService.findAllEventsByManagerId(1);
+  async findEventsByManagerId(): Promise<ServerMessages> {
+    return await this.managerService.findEventsByManagerId(1);
   }
 
   @Get('bands')
   ///@UseGuards(AuthGuard())//
-  async findAllBandsWithGenre(): Promise<ServerMessages> {
-    return await this.managerService.findAllBandsWithGenre(1);
+  async findBandsByManagerId(): Promise<ServerMessages> {
+    return await this.managerService.findBandsByManagerId(1);
+  }
+
+  @Get('bands/:id')
+  ///@UseGuards(AuthGuard())//
+  async findBandByIdAndByManagerId(
+    @Param('id') id: number,
+  ): Promise<ServerMessages> {
+    return await this.managerService.findBandByIdAndByManagerId(1, id);
   }
 }
