@@ -8,7 +8,6 @@ function compare(a, b) {
   // Use toUpperCase() to ignore character casing
   const singerA = a.name.toUpperCase();
   const singerB = b.name.toUpperCase();
-  console.log(singerA);
 
   let comparison = 0;
   if (singerA > singerB) {
@@ -35,25 +34,21 @@ export class SearchService {
           type: { [Op.eq]: 0 },
         },
         order: [['name', 'ASC']],
-        //raw: true,
       });
       const bands = await this.bandRepository.findAll({
         where: {
           name: { [Op.like]: '%' + name.name + '%' },
         },
         order: [['name', 'ASC']],
-
-        //raw: true,
       });
 
       const list: any = members;
       bands.forEach(element => list.push(element));
-      /*console.log(list);
-      const obj = JSON.parse(list.toString());
-      obj.sort(compare);
-      const myList = JSON.stringify(obj);*/
+      let newList = [];
+      newList = list;
+      newList.sort(compare);
 
-      return new ServerMessages(false, 'Sucess', list);
+      return new ServerMessages(false, 'Sucess', newList);
     } catch (error) {
       console.log(error);
       return new ServerMessages(true, 'Error ocurred', error);
