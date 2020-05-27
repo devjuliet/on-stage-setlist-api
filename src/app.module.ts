@@ -7,9 +7,18 @@ import { AuthModule } from './modules/auth/auth.module';
 import { CatalogsModule } from './modules/catalogs/catalogs.module';
 import { SearchModule } from './modules/search/search.module';
 import { UploadsModule } from './modules/uploads/uploads.module';
+import { ManagerModule } from './modules/manager/manager.module';
 
 @Module({
-  imports: [DatabaseModule, UserModule, AuthModule, CatalogsModule,SearchModule, UploadsModule],
+  imports: [
+    DatabaseModule,
+    UserModule,
+    AuthModule,
+    CatalogsModule,
+    SearchModule,
+    UploadsModule,
+    ManagerModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

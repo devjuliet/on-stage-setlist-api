@@ -71,7 +71,7 @@ export class User extends Model<User> {
     defaultValue: false,
     field: 'have_image',
   })
-  haveImage: Boolean;
+  haveImage: boolean;
 
   @HasMany(() => BandMember, 'idUser')
   bandMembers: BandMember[];
@@ -96,7 +96,7 @@ export class User extends Model<User> {
     return bcrypt.compare(password, this.password);
   }
 
-  public async hashNewPassword(newPassword : string) {
+  public async hashNewPassword(newPassword: string) {
     // Generate a salt and use it to hash the user's password
     return await bcrypt.hash(newPassword, bcrypt.genSaltSync(10));
     //a partir de aqui se hacen las acciones posteriores

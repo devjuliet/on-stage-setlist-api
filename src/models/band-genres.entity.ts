@@ -29,8 +29,8 @@ export class BandGenre extends Model<BandGenre> {
   })
   public idBand: number;
 
-  @BelongsTo(() => Band, 'idBand')
-  band: Band;
+  /*@BelongsTo(() => Band, 'idBand')
+  band: Band;*/
 
   @ForeignKey(() => Genre)
   @Column({
@@ -40,6 +40,6 @@ export class BandGenre extends Model<BandGenre> {
   })
   public idGenre: number;
 
-  @BelongsTo(() => Band, 'idGenre')
-  genre: Genre;
+  /*@BelongsTo(() => Genre, 'idGenre')
+  genre: Genre;*/
 }

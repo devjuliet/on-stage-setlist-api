@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { JwtStrategy } from './strategies/jwt.strategy';
+//import { JwtStrategy } from './strategies/jwt.strategy';
 import { UserModule } from '../user/user.module';
 import { PassportModule } from '@nestjs/passport';
 import { userProviders } from '../../models/repositoriesModels/user.providers';
@@ -13,12 +13,12 @@ import { userProviders } from '../../models/repositoriesModels/user.providers';
     JwtModule.register({
       secretOrPrivateKey: 'UxKeyMyBand',
       signOptions: {
-        expiresIn: 60 * 60 * 24 * 365// segundos * minutos * horas * dias 
-      }
+        expiresIn: 60 * 60 * 24 * 365, // segundos * minutos * horas * dias
+      },
     }),
-    UserModule
+    UserModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy,...userProviders]
+  providers: [AuthService, ...userProviders],
 })
 export class AuthModule {}

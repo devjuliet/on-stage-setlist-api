@@ -22,7 +22,7 @@ export class BandMember extends Model<BandMember> {
   public idMember: number;
 
   @Column({
-    type: DataType.INTEGER({ length: 11 }),
+    type: DataType.STRING(50),
     allowNull: false,
   })
   public role: string;
@@ -47,5 +47,5 @@ export class BandMember extends Model<BandMember> {
   public idBand: string;
 
   @BelongsTo(() => Band, 'idBand')
-  band: User;
+  band: Band;
 }

@@ -6,6 +6,7 @@ import {
   ForeignKey,
   BelongsTo,
   HasMany,
+  BelongsToMany,
 } from 'sequelize-typescript';
 import { User } from './users.entity';
 import { Setlist } from './setlists.entity';
@@ -13,6 +14,8 @@ import { LiveEvent } from './live-events.entity';
 import { BandMember } from './band-members.entity';
 import { LiveDesigner } from './live-designers.entity';
 import { BandGenre } from './band-genres.entity';
+import { Genre } from './genres.entity';
+import { Song } from './songs.entity';
 @Table({
   tableName: 'bands',
 })
@@ -65,9 +68,18 @@ export class Band extends Model<Band> {
   @HasMany(() => BandMember, 'idBand')
   bandMembers: BandMember[];
 
+  @HasMany(() => Song, 'idBand')
+  songs: Song[];
+
   @HasMany(() => LiveDesigner, 'idBand')
   liveDesigners: LiveDesigner[];
 
-  @HasMany(() => BandGenre, 'idBandGenre')
-  bandGenres: BandGenre[];
+  /*@HasMany(() => BandGenre, 'idBandGenre')
+  bandGenres: BandGenre[];*/
+
+  @BelongsToMany(
+    () => Genre,
+    () => BandGenre,
+  )
+  genres: Genre[];
 }
