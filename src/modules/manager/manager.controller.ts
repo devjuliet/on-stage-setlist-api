@@ -6,15 +6,14 @@ import {
   Post,
   UseGuards,
   Request,
-  Post,
   Delete,
   Put,
-  Body ,Request
+  Body ,
+  Query
 } from '@nestjs/common';
 import { ManagerService } from './manager.service';
 import { ServerMessages } from '../../utils/serverMessages.util';
 import { AuthGuard } from '@nestjs/passport';
-import { Body, Query } from '@nestjs/common';
 import { Band } from '../../models/bands.entity';
 import { LiveEvent } from '../../models/live-events.entity';
 import { BandMember } from '../../models/band-members.entity';

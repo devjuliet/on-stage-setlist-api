@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 17-05-2020 a las 01:29:16
+-- Tiempo de generación: 28-05-2020 a las 21:50:31
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.2.27
 
@@ -36,6 +36,24 @@ CREATE TABLE `bands` (
   `id_user_manager` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `bands`
+--
+
+INSERT INTO `bands` (`id_band`, `name`, `url_logo`, `description`, `id_user_manager`) VALUES
+(19, 'La bunny bandatrty', 'bands/19', 'Banda mamalona que puede tocar musica pal corazonhgfhg', 1),
+(20, 'La bunny bandatrtydsd', 'bands/20', 'Banda mamalona que puede tocar musica pal corazonhgfhg', 1),
+(21, 'La bunny banda', '', 'Banda mamalona que puede tocar musica pal corazonnnvnn', 1),
+(22, 'La bunny bandafdaaa', 'bands/22', 'Banda mamalona que puede tocar musica pal corazonnnvnn', 1),
+(23, 'La bunny bandasssssss', 'bands/23', 'Banda mamalona que puede tocar musica pal corazonññññ', 1),
+(24, 'La bunny bandaaaaaaa', 'bands/24', 'Banda mamalona que puede tocar musica pal corazonsasasas', 1),
+(25, 'La bunny banda1111', '', 'Banda mamalona que puede tocar musica pal corazondffsd', 1),
+(26, 'La bunny banda11222', 'bands/26', 'Banda mamalona que puede tocar musica pal corazonbvbc', 1),
+(28, 'La bunny banda125', '', 'Banda mamalona que puede tocar musica pal corazon  gdgdg', 1),
+(29, 'La bunny banda12345', 'bands/29', 'Banda mamalona que puede tocar musica pal corazondvdgs', 1),
+(30, 'La bunny bandafsfsf', 'band-image/30', 'Banda mamalona que puede tocar musica pal corazonfdsfsf', 1),
+(31, 'test de banda ya con todo', 'band-image/31', 'fdssssssssssdddddddddddddddddddddddddddddddddddddddddddddddddddddddfdsdff', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -48,6 +66,49 @@ CREATE TABLE `band_genres` (
   `id_genre` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `band_genres`
+--
+
+INSERT INTO `band_genres` (`id_band_genre`, `id_band`, `id_genre`) VALUES
+(28, 19, 1),
+(29, 19, 3),
+(30, 19, 5),
+(31, 20, 1),
+(32, 20, 3),
+(33, 20, 5),
+(34, 21, 1),
+(35, 21, 4),
+(36, 21, 6),
+(37, 22, 1),
+(38, 22, 4),
+(39, 22, 6),
+(40, 23, 1),
+(41, 23, 3),
+(42, 23, 5),
+(43, 24, 4),
+(44, 24, 2),
+(45, 25, 2),
+(46, 25, 4),
+(47, 26, 1),
+(48, 26, 5),
+(49, 26, 6),
+(50, 28, 2),
+(51, 28, 5),
+(52, 29, 2),
+(53, 29, 4),
+(54, 30, 5),
+(55, 30, 6),
+(56, 30, 3),
+(57, 30, 4),
+(58, 30, 1),
+(59, 30, 2),
+(60, 30, 11),
+(61, 30, 8),
+(62, 31, 2),
+(63, 31, 4),
+(64, 31, 6);
+
 -- --------------------------------------------------------
 
 --
@@ -56,10 +117,27 @@ CREATE TABLE `band_genres` (
 
 CREATE TABLE `band_members` (
   `id_member` int(11) NOT NULL,
-  `role` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
   `id_band` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `band_members`
+--
+
+INSERT INTO `band_members` (`id_member`, `id_user`, `id_band`) VALUES
+(21, 9, 19),
+(22, 9, 20),
+(23, 9, 21),
+(24, 9, 22),
+(25, 9, 23),
+(26, 9, 24),
+(27, 9, 25),
+(28, 9, 26),
+(29, 9, 28),
+(30, 9, 29),
+(31, 9, 30),
+(32, 9, 31);
 
 -- --------------------------------------------------------
 
@@ -204,6 +282,15 @@ CREATE TABLE `live_designers` (
   `id_band` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `live_designers`
+--
+
+INSERT INTO `live_designers` (`id_live_designer`, `id_user_designer`, `id_band`) VALUES
+(4, 9, 25),
+(5, 9, 30),
+(6, 9, 31);
+
 -- --------------------------------------------------------
 
 --
@@ -253,7 +340,7 @@ CREATE TABLE `setlists` (
 --
 
 CREATE TABLE `setlist_sets` (
-  `is_setlist_set` int(11) NOT NULL,
+  `id_setlist_set` int(11) NOT NULL,
   `id_setlist` int(11) NOT NULL,
   `id_set` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -310,7 +397,8 @@ CREATE TABLE `songs` (
   `tab_bass` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
   `chords_piano` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
   `tab_piano` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `tempo` int(11) NOT NULL
+  `tempo` int(11) NOT NULL,
+  `id_band` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -468,8 +556,20 @@ CREATE TABLE `users` (
   `email` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
   `type` int(11) NOT NULL DEFAULT 0 COMMENT 'Si el usuario es de tipo 0 es que no es manager ni live designer',
-  `username` varchar(100) COLLATE utf8_unicode_ci NOT NULL
+  `username` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `have_image` tinyint(1) NOT NULL DEFAULT 0,
+  `role` int(11) NOT NULL,
+  `description` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `users`
+--
+
+INSERT INTO `users` (`id_user`, `name`, `email`, `password`, `type`, `username`, `have_image`, `role`, `description`) VALUES
+(1, 'Luismiguel Ortiz alvarez', 'luismi.luu@gmail.com', '$2b$10$shAm0H4ghZWZxaQUzB7ldeaVQp340SS3/NiY6/nA0hDj3MnQ3ZPd6', 1, 'hipsy-luu', 1, 0, NULL),
+(8, 'Luismi designer simon', 'hipsy-luud@gmail.com', '$2b$10$hoP/SS2HKNHva48s/NBZC.LsfCng/T9PaS/F1nlZlBwHvfJS6bhN.', 2, 'hipsy-luud', 1, 0, NULL),
+(9, 'Jenny Rivera', 'jennyrivera@gmail.com', '$2b$10$20HgA3gwkdHSq70cImvy/uZJRhYYIx59a/5bsHrnvA4x7lhrwg.72', 0, 'jennyrivera', 1, 0, 'Cantante en la banda mas prra');
 
 -- --------------------------------------------------------
 
@@ -485,23 +585,13 @@ CREATE TABLE `user_history` (
   `band_name` varchar(150) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- --------------------------------------------------------
-
 --
--- Estructura de tabla para la tabla `usuarios`
+-- Volcado de datos para la tabla `user_history`
 --
 
-CREATE TABLE `usuarios` (
-  `idusuarios` int(10) NOT NULL,
-  `usuario` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `nombre` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `apellidos` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `entidad` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `extension` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `rolusuario` int(10) NOT NULL,
-  `email` varchar(200) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+INSERT INTO `user_history` (`id_user_history`, `date`, `description`, `id_user`, `band_name`) VALUES
+(1, '2020-05-28 00:47:44', 'Toco el instrumento como ningun otro bunny', 9, 'LA BUNNY BANDA'),
+(2, '2020-05-28 00:48:47', 'Cantante de rap ', 9, 'GRUPO VERSATIL DE BUNNY');
 
 --
 -- Índices para tablas volcadas
@@ -527,8 +617,8 @@ ALTER TABLE `band_genres`
 --
 ALTER TABLE `band_members`
   ADD PRIMARY KEY (`id_member`),
-  ADD UNIQUE KEY `band_member_UN` (`id_user`),
-  ADD KEY `band_member_FK_1` (`id_band`);
+  ADD KEY `band_member_FK_1` (`id_band`),
+  ADD KEY `band_members_FK` (`id_user`);
 
 --
 -- Indices de la tabla `genres`
@@ -571,7 +661,7 @@ ALTER TABLE `setlists`
 -- Indices de la tabla `setlist_sets`
 --
 ALTER TABLE `setlist_sets`
-  ADD PRIMARY KEY (`is_setlist_set`),
+  ADD PRIMARY KEY (`id_setlist_set`),
   ADD KEY `setlist_sets_FK` (`id_setlist`),
   ADD KEY `setlist_sets_FK_1` (`id_set`);
 
@@ -601,7 +691,8 @@ ALTER TABLE `set_songs`
 -- Indices de la tabla `songs`
 --
 ALTER TABLE `songs`
-  ADD PRIMARY KEY (`id_song`);
+  ADD PRIMARY KEY (`id_song`),
+  ADD KEY `songs_FK` (`id_band`);
 
 --
 -- Indices de la tabla `song_tags`
@@ -633,12 +724,6 @@ ALTER TABLE `user_history`
   ADD KEY `user_history_FK` (`id_user`);
 
 --
--- Indices de la tabla `usuarios`
---
-ALTER TABLE `usuarios`
-  ADD PRIMARY KEY (`idusuarios`);
-
---
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -646,19 +731,19 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `bands`
 --
 ALTER TABLE `bands`
-  MODIFY `id_band` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_band` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT de la tabla `band_genres`
 --
 ALTER TABLE `band_genres`
-  MODIFY `id_band_genre` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_band_genre` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT de la tabla `band_members`
 --
 ALTER TABLE `band_members`
-  MODIFY `id_member` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_member` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT de la tabla `genres`
@@ -670,7 +755,7 @@ ALTER TABLE `genres`
 -- AUTO_INCREMENT de la tabla `live_designers`
 --
 ALTER TABLE `live_designers`
-  MODIFY `id_live_designer` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_live_designer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `live_events`
@@ -724,19 +809,13 @@ ALTER TABLE `tags`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `user_history`
 --
 ALTER TABLE `user_history`
-  MODIFY `id_user_history` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `usuarios`
---
-ALTER TABLE `usuarios`
-  MODIFY `idusuarios` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_user_history` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas
@@ -759,8 +838,8 @@ ALTER TABLE `band_genres`
 -- Filtros para la tabla `band_members`
 --
 ALTER TABLE `band_members`
-  ADD CONSTRAINT `band_member_FK` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`),
-  ADD CONSTRAINT `band_member_FK_1` FOREIGN KEY (`id_band`) REFERENCES `bands` (`id_band`);
+  ADD CONSTRAINT `band_member_FK_1` FOREIGN KEY (`id_band`) REFERENCES `bands` (`id_band`),
+  ADD CONSTRAINT `band_members_FK` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`);
 
 --
 -- Filtros para la tabla `live_designers`
@@ -809,6 +888,12 @@ ALTER TABLE `setlist_tags`
 ALTER TABLE `set_songs`
   ADD CONSTRAINT `set_songs_FK` FOREIGN KEY (`id_set`) REFERENCES `sets` (`id_set`),
   ADD CONSTRAINT `set_songs_FK_1` FOREIGN KEY (`id_song`) REFERENCES `songs` (`id_song`);
+
+--
+-- Filtros para la tabla `songs`
+--
+ALTER TABLE `songs`
+  ADD CONSTRAINT `songs_FK` FOREIGN KEY (`id_band`) REFERENCES `bands` (`id_band`);
 
 --
 -- Filtros para la tabla `song_tags`
