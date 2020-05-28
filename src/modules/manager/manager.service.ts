@@ -3,10 +3,11 @@ import { Band } from '../../models/bands.entity';
 import { LiveEvent } from '../../models/live-events.entity';
 import { ServerMessages } from '../../utils/serverMessages.util';
 import { Genre } from '../../models/genres.entity';
-import { BandGenre } from '../../models/band-genres.entity';
 import { BandMember } from '../../models/band-members.entity';
 import { Song } from '../../models/songs.entity';
 import { User } from '../../models/users.entity';
+import { Op } from 'sequelize';
+import { LiveDesigner } from '../../models/live-designers.entity';
 
 @Injectable()
 export class ManagerService {
@@ -15,8 +16,10 @@ export class ManagerService {
     private readonly bandRepository: typeof Band,
     @Inject('LiveEventRepository')
     private readonly liveEventRepository: typeof LiveEvent,
-    @Inject('BandGenreRepository')
-    private readonly bandGenreRepository: typeof BandGenre,
+    @Inject('BandMemberRepository')
+    private readonly bandMemberRepository: typeof BandMember,
+    @Inject('BandMemberRepository')
+    private readonly liveDesignerRepository: typeof LiveDesigner,
   ) {}
 
   async findEventsByManagerId(id: number): Promise<ServerMessages> {
@@ -63,7 +66,10 @@ export class ManagerService {
   ): Promise<ServerMessages> {
     try {
       const band = await this.bandRepository.findOne({
-        where: { idBand: id },
+        where: {
+          idBand: id,
+          [Op.and]: [{ idUserManager: managerId }],
+        },
         include: [
           {
             model: BandMember,
@@ -83,6 +89,56 @@ export class ManagerService {
       });
 
       return new ServerMessages(false, 'Success', band);
+    } catch (error) {
+      console.log(error);
+      return new ServerMessages(true, 'Error ocurred', error);
+    }
+  }
+
+  async addBandMemberByUsername(username: string): Promise<ServerMessages> {
+    try {
+      return new ServerMessages(false, 'Success', '');
+    } catch (error) {
+      console.log(error);
+      return new ServerMessages(true, 'Error ocurred', error);
+    }
+  }
+
+  async deleteBandById(managerId: number, id: number): Promise<ServerMessages> {
+    try {
+      const band = await this.bandRepository.destroy({
+        where: { idBand: id, [Op.and]: [{ idUserManager: managerId }] },
+      });
+      return new ServerMessages(false, 'Success', band);
+    } catch (error) {
+      console.log(error);
+      return new ServerMessages(true, 'Error ocurred', error);
+    }
+  }
+
+  async updateBand(
+    managerId: number,
+    idBand: number,
+    band: Band,
+  ): Promise<ServerMessages> {
+    try {
+      const newBand = await this.bandRepository.update(band, {
+        where: { idBand: idBand, [Op.and]: [{ idUserManager: managerId }] },
+      });
+      return new ServerMessages(false, 'Success', newBand);
+    } catch (error) {
+      console.log(error);
+      return new ServerMessages(true, 'Error ocurred', error);
+    }
+  }
+
+  async createLiveEvent(
+    idBand: number,
+    event: LiveEvent,
+  ): Promise<ServerMessages> {
+    try {
+      const newEvent = await this.liveEventRepository.create(event);
+      return new ServerMessages(false, 'Success', newEvent);
     } catch (error) {
       console.log(error);
       return new ServerMessages(true, 'Error ocurred', error);
