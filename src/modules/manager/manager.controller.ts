@@ -1,12 +1,15 @@
+
 import {
   Controller,
   Get,
   Param,
+  Post,
   UseGuards,
   Request,
   Post,
   Delete,
   Put,
+  Body ,Request
 } from '@nestjs/common';
 import { ManagerService } from './manager.service';
 import { ServerMessages } from '../../utils/serverMessages.util';
@@ -85,5 +88,11 @@ export class ManagerController {
     @Body() event: LiveEvent,
   ): Promise<ServerMessages> {
     return await this.managerService.createLiveEvent(req.user.idUser, event);
+  }
+
+  @Post('create-band')
+  @UseGuards(AuthGuard())
+  public async updateUserPassword(@Body() body): Promise<ServerMessages> {
+    return this.managerService.createBand(body);
   }
 }

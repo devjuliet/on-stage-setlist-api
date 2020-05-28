@@ -8,13 +8,15 @@ import { UserClass } from './../../classes/user.class';
 import { User } from '../../models/users.entity';
 import { UpdatedUserDto } from './dto/updatedUser.dto';
 import { NewUserPassword } from './dto/newUserPassword.dto';
+import { UserHistory } from '../../models/user-history.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     //Es una manera de dar de alta el repositorio de la tabla de usuarios
     @Inject('UserRepository')
-    private readonly userRepository: typeof User /* @Inject('BandRepository') private readonly bandRepository: typeof Band, */,
+    private readonly userRepository: typeof User ,
+    @Inject('UserHistoryRepository') private readonly userHistoryRepository: typeof UserHistory,
   ) {}
 
   /* async consultaEjemplo() {
@@ -77,10 +79,32 @@ export class UserService {
         'password',
         'type',
         'username',
+        'role',
+        'description',
         'haveImage',
       ],
       where: { username: username },
     });
+  }
+
+  async addHistoryUser(description: string,bandName: string,idUser:number): Promise<ServerMessages> {
+    bandName = bandName.toLocaleUpperCase();
+    let newDataHistory = {
+      date : new Date(),
+      description : description,
+      bandName : bandName,
+      idUser:idUser
+    };
+    
+    try {
+      var newUserHistory: UserHistory = await this.userHistoryRepository.create<UserHistory>(
+        newDataHistory,
+        {},
+      );
+      return new ServerMessages(false, 'Historial añadido', newUserHistory);
+    } catch (error) {
+      return new ServerMessages(true, 'A ocurrido un error añadiendo el historial', error);
+    }
   }
 
   async getAllUsers(): Promise<ServerMessages> {
@@ -98,7 +122,8 @@ export class UserService {
       !createUser.email ||
       !createUser.password ||
       !createUser.type ||
-      !createUser.username
+      !createUser.username ||
+      !createUser.role
     ) {
       return new ServerMessages(true, 'Peticion incompleta', {});
     } else if (createUser.password.length < 8) {
@@ -111,6 +136,12 @@ export class UserService {
       return new ServerMessages(
         true,
         'El nombre de usuario debe contener almenos 8 caracteres.',
+        {},
+      );
+    } else if (createUser.description.length > 999) {
+      return new ServerMessages(
+        true,
+        'Descripcion muy larga maximo de 1000.',
         {},
       );
     }
@@ -153,13 +184,21 @@ export class UserService {
       !updatedUser.email ||
       updatedUser.haveImage == undefined ||
       updatedUser.haveImage == null ||
-      !updatedUser.username
+      !updatedUser.username ||
+      !updatedUser.role ||
+      !updatedUser.description
     ) {
       return new ServerMessages(true, 'Peticion incompleta', {});
     } else if (updatedUser.username.length < 8) {
       return new ServerMessages(
         true,
         'El nombre de usuario debe contener almenos 8 caracteres.',
+        {},
+      );
+    } else if (updatedUser.description.length > 999) {
+      return new ServerMessages(
+        true,
+        'Descripcion muy larga maximo de 1000.',
         {},
       );
     }
@@ -174,6 +213,8 @@ export class UserService {
       user.email = updatedUser.email.toString();
       user.haveImage = updatedUser.haveImage;
       user.username = updatedUser.username.toString();
+      user.role = updatedUser.role;
+      user.description = updatedUser.description;
       user.save();
       return new ServerMessages(false, 'Usuario actualizado con exito', user);
     } catch (error) {
@@ -204,6 +245,8 @@ export class UserService {
         'password',
         'type',
         'username',
+        'role',
+        'description',
         'haveImage',
       ],
       where: { idUser: newUserPassword.idUser },

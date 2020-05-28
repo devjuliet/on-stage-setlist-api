@@ -79,6 +79,20 @@ export class User extends Model<User> {
   })
   haveImage: boolean;
 
+  @Column({
+    type: DataType.INTEGER({ length: 11 }),
+    allowNull: false,
+    defaultValue: 0,
+  })
+  public role: number;
+
+  @Column({
+    type: DataType.STRING(1000),
+    allowNull: true,
+    defaultValue: ""
+  })
+  description: string;
+
   @HasMany(() => BandMember, 'idUser')
   bandMembers: BandMember[];
 

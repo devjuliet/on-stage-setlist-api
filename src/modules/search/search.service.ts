@@ -3,6 +3,7 @@ import { Band } from '../../models/bands.entity';
 import { User } from '../../models/users.entity';
 import { ServerMessages } from '../../utils/serverMessages.util';
 import { Op } from 'sequelize';
+import { UserHistory } from '../../models/user-history.entity';
 
 function compare(a, b) {
   // Use toUpperCase() to ignore character casing
@@ -49,6 +50,31 @@ export class SearchService {
       newList.sort(compare);
 
       return new ServerMessages(false, 'Sucess', newList);
+    } catch (error) {
+      console.log(error);
+      return new ServerMessages(true, 'Error ocurred', error);
+    }
+  }
+
+  async findUserByUsername(search): Promise<ServerMessages> {
+    try {
+      let user = await this.userRepository.findOne<User>({
+        attributes: [
+          'idUser',
+          'name',
+          'type',
+          'role',
+          'description',
+          'haveImage',
+        ],
+        where: { username: search.username },
+        include: [{
+          model: UserHistory,
+          attributes: ['bandName','description', 'date'],
+        }],
+      });
+
+      return new ServerMessages(false, 'Sucess', user);
     } catch (error) {
       console.log(error);
       return new ServerMessages(true, 'Error ocurred', error);

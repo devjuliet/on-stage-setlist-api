@@ -5,4 +5,6 @@ export class CreateUserDto {
   password: string;
   type: number;
   username: string;
+  role:number;
+  description:string;
 }

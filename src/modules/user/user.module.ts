@@ -10,6 +10,7 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 //Con esto se importa de algun modo la tabla de usuarios para poderla inyectar en el servicio
 import { userProviders } from '../../models/repositoriesModels/user.providers';
+import { userHistoryProviders } from '../../models/repositoriesModels/user-history.providers';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { userProviders } from '../../models/repositoriesModels/user.providers';
   providers: [
     UserService, 
     ...userProviders,
+    ...userHistoryProviders,
     /* ...bandProviders */
   ],
 })
