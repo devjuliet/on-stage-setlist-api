@@ -21,12 +21,6 @@ export class BandMember extends Model<BandMember> {
   })
   public idMember: number;
 
-  @Column({
-    type: DataType.STRING(50),
-    allowNull: false,
-  })
-  public role: string;
-
   @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER({ length: 11 }),

@@ -28,6 +28,12 @@ export class User extends Model<User> {
   })
   public idUser: number;
 
+  @Column({
+    type: DataType.STRING(50),
+    allowNull: false,
+  })
+  public role: number;
+
   /* @HasOne(() => Band, 'user_id')
   band: Band; */
 

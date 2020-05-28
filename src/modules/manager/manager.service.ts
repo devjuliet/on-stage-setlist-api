@@ -20,6 +20,8 @@ export class ManagerService {
     private readonly bandMemberRepository: typeof BandMember,
     @Inject('BandMemberRepository')
     private readonly liveDesignerRepository: typeof LiveDesigner,
+    @Inject('UserRepository')
+    private readonly userRepository: typeof User,
   ) {}
 
   async findEventsByManagerId(id: number): Promise<ServerMessages> {
@@ -95,9 +97,35 @@ export class ManagerService {
     }
   }
 
-  async addBandMemberByUsername(username: string): Promise<ServerMessages> {
+  async addBandMemberByUsername(
+    managerId: number,
+    idBand: number,
+    username: string,
+    isLiveDesigner: string,
+  ): Promise<ServerMessages> {
     try {
-      return new ServerMessages(false, 'Success', '');
+      const user = await this.userRepository.findOne({
+        where: {
+          username: username,
+          type: { [Op.eq]: 0 },
+        },
+      });
+
+      const idUser = user.idUser;
+
+      if (isLiveDesigner == 'true') {
+        await this.liveDesignerRepository.create({
+          idUserDesigner: idUser,
+          idBand: idBand,
+        });
+      }
+
+      const bandMember = await this.bandMemberRepository.create({
+        idUser: idUser,
+        idBand: idBand,
+      });
+
+      return new ServerMessages(false, 'Success', bandMember);
     } catch (error) {
       console.log(error);
       return new ServerMessages(true, 'Error ocurred', error);
