@@ -1,6 +1,7 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Post, UseGuards, Body ,Request} from '@nestjs/common';
 import { ManagerService } from './manager.service';
 import { ServerMessages } from '../../utils/serverMessages.util';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('manager')
 export class ManagerController {
@@ -12,16 +13,22 @@ export class ManagerController {
   }
 
   @Get('bands')
-  ///@UseGuards(AuthGuard())//
-  async findBandsByManagerId(): Promise<ServerMessages> {
-    return await this.managerService.findBandsByManagerId(1);
+  @UseGuards(AuthGuard())
+  async findBandsByManagerId(@Request() req): Promise<ServerMessages> {
+    return await this.managerService.findBandsByManagerId(req.user.idUser);
   }
 
-  @Get('bands/:id')
-  ///@UseGuards(AuthGuard())//
+  @Get('band/:id')
+  //@UseGuards(AuthGuard())//
   async findBandByIdAndByManagerId(
     @Param('id') id: number,
   ): Promise<ServerMessages> {
     return await this.managerService.findBandByIdAndByManagerId(1, id);
+  }
+
+  @Post('create-band')
+  @UseGuards(AuthGuard())
+  public async updateUserPassword(@Body() body): Promise<ServerMessages> {
+    return this.managerService.createBand(body);
   }
 }

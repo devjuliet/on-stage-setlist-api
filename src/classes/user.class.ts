@@ -5,6 +5,8 @@ export class UserClass {
   password: string;
   type: number;
   username: string;
+  role: number;
+  description : string;
   haveImage: boolean;
 
   constructor() {}
@@ -24,6 +26,7 @@ export class UserClass {
     this.password = pass;
     this.type = ty;
     this.username = user;
+    this.role = 0;
     this.haveImage = image;
   }
 }

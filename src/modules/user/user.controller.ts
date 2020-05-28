@@ -39,6 +39,12 @@ export class UserController {
     return this.userService.updateUserPassword(body);
   }
 
+  @Post('add-user-history')
+  //@UseGuards(AuthGuard())
+  public async addHistoryUser(@Body() body): Promise<ServerMessages> {
+    return this.userService.addHistoryUser(body.description,body.bandName,body.idUser);
+  }
+
   /* @Post('testuserband')
   testUserWithBand( @Body() body : any){
     return this.userService.testUserWithBand(body.bandId);

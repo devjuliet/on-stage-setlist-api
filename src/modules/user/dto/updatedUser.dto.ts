@@ -4,4 +4,6 @@ export class UpdatedUserDto {
   username: String;
   email: String;
   haveImage: boolean;
+  role:number;
+  description:string;
 }
