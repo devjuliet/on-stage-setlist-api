@@ -48,9 +48,8 @@ export class ManagerController {
   async addBandMemberByUsername(
     @Param('id') idBand: number,
     @Request() req,
-    @Body() bandMember: BandMember,
-    @Query() livedesigner: string,
-    @Query() username: string,
+    @Query() username,
+    @Query() livedesigner,
   ): Promise<ServerMessages> {
     return await this.managerService.addBandMemberByUsername(
       req.user.idUser,

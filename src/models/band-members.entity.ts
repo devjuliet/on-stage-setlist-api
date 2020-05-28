@@ -27,7 +27,7 @@ export class BandMember extends Model<BandMember> {
     allowNull: false,
     field: 'id_user',
   })
-  public idUser: string;
+  public idUser: number;
 
   @BelongsTo(() => User, 'idUser')
   user: User;
@@ -38,7 +38,7 @@ export class BandMember extends Model<BandMember> {
     allowNull: false,
     field: 'id_band',
   })
-  public idBand: string;
+  public idBand: number;
 
   @BelongsTo(() => Band, 'idBand')
   band: Band;

@@ -18,7 +18,7 @@ export class ManagerService {
     private readonly liveEventRepository: typeof LiveEvent,
     @Inject('BandMemberRepository')
     private readonly bandMemberRepository: typeof BandMember,
-    @Inject('BandMemberRepository')
+    @Inject('LiveDesignerRepository')
     private readonly liveDesignerRepository: typeof LiveDesigner,
     @Inject('UserRepository')
     private readonly userRepository: typeof User,
@@ -100,20 +100,20 @@ export class ManagerService {
   async addBandMemberByUsername(
     managerId: number,
     idBand: number,
-    username: string,
-    isLiveDesigner: string,
+    username,
+    isLiveDesigner,
   ): Promise<ServerMessages> {
     try {
       const user = await this.userRepository.findOne({
         where: {
-          username: username,
+          username: username.username,
           type: { [Op.eq]: 0 },
         },
       });
 
       const idUser = user.idUser;
 
-      if (isLiveDesigner == 'true') {
+      if (isLiveDesigner.livedesigner == 'true') {
         await this.liveDesignerRepository.create({
           idUserDesigner: idUser,
           idBand: idBand,
