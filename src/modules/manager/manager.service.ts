@@ -161,7 +161,7 @@ export class ManagerService {
   }
 
   async createLiveEvent(
-    idBand: number,
+    idManager: number,
     event: LiveEvent,
   ): Promise<ServerMessages> {
     try {
