@@ -179,14 +179,17 @@ export class UserService {
 
   async updateUser(updatedUser: UpdatedUserDto): Promise<ServerMessages> {
     if (
-      !updatedUser.idUser ||
+      updatedUser.idUser == undefined ||
+      updatedUser.idUser == null ||
       !updatedUser.name ||
       !updatedUser.email ||
       updatedUser.haveImage == undefined ||
       updatedUser.haveImage == null ||
       !updatedUser.username ||
-      !updatedUser.role ||
-      !updatedUser.description
+      updatedUser.role ==  undefined ||
+      updatedUser.role == null ||
+      updatedUser.description == undefined ||
+      updatedUser.description == null 
     ) {
       return new ServerMessages(true, 'Peticion incompleta', {});
     } else if (updatedUser.username.length < 8) {
