@@ -54,7 +54,7 @@ export class Band extends Model<Band> {
     allowNull: false,
     field: 'id_user_manager',
   })
-  public idUserManager: string;
+  public idUserManager: number;
 
   /*@BelongsTo(() => User, 'id_user')
   user: User;*/

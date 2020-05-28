@@ -8,11 +8,13 @@ import { genreProviders } from 'src/models/repositoriesModels/genres.providers';
 import { bandMemberProviders } from 'src/models/repositoriesModels/band-members.providers';
 import { userProviders } from 'src/models/repositoriesModels/user.providers';
 import { songProviders } from '../../models/repositoriesModels/songs.providers';
+import { PassportModule } from '@nestjs/passport';
+import { liveDesignerProviders } from 'src/models/repositoriesModels/live-designers.providers';
 
 @Module({
-  /*imports: [
-    PassportModule.register({ defaultStrategy: 'jwt', session: false })
-  ],*/
+  imports: [
+    PassportModule.register({ defaultStrategy: 'jwt', session: false }),
+  ],
   controllers: [ManagerController],
   providers: [
     ManagerService,
@@ -24,6 +26,7 @@ import { songProviders } from '../../models/repositoriesModels/songs.providers';
     ...userProviders,
     ...songProviders,
     ...bandGenreProviders,
+    ...liveDesignerProviders,
   ],
 })
 export class ManagerModule {}

@@ -21,19 +21,13 @@ export class BandMember extends Model<BandMember> {
   })
   public idMember: number;
 
-  @Column({
-    type: DataType.STRING(50),
-    allowNull: false,
-  })
-  public role: string;
-
   @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER({ length: 11 }),
     allowNull: false,
     field: 'id_user',
   })
-  public idUser: string;
+  public idUser: number;
 
   @BelongsTo(() => User, 'idUser')
   user: User;
@@ -44,7 +38,7 @@ export class BandMember extends Model<BandMember> {
     allowNull: false,
     field: 'id_band',
   })
-  public idBand: string;
+  public idBand: number;
 
   @BelongsTo(() => Band, 'idBand')
   band: Band;
