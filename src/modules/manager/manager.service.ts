@@ -9,6 +9,7 @@ import { User } from '../../models/users.entity';
 import { BandDto } from './dto/band.dto';
 import { Op } from 'sequelize';
 import { LiveDesigner } from '../../models/live-designers.entity';
+import { BandGenre } from '../../models/band-genres.entity';
 
 @Injectable()
 export class ManagerService {
@@ -23,10 +24,6 @@ export class ManagerService {
     private readonly liveEventRepository: typeof LiveEvent,
     @Inject('BandGenreRepository')
     private readonly bandGenreRepository: typeof BandGenre,
-    @Inject('BandMemberRepository')
-    private readonly bandMemberRepository: typeof BandMember,
-    @Inject('LiveDesignerRepository')
-    private readonly liveDesignerRepository: typeof LiveDesigner,
     @Inject('UserRepository')
     private readonly userRepository: typeof User,
   ) {}

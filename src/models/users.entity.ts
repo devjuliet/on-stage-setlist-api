@@ -29,8 +29,9 @@ export class User extends Model<User> {
   public idUser: number;
 
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.INTEGER({ length: 11 }),
     allowNull: false,
+    defaultValue: 0,
   })
   public role: number;
 
@@ -78,13 +79,6 @@ export class User extends Model<User> {
     field: 'have_image',
   })
   haveImage: boolean;
-
-  @Column({
-    type: DataType.INTEGER({ length: 11 }),
-    allowNull: false,
-    defaultValue: 0,
-  })
-  public role: number;
 
   @Column({
     type: DataType.STRING(1000),
