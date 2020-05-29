@@ -10,6 +10,7 @@ import {
 } from 'sequelize-typescript';
 import { User } from './users.entity';
 import { Setlist } from './setlists.entity';
+import { Set } from './sets.entity';
 import { LiveEvent } from './live-events.entity';
 import { BandMember } from './band-members.entity';
 import { LiveDesigner } from './live-designers.entity';
@@ -61,6 +62,9 @@ export class Band extends Model<Band> {
 
   @HasMany(() => Setlist, 'idSetlist')
   setlists: Setlist[];
+
+  @HasMany(() => Set, 'idBand')
+  sets: Set[];
 
   @HasMany(() => LiveEvent, 'idLiveEvent')
   liveEvents: LiveEvent[];

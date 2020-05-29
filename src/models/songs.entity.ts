@@ -102,7 +102,7 @@ export class Song extends Model<Song> {
     allowNull: false,
     field: 'id_band',
   })
-  public idBand: string;
+  public idBand: number;
 
   @BelongsTo(() => Band, 'idBand')
   band: Band;

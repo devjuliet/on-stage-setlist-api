@@ -96,7 +96,7 @@ export class User extends Model<User> {
   @HasMany(() => UserHistory, 'idUser')
   userHistories: UserHistory[];
 
-  @HasMany(() => LiveDesigner, 'idUserDesigener')
+  @HasMany(() => LiveDesigner, 'idUserDesigner')
   liveDesigners: LiveDesigner[];
 
   @BeforeCreate
