@@ -27,12 +27,14 @@ class BandMember {
     role: Number;
     name: String;
     haveImage: Boolean;
+    idUser : number;
 
     constructor() {
         this.idMember = 0;
         this.role = 0;
         this.name = "";
         this.haveImage = false;
+        this.idUser = 0;
     }
 }
 class Genre {
@@ -47,9 +49,13 @@ class Genre {
 class Set {
     idSet: Number;
     name: String;
+    urlImage : string;
+    description : string;
 
     constructor() {
         this.idSet = 0;
         this.name = "";
+        this.urlImage = "";
+        this.description = "";
     }
 }

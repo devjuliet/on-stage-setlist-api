@@ -17,6 +17,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { Band } from '../../models/bands.entity';
 import { LiveEvent } from '../../models/live-events.entity';
 import { BandMember } from '../../models/band-members.entity';
+import { BandDto } from './dto/band.dto';
 
 @Controller('manager')
 export class ManagerController {
@@ -33,16 +34,14 @@ export class ManagerController {
     return await this.managerService.findBandsByManagerId(req.user.idUser);
   }
 
-  @Get('bands/:id')
+  @Get('band/:idBand')
   @UseGuards(AuthGuard())
   async findBandByIdAndByManagerId(
-    @Param('id') id: number,
-    @Request() req,
+    @Param('idBand') idBand: number, 
+    @Request() req
   ): Promise<ServerMessages> {
-    return await this.managerService.findBandByIdAndByManagerId(
-      req.user.idUser,
-      id,
-    );
+    return await 
+      this.managerService.findBandByIdAndByManagerId(req.user.idUser,idBand);
   }
 
   @Post('bands/:id')
@@ -61,23 +60,22 @@ export class ManagerController {
     );
   }
 
-  @Delete('bands/:id')
+  @Get('band-delete/:id')
   @UseGuards(AuthGuard())
   async deleteBandById(
-    @Param('id') id: number,
+    @Param('id') idBand: number,
     @Request() req,
   ): Promise<ServerMessages> {
-    return await this.managerService.deleteBandById(req.user.idUser, id);
+    return await this.managerService.deleteBandById(req.user.idUser, idBand);
   }
 
-  @Put('bands/:id')
+  @Post('band-update')
   @UseGuards(AuthGuard())
   async updateBand(
-    @Param('id') id: number,
     @Request() req,
-    @Body() band: Band,
+    @Body() band: BandDto,
   ): Promise<ServerMessages> {
-    return await this.managerService.updateBand(req.user.idUser, id, band);
+    return await this.managerService.updateBand(req.user.idUser, band);
   }
 
   @Post('events')

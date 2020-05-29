@@ -8,6 +8,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 var usersPath = './storage/users/';
 var bandsPath = './storage/bands/';
+var setsPath = './storage/sets/';
 
 const jpgFileFilter = (req, file, callback) => {
     let ext = path.extname(file.originalname);
@@ -47,6 +48,23 @@ var storageBands = multer.diskStorage({
             fs.mkdirSync(bandsPath);
         }
         cb(null, bandsPath)
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname );
+        
+    }
+});
+
+var storageSets = multer.diskStorage({
+    destination: function (req, file, cb) {
+        //console.log({stringActual : dirCompany , stringdirectorio : dir});
+        if (!fs.existsSync('./storage/') ){
+            fs.mkdirSync('./storage/');
+        }
+        if (!fs.existsSync(setsPath) ){
+            fs.mkdirSync(setsPath);
+        }
+        cb(null, setsPath)
     },
     filename: function (req, file, cb) {
         cb(null, file.originalname );
@@ -131,14 +149,56 @@ export class UploadsController {
         }
     }
     //Elimina la imagen de una BANDAS
-    /* @Get('user-delete-image/:idUser')
+    @Get('band-delete-image/:idBand')
     @UseGuards(AuthGuard())
-    async deleteCompanyImage(@Param('idUser') idUser : String): Promise<any> {
-        fs.unlink( 'storage/users/'+idUser+'.jpg', (error) => {
+    async deleteBandImage(@Param('idBand') idBand : String): Promise<any> {
+        fs.unlink( 'storage/bands/'+idBand+'.jpg', (error) => {
             if (error) {
-                return new ServerMessages(true,"Imagen del usuario " + idUser + " no existe.",{});
+                return new ServerMessages(true,"Imagen de la banda " + idBand + " no existe.",{});
             };
-            return new ServerMessages(false,"Imagen del usuario " + idUser + " se elimino.",{});
+            return new ServerMessages(false,"Imagen de la banda " + idBand + " se elimino.",{});
         });
-    } */
+    }
+
+    //////////////////////////////////////Sets/////////////////////////////////////////////////
+    //Crea y guarda la imagen de un SET y su directorio
+    @Post('set-image/')
+    @UseGuards(AuthGuard())
+    @UseInterceptors(FilesInterceptor('files[]', 1, {
+        fileFilter: jpgFileFilter,
+        storage: storageSets
+    }))
+    async setImageFileUpload(@UploadedFiles() images): Promise<any> {
+        return new ServerMessages(false,"Imagen del set " + images[0].originalname + " subida.",{});
+    }
+
+    //URL que proporciona las imagenes un SET
+    @Get('set-image/:idSet')
+    //@UseGuards(AuthGuard())
+    async serveSetImage(@Param('idSet') idSet : String, @Res() res): Promise<any> {
+        try {
+            res.sendFile( idSet+'.jpg' , { root: 'storage/sets/'}, 
+            (err) => {
+                if (err) {
+                    return new ServerMessages(true,"Imagen del set"+idSet+" no encontrada.",err);
+                } else {
+                    return new ServerMessages(false,"Imagen del set " +idSet + " enviada.",{});
+                }
+            }
+            );
+        } catch (error) {
+            return new ServerMessages(true,"Imagen del set"+idSet+" no encontrada.",error);
+        }
+    }
+    //Elimina la imagen un SET
+    @Get('set-delete-image/:idSet')
+    @UseGuards(AuthGuard())
+    async deleteSetImage(@Param('idSet') idSet : String): Promise<any> {
+        fs.unlink( 'storage/sets/'+idSet+'.jpg', (error) => {
+            if (error) {
+                return new ServerMessages(true,"Imagen del set " + idSet + " no existe.",{});
+            };
+            return new ServerMessages(false,"Imagen del set " + idSet + " se elimino.",{});
+        });
+    }
 }

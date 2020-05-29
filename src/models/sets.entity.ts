@@ -1,6 +1,7 @@
-import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, HasMany, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import { SetSong } from './set-songs.entity';
 import { SetlistSet } from './setlist-sets.entity';
+import { Band } from './bands.entity';
 
 @Table({
   tableName: 'sets',
@@ -20,6 +21,31 @@ export class Set extends Model<Set> {
     allowNull: false,
   })
   public name: string;
+  
+  @Column({
+    type: DataType.STRING(1000),
+    allowNull: true,
+    defaultValue : ""
+  })
+  public description: string;
+  
+  @Column({
+    type: DataType.STRING(150),
+    allowNull: true,
+    defaultValue : ""
+  })
+  public urlImage: string;
+
+  @ForeignKey(() => Band)
+  @Column({
+    type: DataType.INTEGER({ length: 11 }),
+    allowNull: false,
+    field: 'id_band',
+  })
+  public idBand: number;
+
+  @BelongsTo(() => Band, 'idBand')
+  band: Band;
 
   @HasMany(() => SetlistSet, 'idSetlistSet')
   setlistSets: SetlistSet[];

@@ -10,6 +10,7 @@ import { userProviders } from '../../models/repositoriesModels/user.providers';
 import { songProviders } from '../../models/repositoriesModels/songs.providers';
 import { liveDesignerProviders } from '../../models/repositoriesModels/live-designers.providers';
 import { PassportModule } from '@nestjs/passport';
+import { setProviders } from '../../models/repositoriesModels/sets.providers';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { PassportModule } from '@nestjs/passport';
     ...songProviders,
     ...bandGenreProviders,
     ...liveDesignerProviders,
+    ...setProviders
   ],
 })
 export class ManagerModule {}

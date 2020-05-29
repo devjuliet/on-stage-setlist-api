@@ -1,6 +1,7 @@
 export class CreateUserDto {
   idUser: number;
   name: string;
+  haveImage: boolean;
   email: string;
   password: string;
   type: number;

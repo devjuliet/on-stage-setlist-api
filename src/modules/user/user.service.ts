@@ -120,10 +120,13 @@ export class UserService {
     if (
       !createUser.name ||
       !createUser.email ||
-      !createUser.password ||
-      !createUser.type ||
+      createUser.haveImage == undefined ||
+      createUser.haveImage == null ||
       !createUser.username ||
-      !createUser.role
+      createUser.role ==  undefined ||
+      createUser.role == null ||
+      createUser.description == undefined ||
+      createUser.description == null 
     ) {
       return new ServerMessages(true, 'Peticion incompleta', {});
     } else if (createUser.password.length < 8) {
