@@ -63,14 +63,14 @@ export class ManagerService {
         include: [
           {
             model: Genre,
-            as: 'genres',
+            as: 'genres', 
           },
         ],
       });
 
       return new ServerMessages(false, 'Success', bands);
     } catch (error) {
-      //console.log(error);
+      console.log(error);
       return new ServerMessages(true, 'Error ocurred', error);
     }
   }
