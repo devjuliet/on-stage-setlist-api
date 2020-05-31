@@ -8,9 +8,9 @@ import {
 } from 'sequelize-typescript';
 import { Band } from './bands.entity';
 import { LiveEvent } from './live-events.entity';
-import { SetlistTag } from './setlist-tags.entity';
 import { HasMany } from 'sequelize-typescript';
 import { SetlistSet } from './setlist-sets.entity';
+import { Tag } from './tags.entity';
 @Table({
   tableName: 'setlists',
 })
@@ -34,6 +34,7 @@ export class Setlist extends Model<Setlist> {
   @Column({
     type: DataType.INTEGER({ length: 11 }),
     allowNull: false,
+    unique: true,
     field: 'id_live_event',
   })
   public idLiveEvent: number;
@@ -52,9 +53,17 @@ export class Setlist extends Model<Setlist> {
   @BelongsTo(() => Band, 'idBand')
   band: Band;
 
+  @Column({
+    type: DataType.INTEGER({ length: 11 }),
+    allowNull: false,
+    field: 'id_tag',
+  })
+  public idTag: number;
+  
+  @BelongsTo(() => Tag, 'idTag')
+  tag: Tag;
+  
   @HasMany(() => SetlistSet, 'idSetlistSet')
   setlistSets: SetlistSet[];
-
-  @HasMany(() => SetlistTag, 'idSetlistTag')
-  setlistTags: SetlistTag[];
+  
 }

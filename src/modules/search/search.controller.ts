@@ -17,4 +17,16 @@ export class SearchController {
   async findUserByUsername(@Query() search) : Promise<ServerMessages> {
     return await this.searchService.findUserByUsername(search);
   }
+
+  @Get('get-band')
+  ///@UseGuards(AuthGuard())//
+  async findBandById(@Query() search): Promise<ServerMessages> {
+    return await this.searchService.findBandById(search.bandId);
+  }
+
+  @Get('get-artist-profile')
+  ///@UseGuards(AuthGuard())//
+  async findUserProfileById(@Query() search): Promise<ServerMessages> {
+    return await this.searchService.findUserProfileById(search.idUser);
+  }
 }

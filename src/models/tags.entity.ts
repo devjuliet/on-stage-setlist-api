@@ -1,7 +1,4 @@
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
-import { LiveEventTag } from './live-event-tags.entity';
-import { SetlistTag } from './setlist-tags.entity';
-import { SongTag } from './song-tags.entity';
 
 @Table({
   tableName: 'tags',
@@ -22,12 +19,12 @@ export class Tag extends Model<Tag> {
   })
   public name: string;
 
-  @HasMany(() => LiveEventTag, 'idLiveEventTag')
+  /* @HasMany(() => LiveEventTag, 'idLiveEventTag')
   liveEventTags: LiveEventTag[];
 
   @HasMany(() => SetlistTag, 'idSetlistTag')
   setlistTags: SetlistTag[];
 
   @HasMany(() => SongTag, 'idSongTag')
-  songTags: SongTag[];
+  songTags: SongTag[]; */
 }

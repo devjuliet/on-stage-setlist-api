@@ -18,6 +18,7 @@ import { Band } from '../../models/bands.entity';
 import { LiveEvent } from '../../models/live-events.entity';
 import { BandMember } from '../../models/band-members.entity';
 import { BandDto } from './dto/band.dto';
+import { EventDto } from './dto/event.dto';
 
 @Controller('manager')
 export class ManagerController {
@@ -78,13 +79,16 @@ export class ManagerController {
     return await this.managerService.updateBand(req.user.idUser, band);
   }
 
-  @Post('events')
+  @Post('create-event')
   @UseGuards(AuthGuard())
-  async createLiveEvent(
-    @Request() req,
-    @Body() event: LiveEvent,
-  ): Promise<ServerMessages> {
-    return await this.managerService.createLiveEvent(req.user.idUser, event);
+  async createLiveEvent( @Body() event: EventDto ): Promise<ServerMessages> {
+    return await this.managerService.createLiveEvent(event);
+  }
+
+  @Post('update-event')
+  @UseGuards(AuthGuard())
+  async updateLiveEvent( @Body() event: EventDto ): Promise<ServerMessages> {
+    return await this.managerService.updateLiveEvent(event);
   }
 
   @Post('create-band')

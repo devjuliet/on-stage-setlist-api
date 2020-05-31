@@ -14,7 +14,7 @@ export class CatalogsController {
   }
 
   @Get('tags')
-  ///@UseGuards(AuthGuard())//
+  @UseGuards(AuthGuard())
   async getAllTags(): Promise<ServerMessages> {
     return await this.catalogService.getAllTags();
   }
