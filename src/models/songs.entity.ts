@@ -7,9 +7,9 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
-import { SongTag } from './song-tags.entity';
 import { SetSong } from './set-songs.entity';
 import { Band } from './bands.entity';
+import { Tag } from './tags.entity';
 @Table({
   tableName: 'songs',
 })
@@ -40,54 +40,54 @@ export class Song extends Model<Song> {
     allowNull: false,
   })
   public lyric: string;
-
+  
   @Column({
-    type: DataType.STRING(250),
+    type: DataType.BOOLEAN,
     allowNull: true,
-    defaultValue: null,
+    defaultValue: false,
     field: 'chords_guitar',
   })
-  public chordsGuitar: string;
+  public chordsGuitar: boolean;
 
   @Column({
-    type: DataType.STRING(250),
+    type: DataType.BOOLEAN,
     allowNull: true,
-    defaultValue: null,
+    defaultValue: false,
     field: 'tab_guitar',
   })
-  public tabGuitar: string;
+  public tabGuitar: boolean;
 
   @Column({
-    type: DataType.STRING(250),
+    type: DataType.BOOLEAN,
     allowNull: true,
-    defaultValue: null,
+    defaultValue: false,
     field: 'chords_bass',
   })
-  public chordsBass: string;
+  public chordsBass: boolean;
 
   @Column({
-    type: DataType.STRING(250),
+    type: DataType.BOOLEAN,
     allowNull: true,
-    defaultValue: null,
+    defaultValue: false,
     field: 'tab_bass',
   })
-  public tabBass: string;
+  public tabBass: boolean;
 
   @Column({
-    type: DataType.STRING(250),
+    type: DataType.BOOLEAN,
     allowNull: true,
-    defaultValue: null,
+    defaultValue: false,
     field: 'chords_piano',
   })
-  public chordsPiano: string;
+  public chordsPiano: boolean;
 
   @Column({
-    type: DataType.STRING(250),
+    type: DataType.BOOLEAN,
     allowNull: true,
-    defaultValue: null,
+    defaultValue: false,
     field: 'tab_piano',
   })
-  public tabPiano: string;
+  public tabPiano: boolean;
 
   @Column({
     type: DataType.INTEGER({ length: 11 }),
@@ -107,8 +107,15 @@ export class Song extends Model<Song> {
   @BelongsTo(() => Band, 'idBand')
   band: Band;
 
-  @HasMany(() => SongTag, 'idSongTag')
-  songTags: SongTag[];
+  @Column({
+    type: DataType.INTEGER({ length: 11 }),
+    allowNull: false,
+    field: 'id_tag',
+  })
+  public idTag: number;
+  
+  @BelongsTo(() => Tag, 'idTag')
+  tag: Tag;
 
   @HasMany(() => SetSong, 'idSetSong')
   setSongs: SetSong[];

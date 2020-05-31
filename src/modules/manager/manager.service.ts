@@ -12,6 +12,8 @@ import { LiveDesigner } from '../../models/live-designers.entity';
 import { BandGenre } from '../../models/band-genres.entity';
 import { SetSong } from '../../models/set-songs.entity';
 import { Set } from '../../models/sets.entity';
+import { EventDto } from './dto/event.dto';
+import { Tag } from '../../models/tags.entity';
 @Injectable()
 export class ManagerService {
   constructor(
@@ -33,20 +35,37 @@ export class ManagerService {
 
   async findEventsByManagerId(id: number): Promise<ServerMessages> {
     try {
-      const events = await this.liveEventRepository.findAll({
+      const events : EventDto[] = await this.liveEventRepository.findAll({
         include: [
           {
             model: Band,
             as: 'band',
             where: { idUserManager: id },
+          },{
+            model: Tag,
+            as: 'tag',
           },
         ],
+      }).map((event: LiveEvent) => {
+        return Object.assign({
+          idLiveEvent : event.idLiveEvent,
+          name: event.name,
+          location: event.location,
+          tour: event.tour,
+          date: event.date,
+          place: event.place,
+          idTag: event.idTag,
+          idBand: event.idBand,
+          nameBand : event.band.name,
+          nameTag : event.tag.name
+        })
       });
+
 
       return new ServerMessages(false, 'Success', events);
     } catch (error) {
       console.log(error);
-      return new ServerMessages(true, 'Error ocurred', error);
+      return new ServerMessages(true, 'A ocurrido un error consultando los eventos', error);
     }
   }
 
@@ -110,32 +129,36 @@ export class ManagerService {
         ],
       });
 
-      allBandData.idBand = band.idBand;
-      allBandData.name = band.name;
-      allBandData.description = band.description;
-      allBandData.urlLogo = band.urlLogo;
-      allBandData.idUserManager = band.idUserManager;
-      allBandData.genres = band.genres;
-
-      band.bandMembers.forEach((member) => {
-        allBandData.bandMembers.push({
-          idMember: member.idMember,
-          idUser: member.idUser,
-          role: member.user.role,
-          name: member.user.name,
-          haveImage: member.user.haveImage
+      if(band == null || band == undefined){
+        return new ServerMessages(true, 'La banda no existe', {});
+      }else{
+        allBandData.idBand = band.idBand;
+        allBandData.name = band.name;
+        allBandData.description = band.description;
+        allBandData.urlLogo = band.urlLogo;
+        allBandData.idUserManager = band.idUserManager;
+        allBandData.genres = band.genres;
+  
+        band.bandMembers.forEach((member) => {
+          allBandData.bandMembers.push({
+            idMember: member.idMember,
+            idUser: member.idUser,
+            role: member.user.role,
+            name: member.user.name,
+            haveImage: member.user.haveImage
+          });
         });
-      });
-
-      band.liveDesigners.forEach((liveDesigners) => {
-        allBandData.bandLiveDesigners.push(liveDesigners.idUserDesigner)
-      });
-
-      band.sets.forEach((set) => {
-        allBandData.sets.push({ idSet: set.idSet, name: set.name, urlImage: set.urlImage, description: set.description })
-      });
-      //return new ServerMessages(false, 'Datos de la banda cargados', await this.setRepository.findAll());
-      return new ServerMessages(false, 'Datos de la banda cargados', allBandData);
+  
+        band.liveDesigners.forEach((liveDesigners) => {
+          allBandData.bandLiveDesigners.push(liveDesigners.idUserDesigner)
+        });
+  
+        band.sets.forEach((set) => {
+          allBandData.sets.push({ idSet: set.idSet, name: set.name, urlImage: set.urlImage, description: set.description })
+        });
+        //return new ServerMessages(false, 'Datos de la banda cargados', await this.setRepository.findAll());
+        return new ServerMessages(false, 'Datos de la banda cargados', allBandData);
+      }
     } catch (error) {
       console.log(error);
       return new ServerMessages(true, 'Error ocurred', error);
@@ -469,16 +492,90 @@ export class ManagerService {
     }
   }
 
-  async createLiveEvent(
-    idManager: number,
-    event: LiveEvent,
-  ): Promise<ServerMessages> {
+  async createLiveEvent(event: EventDto): Promise<ServerMessages> {
     try {
-      const newEvent = await this.liveEventRepository.create(event);
-      return new ServerMessages(false, 'Success', newEvent);
+      if (
+        event.location == null ||
+        event.location == undefined ||
+        event.name == null ||
+        event.name == undefined ||
+        event.tour == null ||
+        event.tour == undefined ||
+        event.date == null ||
+        event.date == undefined ||
+        event.place == null ||
+        event.place == undefined ||
+        event.idBand == null ||
+        event.idBand == undefined ||
+        event.idTag == null ||
+        event.idTag == undefined
+      ) {
+        return new ServerMessages(true, 'Peticion incompleta', {});
+      } else if (event.name.length < 5) {
+        return new ServerMessages(
+          true,
+          'El nombre dela banda debe contener almenos 8 caracteres.',
+          {},
+        );
+      }
+    
+      const newEvent = await this.liveEventRepository.create<LiveEvent>(event);
+      return new ServerMessages(false, 'Evento creado exitosamente', newEvent);
     } catch (error) {
       console.log(error);
-      return new ServerMessages(true, 'Error ocurred', error);
+      return new ServerMessages(true, 'A ocurrido un error creando el evento', error);
+    }
+  }
+
+  async updateLiveEvent(event: EventDto): Promise<ServerMessages> {
+    try {
+      if (
+        event.idLiveEvent == null ||
+        event.idLiveEvent == undefined ||
+        event.location == null ||
+        event.location == undefined ||
+        event.name == null ||
+        event.name == undefined ||
+        event.tour == null ||
+        event.tour == undefined ||
+        event.date == null ||
+        event.date == undefined ||
+        event.place == null ||
+        event.place == undefined ||
+        event.idBand == null ||
+        event.idBand == undefined ||
+        event.idTag == null ||
+        event.idTag == undefined
+      ) {
+        return new ServerMessages(true, 'Peticion incompleta', {});
+      } else if (event.name.length < 5) {
+        return new ServerMessages(
+          true,
+          'El nombre dela banda debe contener almenos 8 caracteres.',
+          {},
+        );
+      }
+      var bandFinded: LiveEvent = await this.liveEventRepository.findOne<LiveEvent>({
+        where: { idLiveEvent : event.idLiveEvent.toString() },
+      });
+      if (bandFinded == undefined || bandFinded == null) {
+        return new ServerMessages(true, 'El evento no existe',{});
+      }else{
+        bandFinded =  await bandFinded.update({ 
+          name: event.name,
+          location: event.location,
+          tour: event.tour,
+          date: new Date(event.date),
+          idTag: event.idTag,
+          idBand: event.idBand
+        });
+
+        return new ServerMessages(false, 'Evento actualizado exitosamente', bandFinded);
+      }
+      
+    } catch (error) {
+      console.log(error);
+      return new ServerMessages(true, 'A ocurrido un error creando el evento', error);
     }
   }
 }

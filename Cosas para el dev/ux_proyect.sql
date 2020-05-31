@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 28-05-2020 a las 21:50:31
+-- Tiempo de generación: 31-05-2020 a las 08:44:37
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.2.27
 
@@ -41,18 +41,15 @@ CREATE TABLE `bands` (
 --
 
 INSERT INTO `bands` (`id_band`, `name`, `url_logo`, `description`, `id_user_manager`) VALUES
-(19, 'La bunny bandatrty', 'bands/19', 'Banda mamalona que puede tocar musica pal corazonhgfhg', 1),
+(19, 'La bunny bandatrty', 'band-image/19', 'Banda mamalona que puede tocar musica pal corazonhgfhg', 1),
 (20, 'La bunny bandatrtydsd', 'bands/20', 'Banda mamalona que puede tocar musica pal corazonhgfhg', 1),
-(21, 'La bunny banda', '', 'Banda mamalona que puede tocar musica pal corazonnnvnn', 1),
+(21, 'La bunny banda', 'band-image/21', 'Banda mamalona que puede tocar musica pal corazonnneeeeeee', 1),
 (22, 'La bunny bandafdaaa', 'bands/22', 'Banda mamalona que puede tocar musica pal corazonnnvnn', 1),
-(23, 'La bunny bandasssssss', 'bands/23', 'Banda mamalona que puede tocar musica pal corazonññññ', 1),
-(24, 'La bunny bandaaaaaaa', 'bands/24', 'Banda mamalona que puede tocar musica pal corazonsasasas', 1),
+(23, 'La bad bunny ', 'band-image/23', 'Banda mamalona que puede tocar musica pal corazonññññ', 8),
+(24, 'La bunny bandaaaaaaa', 'bands/24', 'Banda mamalona que puede tocar musica pal corazonsasasas', 8),
 (25, 'La bunny banda1111', '', 'Banda mamalona que puede tocar musica pal corazondffsd', 1),
-(26, 'La bunny banda11222', 'bands/26', 'Banda mamalona que puede tocar musica pal corazonbvbc', 1),
-(28, 'La bunny banda125', '', 'Banda mamalona que puede tocar musica pal corazon  gdgdg', 1),
-(29, 'La bunny banda12345', 'bands/29', 'Banda mamalona que puede tocar musica pal corazondvdgs', 1),
-(30, 'La bunny bandafsfsf', 'band-image/30', 'Banda mamalona que puede tocar musica pal corazonfdsfsf', 1),
-(31, 'test de banda ya con todo', 'band-image/31', 'fdssssssssssdddddddddddddddddddddddddddddddddddddddddddddddddddddddfdsdff', 1);
+(30, 'siimnooookkennee', 'band-image/30', 'Banda mamalona que puede tocar musica pal corazonfdsfsf', 1),
+(32, 'tem dev one band', 'band-image/32', 'lddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', 1);
 
 -- --------------------------------------------------------
 
@@ -71,43 +68,42 @@ CREATE TABLE `band_genres` (
 --
 
 INSERT INTO `band_genres` (`id_band_genre`, `id_band`, `id_genre`) VALUES
-(28, 19, 1),
-(29, 19, 3),
-(30, 19, 5),
 (31, 20, 1),
 (32, 20, 3),
 (33, 20, 5),
-(34, 21, 1),
-(35, 21, 4),
-(36, 21, 6),
 (37, 22, 1),
 (38, 22, 4),
 (39, 22, 6),
-(40, 23, 1),
-(41, 23, 3),
-(42, 23, 5),
 (43, 24, 4),
 (44, 24, 2),
 (45, 25, 2),
 (46, 25, 4),
-(47, 26, 1),
-(48, 26, 5),
-(49, 26, 6),
-(50, 28, 2),
-(51, 28, 5),
-(52, 29, 2),
-(53, 29, 4),
-(54, 30, 5),
-(55, 30, 6),
-(56, 30, 3),
-(57, 30, 4),
-(58, 30, 1),
-(59, 30, 2),
-(60, 30, 11),
-(61, 30, 8),
-(62, 31, 2),
-(63, 31, 4),
-(64, 31, 6);
+(569, 30, 5),
+(570, 30, 6),
+(571, 30, 3),
+(572, 30, 4),
+(573, 30, 1),
+(574, 30, 2),
+(575, 30, 11),
+(576, 30, 8),
+(588, 21, 6),
+(589, 21, 1),
+(590, 21, 5),
+(591, 32, 2),
+(592, 32, 1),
+(593, 32, 4),
+(594, 32, 6),
+(595, 23, 1),
+(596, 23, 3),
+(597, 23, 2),
+(598, 23, 8),
+(599, 23, 5),
+(600, 23, 4),
+(601, 23, 7),
+(602, 23, 12),
+(603, 19, 1),
+(604, 19, 3),
+(605, 19, 5);
 
 -- --------------------------------------------------------
 
@@ -128,16 +124,15 @@ CREATE TABLE `band_members` (
 INSERT INTO `band_members` (`id_member`, `id_user`, `id_band`) VALUES
 (21, 9, 19),
 (22, 9, 20),
-(23, 9, 21),
 (24, 9, 22),
 (25, 9, 23),
 (26, 9, 24),
 (27, 9, 25),
-(28, 9, 26),
-(29, 9, 28),
-(30, 9, 29),
 (31, 9, 30),
-(32, 9, 31);
+(95, 9, 21),
+(96, 9, 32),
+(97, 10, 23),
+(98, 10, 19);
 
 -- --------------------------------------------------------
 
@@ -289,7 +284,10 @@ CREATE TABLE `live_designers` (
 INSERT INTO `live_designers` (`id_live_designer`, `id_user_designer`, `id_band`) VALUES
 (4, 9, 25),
 (5, 9, 30),
-(6, 9, 31);
+(976, 10, 21),
+(978, 9, 21),
+(979, 9, 32),
+(980, 10, 19);
 
 -- --------------------------------------------------------
 
@@ -299,26 +297,26 @@ INSERT INTO `live_designers` (`id_live_designer`, `id_user_designer`, `id_band`)
 
 CREATE TABLE `live_events` (
   `id_live_event` int(11) NOT NULL,
-  `location` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
+  `location` varchar(1000) COLLATE utf8_unicode_ci NOT NULL,
   `name` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
-  `tour` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `tour` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `place` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
   `id_band` int(11) NOT NULL,
-  `tag` varchar(100) COLLATE utf8_unicode_ci NOT NULL
+  `id_tag` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- --------------------------------------------------------
-
 --
--- Estructura de tabla para la tabla `live_event_tags`
+-- Volcado de datos para la tabla `live_events`
 --
 
-CREATE TABLE `live_event_tags` (
-  `id_live_event_tags` int(11) NOT NULL,
-  `id_tag` int(11) NOT NULL,
-  `id_live_event` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+INSERT INTO `live_events` (`id_live_event`, `location`, `name`, `tour`, `date`, `place`, `id_band`, `id_tag`) VALUES
+(1, 'Chihuahua', 'Tecate Live', 'Tecate Tour', '2020-06-21 00:00:00', 'Don Burro', 21, 2),
+(2, 'Chihuahua', 'Tecate Live', 'Tecate Tour', '2020-05-31 03:41:21', 'Don Burro', 24, 2),
+(3, 'Ubicacion chidota', 'Concierto chidote1133', 'El tour de las bunyys', '2020-02-28 00:00:00', 'Concierto chidote', 21, 2),
+(4, 'Ubicacion chidota44', 'Concierto chidote2', 'El tour de las bunyys', '2020-04-30 00:00:00', 'Concierto chidote', 19, 1),
+(5, 'Ubicacion chidota', 'Concierto chidote', 'El tour de las bunyys', '2020-05-31 06:18:18', 'Concierto chidote', 20, 2),
+(6, 'Ubicacion chidotaqqqq', 'Concierto chidoteqqqqqq', 'El tour de las bunyysqqqqqqqq', '2020-06-26 00:00:00', 'Concierto chidote', 21, 2);
 
 -- --------------------------------------------------------
 
@@ -330,7 +328,8 @@ CREATE TABLE `setlists` (
   `id_setlist` int(11) NOT NULL,
   `id_live_event` int(11) NOT NULL,
   `id_band` int(11) NOT NULL,
-  `name` varchar(200) COLLATE utf8_unicode_ci NOT NULL
+  `name` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `id_tag` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -348,25 +347,23 @@ CREATE TABLE `setlist_sets` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `setlist_tags`
---
-
-CREATE TABLE `setlist_tags` (
-  `id_setlist_tag` int(11) NOT NULL,
-  `id_setlist` int(11) NOT NULL,
-  `id_tag` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `sets`
 --
 
 CREATE TABLE `sets` (
   `id_set` int(11) NOT NULL,
-  `name` varchar(150) COLLATE utf8_unicode_ci NOT NULL
+  `name` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `urlImage` varchar(150) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `id_band` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `sets`
+--
+
+INSERT INTO `sets` (`id_set`, `name`, `description`, `urlImage`, `id_band`) VALUES
+(1, 'Primer set de prueba', 'set de prueba mamalon', 'set-image/1', 21);
 
 -- --------------------------------------------------------
 
@@ -391,26 +388,15 @@ CREATE TABLE `songs` (
   `name` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
   `artist` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `lyric` varchar(20000) COLLATE utf8_unicode_ci NOT NULL,
-  `chords_guitar` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `tab_guitar` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `chords_bass` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `tab_bass` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `chords_piano` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `tab_piano` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `chords_guitar` tinyint(1) DEFAULT 0,
+  `tab_guitar` tinyint(1) DEFAULT 0,
+  `chords_bass` tinyint(1) DEFAULT 0,
+  `tab_bass` tinyint(1) DEFAULT 0,
+  `chords_piano` tinyint(1) DEFAULT 0,
+  `tab_piano` tinyint(1) DEFAULT 0,
   `tempo` int(11) NOT NULL,
-  `id_band` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `song_tags`
---
-
-CREATE TABLE `song_tags` (
-  `id_song_tag` int(11) NOT NULL,
-  `id_tag` int(11) NOT NULL,
-  `id_song` int(11) NOT NULL
+  `id_band` int(11) NOT NULL,
+  `id_tag` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -567,9 +553,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id_user`, `name`, `email`, `password`, `type`, `username`, `have_image`, `role`, `description`) VALUES
-(1, 'Luismiguel Ortiz alvarez', 'luismi.luu@gmail.com', '$2b$10$shAm0H4ghZWZxaQUzB7ldeaVQp340SS3/NiY6/nA0hDj3MnQ3ZPd6', 1, 'hipsy-luu', 1, 0, NULL),
+(1, 'Luismiguel Ortiz Alvarez', 'luismi.luu@gmail.com', '$2b$10$shAm0H4ghZWZxaQUzB7ldeaVQp340SS3/NiY6/nA0hDj3MnQ3ZPd6', 1, 'hipsy-luu', 1, 0, ''),
 (8, 'Luismi designer simon', 'hipsy-luud@gmail.com', '$2b$10$hoP/SS2HKNHva48s/NBZC.LsfCng/T9PaS/F1nlZlBwHvfJS6bhN.', 2, 'hipsy-luud', 1, 0, NULL),
-(9, 'Jenny Rivera', 'jennyrivera@gmail.com', '$2b$10$20HgA3gwkdHSq70cImvy/uZJRhYYIx59a/5bsHrnvA4x7lhrwg.72', 0, 'jennyrivera', 1, 0, 'Cantante en la banda mas prra');
+(9, 'Jenny Rivera', 'jennyrivera@gmail.com', '$2b$10$20HgA3gwkdHSq70cImvy/uZJRhYYIx59a/5bsHrnvA4x7lhrwg.72', 0, 'jennyrivera', 1, 0, 'Cantante en la banda mas prra'),
+(10, 'Jeny Andrea', 'lajenyandrea@gmail.com', '$2b$10$SK5p4SCxA2JafcQ9rdMps.VRX8VkSp/HpGnVea5nkgE5aMaWJojXy', 0, 'lajenyandrea', 0, 0, '');
 
 -- --------------------------------------------------------
 
@@ -639,15 +626,8 @@ ALTER TABLE `live_designers`
 --
 ALTER TABLE `live_events`
   ADD PRIMARY KEY (`id_live_event`),
-  ADD KEY `live_shows_FK` (`id_band`);
-
---
--- Indices de la tabla `live_event_tags`
---
-ALTER TABLE `live_event_tags`
-  ADD PRIMARY KEY (`id_live_event_tags`),
-  ADD KEY `live_event_tags_FK` (`id_tag`),
-  ADD KEY `live_event_tags_FK_1` (`id_live_event`);
+  ADD KEY `live_shows_FK` (`id_band`),
+  ADD KEY `live_events_FK` (`id_tag`);
 
 --
 -- Indices de la tabla `setlists`
@@ -655,7 +635,8 @@ ALTER TABLE `live_event_tags`
 ALTER TABLE `setlists`
   ADD PRIMARY KEY (`id_setlist`),
   ADD KEY `setlists_FK` (`id_live_event`),
-  ADD KEY `setlists_FK_1` (`id_band`);
+  ADD KEY `setlists_FK_1` (`id_band`),
+  ADD KEY `setlists_FK_2` (`id_tag`);
 
 --
 -- Indices de la tabla `setlist_sets`
@@ -666,18 +647,11 @@ ALTER TABLE `setlist_sets`
   ADD KEY `setlist_sets_FK_1` (`id_set`);
 
 --
--- Indices de la tabla `setlist_tags`
---
-ALTER TABLE `setlist_tags`
-  ADD PRIMARY KEY (`id_setlist_tag`),
-  ADD KEY `setlist_tags_FK` (`id_setlist`),
-  ADD KEY `setlist_tags_FK_1` (`id_tag`);
-
---
 -- Indices de la tabla `sets`
 --
 ALTER TABLE `sets`
-  ADD PRIMARY KEY (`id_set`);
+  ADD PRIMARY KEY (`id_set`),
+  ADD KEY `sets_FK` (`id_band`);
 
 --
 -- Indices de la tabla `set_songs`
@@ -692,15 +666,8 @@ ALTER TABLE `set_songs`
 --
 ALTER TABLE `songs`
   ADD PRIMARY KEY (`id_song`),
-  ADD KEY `songs_FK` (`id_band`);
-
---
--- Indices de la tabla `song_tags`
---
-ALTER TABLE `song_tags`
-  ADD PRIMARY KEY (`id_song_tag`),
-  ADD KEY `song_tags_FK` (`id_song`),
-  ADD KEY `song_tags_FK_1` (`id_tag`);
+  ADD KEY `songs_FK` (`id_band`),
+  ADD KEY `songs_FK_1` (`id_tag`);
 
 --
 -- Indices de la tabla `tags`
@@ -731,19 +698,19 @@ ALTER TABLE `user_history`
 -- AUTO_INCREMENT de la tabla `bands`
 --
 ALTER TABLE `bands`
-  MODIFY `id_band` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id_band` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT de la tabla `band_genres`
 --
 ALTER TABLE `band_genres`
-  MODIFY `id_band_genre` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `id_band_genre` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=606;
 
 --
 -- AUTO_INCREMENT de la tabla `band_members`
 --
 ALTER TABLE `band_members`
-  MODIFY `id_member` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id_member` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
 
 --
 -- AUTO_INCREMENT de la tabla `genres`
@@ -755,19 +722,13 @@ ALTER TABLE `genres`
 -- AUTO_INCREMENT de la tabla `live_designers`
 --
 ALTER TABLE `live_designers`
-  MODIFY `id_live_designer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_live_designer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=981;
 
 --
 -- AUTO_INCREMENT de la tabla `live_events`
 --
 ALTER TABLE `live_events`
-  MODIFY `id_live_event` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `live_event_tags`
---
-ALTER TABLE `live_event_tags`
-  MODIFY `id_live_event_tags` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_live_event` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `setlists`
@@ -779,7 +740,7 @@ ALTER TABLE `setlists`
 -- AUTO_INCREMENT de la tabla `sets`
 --
 ALTER TABLE `sets`
-  MODIFY `id_set` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_set` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `set_songs`
@@ -794,12 +755,6 @@ ALTER TABLE `songs`
   MODIFY `id_song` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `song_tags`
---
-ALTER TABLE `song_tags`
-  MODIFY `id_song_tag` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de la tabla `tags`
 --
 ALTER TABLE `tags`
@@ -809,7 +764,7 @@ ALTER TABLE `tags`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `user_history`
@@ -852,21 +807,16 @@ ALTER TABLE `live_designers`
 -- Filtros para la tabla `live_events`
 --
 ALTER TABLE `live_events`
+  ADD CONSTRAINT `live_events_FK` FOREIGN KEY (`id_tag`) REFERENCES `tags` (`id_tag`),
   ADD CONSTRAINT `live_shows_FK` FOREIGN KEY (`id_band`) REFERENCES `bands` (`id_band`);
-
---
--- Filtros para la tabla `live_event_tags`
---
-ALTER TABLE `live_event_tags`
-  ADD CONSTRAINT `live_event_tags_FK` FOREIGN KEY (`id_tag`) REFERENCES `tags` (`id_tag`),
-  ADD CONSTRAINT `live_event_tags_FK_1` FOREIGN KEY (`id_live_event`) REFERENCES `live_events` (`id_live_event`);
 
 --
 -- Filtros para la tabla `setlists`
 --
 ALTER TABLE `setlists`
   ADD CONSTRAINT `setlists_FK` FOREIGN KEY (`id_live_event`) REFERENCES `live_events` (`id_live_event`),
-  ADD CONSTRAINT `setlists_FK_1` FOREIGN KEY (`id_band`) REFERENCES `bands` (`id_band`);
+  ADD CONSTRAINT `setlists_FK_1` FOREIGN KEY (`id_band`) REFERENCES `bands` (`id_band`),
+  ADD CONSTRAINT `setlists_FK_2` FOREIGN KEY (`id_tag`) REFERENCES `tags` (`id_tag`);
 
 --
 -- Filtros para la tabla `setlist_sets`
@@ -876,11 +826,10 @@ ALTER TABLE `setlist_sets`
   ADD CONSTRAINT `setlist_sets_FK_1` FOREIGN KEY (`id_set`) REFERENCES `sets` (`id_set`);
 
 --
--- Filtros para la tabla `setlist_tags`
+-- Filtros para la tabla `sets`
 --
-ALTER TABLE `setlist_tags`
-  ADD CONSTRAINT `setlist_tags_FK` FOREIGN KEY (`id_setlist`) REFERENCES `setlists` (`id_setlist`),
-  ADD CONSTRAINT `setlist_tags_FK_1` FOREIGN KEY (`id_tag`) REFERENCES `tags` (`id_tag`);
+ALTER TABLE `sets`
+  ADD CONSTRAINT `sets_FK` FOREIGN KEY (`id_band`) REFERENCES `bands` (`id_band`);
 
 --
 -- Filtros para la tabla `set_songs`
@@ -893,14 +842,8 @@ ALTER TABLE `set_songs`
 -- Filtros para la tabla `songs`
 --
 ALTER TABLE `songs`
-  ADD CONSTRAINT `songs_FK` FOREIGN KEY (`id_band`) REFERENCES `bands` (`id_band`);
-
---
--- Filtros para la tabla `song_tags`
---
-ALTER TABLE `song_tags`
-  ADD CONSTRAINT `song_tags_FK` FOREIGN KEY (`id_song`) REFERENCES `songs` (`id_song`),
-  ADD CONSTRAINT `song_tags_FK_1` FOREIGN KEY (`id_tag`) REFERENCES `tags` (`id_tag`);
+  ADD CONSTRAINT `songs_FK` FOREIGN KEY (`id_band`) REFERENCES `bands` (`id_band`),
+  ADD CONSTRAINT `songs_FK_1` FOREIGN KEY (`id_tag`) REFERENCES `tags` (`id_tag`);
 
 --
 -- Filtros para la tabla `user_history`

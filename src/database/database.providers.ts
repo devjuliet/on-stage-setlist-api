@@ -18,11 +18,8 @@ import { Song } from '../models/songs.entity';
 import { Tag } from '../models/tags.entity';
 import { UserHistory } from '../models/user-history.entity';
 import { BandGenre } from '../models/band-genres.entity';
-import { LiveEventTag } from '../models/live-event-tags.entity';
 import { SetlistSet } from '../models/setlist-sets.entity';
 import { SetSong } from '../models/set-songs.entity';
-import { SetlistTag } from '../models/setlist-tags.entity';
-import { SongTag } from '../models/song-tags.entity';
 
 export const databaseProviders = [
   {
@@ -60,11 +57,8 @@ export const databaseProviders = [
         Tag,
         UserHistory,
         BandGenre,
-        LiveEventTag,
         SetlistSet,
         SetSong,
-        SetlistTag,
-        SongTag,
       ]);
 
       await sequelize.sync();

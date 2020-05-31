@@ -9,8 +9,8 @@ import {
 } from 'sequelize-typescript';
 import { Band } from './bands.entity';
 import { Setlist } from './setlists.entity';
-import { LiveEventTag } from './live-event-tags.entity';
 import sequelize = require('sequelize');
+import { Tag } from './tags.entity';
 
 @Table({
   tableName: 'live_events',
@@ -32,13 +32,13 @@ export class LiveEvent extends Model<LiveEvent> {
   public name: string;
 
   @Column({
-    type: DataType.STRING(150),
+    type: DataType.STRING(1000),
     allowNull: false,
   })
   public location: string;
 
   @Column({
-    type: DataType.STRING(100),
+    type: DataType.STRING(150),
     allowNull: false,
   })
   public tour: string;
@@ -57,10 +57,11 @@ export class LiveEvent extends Model<LiveEvent> {
   public place: string;
 
   @Column({
-    type: DataType.STRING(150),
+    type: DataType.INTEGER({ length: 11 }),
     allowNull: false,
+    field: 'id_tag',
   })
-  public tag: string;
+  public idTag: number;
 
   @ForeignKey(() => Band)
   @Column({
@@ -76,6 +77,6 @@ export class LiveEvent extends Model<LiveEvent> {
   @HasMany(() => Setlist, 'idSetlist')
   setlists: Setlist[];
 
-  @HasMany(() => LiveEventTag, 'idLiveEventTag')
-  liveEventTags: LiveEventTag[];
+  @BelongsTo(() => Tag, 'idTag')
+  tag: Tag;
 }
