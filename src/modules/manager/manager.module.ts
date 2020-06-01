@@ -11,6 +11,7 @@ import { songProviders } from '../../models/repositoriesModels/songs.providers';
 import { liveDesignerProviders } from '../../models/repositoriesModels/live-designers.providers';
 import { PassportModule } from '@nestjs/passport';
 import { setProviders } from '../../models/repositoriesModels/sets.providers';
+import { userHistoryProviders } from '../../models/repositoriesModels/user-history.providers';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { setProviders } from '../../models/repositoriesModels/sets.providers';
     ...genreProviders,
     ...bandMemberProviders,
     ...userProviders,
+    ...userHistoryProviders,
     ...songProviders,
     ...bandGenreProviders,
     ...liveDesignerProviders,

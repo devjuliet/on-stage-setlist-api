@@ -14,6 +14,7 @@ import { SetSong } from '../../models/set-songs.entity';
 import { Set } from '../../models/sets.entity';
 import { EventDto } from './dto/event.dto';
 import { Tag } from '../../models/tags.entity';
+import { UserHistory } from '../../models/user-history.entity';
 @Injectable()
 export class ManagerService {
   constructor(
@@ -29,6 +30,8 @@ export class ManagerService {
     private readonly bandGenreRepository: typeof BandGenre,
     @Inject('UserRepository')
     private readonly userRepository: typeof User,
+    @Inject('UserHistoryRepository')
+    private readonly userHistoryRepository: typeof UserHistory,
     @Inject('SetRepository')
     private readonly setRepository: typeof Set,
   ) { }
@@ -231,6 +234,12 @@ export class ManagerService {
             idBand: newBand.idBand,
           };
           await this.bandMemberRepository.create<BandMember>(newData, {});
+          await this.userHistoryRepository.create<UserHistory>({
+            date : new Date(),
+            description : "Se unio a la banda",
+            bandName : newBandData.name,
+            idUser : newMember.idMember,
+          },{});
         });
         //Se crean nuevos live designer de la banda
         newBandData.bandLiveDesigners.forEach(async newLiveDesigner => {
@@ -405,6 +414,10 @@ export class ManagerService {
         //Eliminar todos los miebros de la banda
         let actualMembers: BandMember[] = await this.bandMemberRepository.findAll({
           where: { idBand: bandFinded.idBand },
+          include:[{
+            model: User,
+            as : "user"
+          }]
         });
         let fixActual: any[] = Array.from(actualMembers);
         actualMembers.forEach(async actualMember => {
@@ -413,6 +426,13 @@ export class ManagerService {
           });
 
           if (finded == null && finded == undefined) {
+            //console.log(actualMember);
+            await this.userHistoryRepository.create<UserHistory>({
+              date : new Date(),
+              description : "Salio de la banda",
+              bandName : bandFinded.name,
+              idUser : actualMember.idUser,
+            },{});
             await actualMember.destroy();
           } else {
             //console.log("no se borro" + finded.idUser);
@@ -430,6 +450,30 @@ export class ManagerService {
           };
           if (finded == null && finded == undefined) {
             await this.bandMemberRepository.create<BandMember>(newData, {});
+            let instrument = "";
+            switch (newMember.role) {
+              case 0:
+                instrument = "vocalista.";
+                break;
+              case 1:
+                instrument = "tecladista.";
+                break;
+              case 2:
+                instrument = "bajista.";
+                break;
+              case 3:
+                instrument = "guitarrista.";
+                break;
+              default:
+                break;
+            }
+
+            await this.userHistoryRepository.create<UserHistory>({
+              date : new Date(),
+              description : "Se unio a la banda como "+instrument,
+              bandName : bandFinded.name,
+              idUser : newMember.idMember,
+            },{});
           } else {
             //console.log("no se creo" + finded.idUser);
           }
@@ -451,12 +495,12 @@ export class ManagerService {
         });
 
         //Eliminar todos los live designer de la banda
-        let actualDesigner: LiveDesigner[] = await this.liveDesignerRepository.findAll({
+        let actualDesigners: LiveDesigner[] = await this.liveDesignerRepository.findAll({
           where: { idBand: bandFinded.idBand },
         });
-        //console.log(actualDesigner);
-        let fixActualDesigner: any[] = Array.from(actualDesigner);
-        actualDesigner.forEach(async actualDesigner => {
+        //console.log(actualDesigners);
+        let fixActualDesigner: any[] = Array.from(actualDesigners);
+        actualDesigners.forEach(async actualDesigner => {
           let finded = updatedBandData.bandLiveDesigners.find((element) => {
             return element == actualDesigner.idUserDesigner;
           });
@@ -464,6 +508,12 @@ export class ManagerService {
           
           if (finded == null && finded == undefined) {
             //console.log("se borro" + actualDesigner.idUserDesigner);
+            await this.userHistoryRepository.create<UserHistory>({
+              date : new Date(),
+              description : "Dejo de ser el live designer.",
+              bandName : bandFinded.name,
+              idUser : actualDesigner.idUserDesigner,
+            },{});
             await actualDesigner.destroy();
           } else {
             //console.log("no se borro" + finded);
@@ -480,7 +530,14 @@ export class ManagerService {
             idBand: bandFinded.idBand,
           };
           if (finded == null && finded == undefined) {
+            
             await this.liveDesignerRepository.create<LiveDesigner>(newData, {});
+            await this.userHistoryRepository.create<UserHistory>({
+              date : new Date(),
+              description : "Se convirtio en el live designer.",
+              bandName : bandFinded.name,
+              idUser : newDesigner,
+            },{});
           } else {
             //console.log("no se creo" + finded.idUser);
           }
