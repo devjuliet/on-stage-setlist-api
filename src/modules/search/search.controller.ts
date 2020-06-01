@@ -1,6 +1,7 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ServerMessages } from '../../utils/serverMessages.util';
 import { SearchService } from './search.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('search')
 export class SearchController {
@@ -13,7 +14,7 @@ export class SearchController {
   }
 
   @Get('username')
-  ///@UseGuards(AuthGuard())//
+  @UseGuards(AuthGuard())//
   async findUserByUsername(@Query() search) : Promise<ServerMessages> {
     return await this.searchService.findUserByUsername(search);
   }

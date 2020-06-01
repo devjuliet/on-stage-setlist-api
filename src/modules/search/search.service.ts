@@ -144,6 +144,7 @@ export class SearchService {
 
   async findUserByUsername(search): Promise<ServerMessages> {
     try {
+      //No se deben de poder añadir managers a las bandas como integrantes o live designers
       let user = await this.userRepository.findOne<User>({
         attributes: [
           'idUser',
@@ -153,7 +154,10 @@ export class SearchService {
           'description',
           'haveImage',
         ],
-        where: { username: search.username },
+        where: { username: search.username , [Op.or]: [
+          { type: 0 },
+          { type: 2 }
+        ] },
         include: [{
           model: UserHistory,
           attributes: ['bandName','description', 'date'],

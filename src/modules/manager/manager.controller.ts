@@ -72,11 +72,14 @@ export class ManagerController {
 
   @Post('band-update')
   @UseGuards(AuthGuard())
-  async updateBand(
-    @Request() req,
-    @Body() band: BandDto,
-  ): Promise<ServerMessages> {
+  async updateBand( @Request() req, @Body() band: BandDto): Promise<ServerMessages> {
     return await this.managerService.updateBand(req.user.idUser, band);
+  }
+
+  @Post('create-band')
+  @UseGuards(AuthGuard())
+  public async updateUserPassword(@Body() body): Promise<ServerMessages> {
+    return this.managerService.createBand(body);
   }
 
   @Post('create-event')
@@ -91,9 +94,5 @@ export class ManagerController {
     return await this.managerService.updateLiveEvent(event);
   }
 
-  @Post('create-band')
-  @UseGuards(AuthGuard())
-  public async updateUserPassword(@Body() body): Promise<ServerMessages> {
-    return this.managerService.createBand(body);
-  }
+  
 }
