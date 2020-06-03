@@ -30,11 +30,12 @@ export class Set extends Model<Set> {
   public description: string;
   
   @Column({
-    type: DataType.STRING(150),
-    allowNull: true,
-    defaultValue : ""
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+    field: 'have_image',
   })
-  public urlImage: string;
+  haveImage: boolean;
 
   @ForeignKey(() => Band)
   @Column({

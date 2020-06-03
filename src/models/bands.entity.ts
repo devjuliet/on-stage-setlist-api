@@ -57,8 +57,8 @@ export class Band extends Model<Band> {
   })
   public idUserManager: number;
 
-  /*@BelongsTo(() => User, 'id_user')
-  user: User;*/
+  @BelongsTo(() => User, 'idUserManager')
+  manager: User;
 
   @HasMany(() => Setlist, 'idSetlist')
   setlists: Setlist[];

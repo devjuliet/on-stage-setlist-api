@@ -8,6 +8,7 @@ import { CatalogsModule } from './modules/catalogs/catalogs.module';
 import { SearchModule } from './modules/search/search.module';
 import { UploadsModule } from './modules/uploads/uploads.module';
 import { ManagerModule } from './modules/manager/manager.module';
+import { LedModule } from './modules/led/led.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ManagerModule } from './modules/manager/manager.module';
     SearchModule,
     UploadsModule,
     ManagerModule,
+    LedModule,
   ],
   controllers: [AppController],
   providers: [AppService],

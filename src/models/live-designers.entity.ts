@@ -43,4 +43,5 @@ export class LiveDesigner extends Model<LiveDesigner> {
 
   @BelongsTo(() => User, 'idUserDesigner')
   user: User;
+  
 }

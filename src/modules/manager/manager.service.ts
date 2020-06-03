@@ -157,7 +157,7 @@ export class ManagerService {
         });
   
         band.sets.forEach((set) => {
-          allBandData.sets.push({ idSet: set.idSet, name: set.name, urlImage: set.urlImage, description: set.description })
+          allBandData.sets.push({ idSet: set.idSet, name: set.name, haveImage: set.haveImage, description: set.description })
         });
         //return new ServerMessages(false, 'Datos de la banda cargados', await this.setRepository.findAll());
         return new ServerMessages(false, 'Datos de la banda cargados', allBandData);
