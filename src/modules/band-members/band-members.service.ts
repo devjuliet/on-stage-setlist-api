@@ -114,4 +114,23 @@ export class BandMembersService {
       return new ServerMessages(true, 'Error ocurred', error);
     }
   }
+
+  async findSetById(setId, userId): Promise<ServerMessages> {
+    try {
+      const set = await this.setRepository.findOne({
+        where: { idSet: setId },
+        include: [
+          {
+            model: Song,
+            as: 'songs',
+          },
+        ],
+      });
+
+      return new ServerMessages(false, 'Success', set);
+    } catch (error) {
+      console.log(error);
+      return new ServerMessages(true, 'Error ocurred', error);
+    }
+  }
 }
