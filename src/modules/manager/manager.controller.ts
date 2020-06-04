@@ -1,4 +1,3 @@
-
 import {
   Controller,
   Get,
@@ -8,8 +7,8 @@ import {
   Request,
   Delete,
   Put,
-  Body ,
-  Query
+  Body,
+  Query,
 } from '@nestjs/common';
 import { ManagerService } from './manager.service';
 import { ServerMessages } from '../../utils/serverMessages.util';
@@ -19,6 +18,7 @@ import { LiveEvent } from '../../models/live-events.entity';
 import { BandMember } from '../../models/band-members.entity';
 import { BandDto } from './dto/band.dto';
 import { EventDto } from './dto/event.dto';
+import { SongDto } from './dto/song.dto';
 
 @Controller('manager')
 export class ManagerController {
@@ -38,11 +38,13 @@ export class ManagerController {
   @Get('band/:idBand')
   @UseGuards(AuthGuard())
   async findBandByIdAndByManagerId(
-    @Param('idBand') idBand: number, 
-    @Request() req
+    @Param('idBand') idBand: number,
+    @Request() req,
   ): Promise<ServerMessages> {
-    return await 
-      this.managerService.findBandByIdAndByManagerId(req.user.idUser,idBand);
+    return await this.managerService.findBandByIdAndByManagerId(
+      req.user.idUser,
+      idBand,
+    );
   }
 
   @Post('bands/:id')
@@ -72,7 +74,10 @@ export class ManagerController {
 
   @Post('band-update')
   @UseGuards(AuthGuard())
-  async updateBand( @Request() req, @Body() band: BandDto): Promise<ServerMessages> {
+  async updateBand(
+    @Request() req,
+    @Body() band: BandDto,
+  ): Promise<ServerMessages> {
     return await this.managerService.updateBand(req.user.idUser, band);
   }
 
@@ -84,15 +89,28 @@ export class ManagerController {
 
   @Post('create-event')
   @UseGuards(AuthGuard())
-  async createLiveEvent( @Body() event: EventDto ): Promise<ServerMessages> {
+  async createLiveEvent(@Body() event: EventDto): Promise<ServerMessages> {
     return await this.managerService.createLiveEvent(event);
   }
 
   @Post('update-event')
   @UseGuards(AuthGuard())
-  async updateLiveEvent( @Body() event: EventDto ): Promise<ServerMessages> {
+  async updateLiveEvent(@Body() event: EventDto): Promise<ServerMessages> {
     return await this.managerService.updateLiveEvent(event);
   }
 
-  
+  @Post('bands-save-songs/:id')
+  @UseGuards(AuthGuard())
+  async saveSongs(
+    @Body() songs: SongDto[],
+    @Param('id') idBand: number,
+  ): Promise<ServerMessages> {
+    return await this.managerService.saveSongs(songs, idBand);
+  }
+
+  @Get('bands/:id/songs')
+  @UseGuards(AuthGuard())
+  async getSongsByBandId(@Param('id') idBand: number): Promise<ServerMessages> {
+    return await this.managerService.getSongsByBandId(idBand);
+  }
 }
