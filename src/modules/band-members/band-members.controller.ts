@@ -24,4 +24,16 @@ export class BandMembersController {
         return await this.BandMembersService.findSongById(idSong, req.user.idUser);
     }
 
+    @Get('events')
+    @UseGuards(AuthGuard())
+    async findAllEventsByUserId(@Request() req): Promise<ServerMessages> {
+        return await this.BandMembersService.findAllEventsByUserId(req.user.idUser);
+    }
+
+    @Get('history')
+    @UseGuards(AuthGuard())
+    async getBandMemberHistory(@Request() req): Promise<ServerMessages> {
+        return await this.BandMembersService.getBandMemberHistory(req.user.idUser);
+    }
+
 }

@@ -63,7 +63,55 @@ export class BandMembersService {
         } catch (error) {
             return new ServerMessages(true, 'Error ocurred', error);
         }
+    }
 
+    async findAllEventsByUserId(userId): Promise<ServerMessages> {
+        //encontrar todas la bands que pertenece el usuario
+        let allEvents = [];
+        try {
+            const bands = await this.bandMemberRepository.findAll({
+                attributes: ['idBand'],
+                where: { idUser: userId },
+
+            });
+
+            //encontrar todos los eventos por banda
+            return Promise.all(
+                bands.map(band =>
+                    this.liveEventRepository.findAll({
+                        where: { idBand: band.idBand },
+                    }),
+                ),
+            ).then(events => {
+                if (events.length != 0) {
+                    allEvents.push(events)
+                }
+
+            }).then(
+                //regresar eventos
+                () => new ServerMessages(false, 'Songs not saved', allEvents)
+            )
+
+        } catch (error) {
+            console.log(error);
+            return new ServerMessages(true, 'Error ocurred', error);
+        }
+
+    }
+
+    async getBandMemberHistory(userId): Promise<ServerMessages> {
+        try {
+            const history = await this.userHistoryRepository.findAll({
+                where: { idUser: userId },
+
+            });
+
+            return new ServerMessages(true, 'History of user ' + userId, history);
+
+        } catch (error) {
+            console.log(error);
+            return new ServerMessages(true, 'Error ocurred', error);
+        }
     }
 
 
