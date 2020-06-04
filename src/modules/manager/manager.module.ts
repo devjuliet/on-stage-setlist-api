@@ -8,10 +8,10 @@ import { genreProviders } from '../../models/repositoriesModels/genres.providers
 import { bandMemberProviders } from '../../models/repositoriesModels/band-members.providers';
 import { userProviders } from '../../models/repositoriesModels/user.providers';
 import { songProviders } from '../../models/repositoriesModels/songs.providers';
-import { liveDesignerProviders } from '../../models/repositoriesModels/live-designers.providers';
 import { PassportModule } from '@nestjs/passport';
 import { setProviders } from '../../models/repositoriesModels/sets.providers';
 import { userHistoryProviders } from '../../models/repositoriesModels/user-history.providers';
+import { liveDesignerProviders } from '../../models/repositoriesModels/live-designers.providers';
 
 @Module({
   imports: [
@@ -32,4 +32,4 @@ import { userHistoryProviders } from '../../models/repositoriesModels/user-histo
     ...setProviders
   ],
 })
-export class ManagerModule {}
+export class ManagerModule { }

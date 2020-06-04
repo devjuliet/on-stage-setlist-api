@@ -1,4 +1,27 @@
-import { Controller } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Param,
+    Post,
+    UseGuards,
+    Request,
+    Delete,
+    Put,
+    Body,
+    Query,
+} from '@nestjs/common';
+import { BandMembersService } from './band-members.service';
+import { AuthGuard } from '@nestjs/passport';
+import { ServerMessages } from '../../utils/serverMessages.util';
 
 @Controller('band-members')
-export class BandMembersController {}
+export class BandMembersController {
+    constructor(private readonly BandMembersService: BandMembersService) { }
+
+    @Get('songs/:id')
+    @UseGuards(AuthGuard())
+    async findSongById(@Param('id') idSong: number, @Request() req): Promise<ServerMessages> {
+        return await this.BandMembersService.findSongById(idSong, req.user.idUser);
+    }
+
+}
