@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 31-05-2020 a las 08:44:37
+-- Tiempo de generación: 03-06-2020 a las 23:28:59
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.2.27
 
@@ -41,15 +41,14 @@ CREATE TABLE `bands` (
 --
 
 INSERT INTO `bands` (`id_band`, `name`, `url_logo`, `description`, `id_user_manager`) VALUES
-(19, 'La bunny bandatrty', 'band-image/19', 'Banda mamalona que puede tocar musica pal corazonhgfhg', 1),
+(19, 'La bunny bandatrty 2222222', 'band-image/19', 'Banda mamalona que puede tocar musica pal corazonhgfhg', 1),
 (20, 'La bunny bandatrtydsd', 'bands/20', 'Banda mamalona que puede tocar musica pal corazonhgfhg', 1),
 (21, 'La bunny banda', 'band-image/21', 'Banda mamalona que puede tocar musica pal corazonnneeeeeee', 1),
 (22, 'La bunny bandafdaaa', 'bands/22', 'Banda mamalona que puede tocar musica pal corazonnnvnn', 1),
 (23, 'La bad bunny ', 'band-image/23', 'Banda mamalona que puede tocar musica pal corazonññññ', 8),
 (24, 'La bunny bandaaaaaaa', 'bands/24', 'Banda mamalona que puede tocar musica pal corazonsasasas', 8),
 (25, 'La bunny banda1111', '', 'Banda mamalona que puede tocar musica pal corazondffsd', 1),
-(30, 'siimnooookkennee', 'band-image/30', 'Banda mamalona que puede tocar musica pal corazonfdsfsf', 1),
-(32, 'tem dev one band', 'band-image/32', 'lddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', 1);
+(30, 'siimnooookkennee', 'band-image/30', 'Banda mamalona que puede tocar musica pal corazonfdsfsf', 1);
 
 -- --------------------------------------------------------
 
@@ -78,21 +77,6 @@ INSERT INTO `band_genres` (`id_band_genre`, `id_band`, `id_genre`) VALUES
 (44, 24, 2),
 (45, 25, 2),
 (46, 25, 4),
-(569, 30, 5),
-(570, 30, 6),
-(571, 30, 3),
-(572, 30, 4),
-(573, 30, 1),
-(574, 30, 2),
-(575, 30, 11),
-(576, 30, 8),
-(588, 21, 6),
-(589, 21, 1),
-(590, 21, 5),
-(591, 32, 2),
-(592, 32, 1),
-(593, 32, 4),
-(594, 32, 6),
 (595, 23, 1),
 (596, 23, 3),
 (597, 23, 2),
@@ -101,9 +85,20 @@ INSERT INTO `band_genres` (`id_band_genre`, `id_band`, `id_genre`) VALUES
 (600, 23, 4),
 (601, 23, 7),
 (602, 23, 12),
-(603, 19, 1),
-(604, 19, 3),
-(605, 19, 5);
+(678, 21, 6),
+(679, 21, 1),
+(680, 21, 5),
+(681, 19, 1),
+(682, 19, 3),
+(683, 19, 5),
+(684, 30, 5),
+(685, 30, 6),
+(686, 30, 3),
+(687, 30, 4),
+(688, 30, 1),
+(689, 30, 2),
+(690, 30, 11),
+(691, 30, 8);
 
 -- --------------------------------------------------------
 
@@ -129,10 +124,11 @@ INSERT INTO `band_members` (`id_member`, `id_user`, `id_band`) VALUES
 (26, 9, 24),
 (27, 9, 25),
 (31, 9, 30),
-(95, 9, 21),
-(96, 9, 32),
 (97, 10, 23),
-(98, 10, 19);
+(99, 11, 21),
+(102, 10, 21),
+(105, 10, 19),
+(106, 10, 30);
 
 -- --------------------------------------------------------
 
@@ -284,10 +280,8 @@ CREATE TABLE `live_designers` (
 INSERT INTO `live_designers` (`id_live_designer`, `id_user_designer`, `id_band`) VALUES
 (4, 9, 25),
 (5, 9, 30),
-(976, 10, 21),
-(978, 9, 21),
-(979, 9, 32),
-(980, 10, 19);
+(980, 10, 19),
+(983, 10, 30);
 
 -- --------------------------------------------------------
 
@@ -354,16 +348,9 @@ CREATE TABLE `sets` (
   `id_set` int(11) NOT NULL,
   `name` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
   `description` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `urlImage` varchar(150) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `have_image` tinyint(1) DEFAULT 0,
   `id_band` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Volcado de datos para la tabla `sets`
---
-
-INSERT INTO `sets` (`id_set`, `name`, `description`, `urlImage`, `id_band`) VALUES
-(1, 'Primer set de prueba', 'set de prueba mamalon', 'set-image/1', 21);
 
 -- --------------------------------------------------------
 
@@ -398,6 +385,17 @@ CREATE TABLE `songs` (
   `id_band` int(11) NOT NULL,
   `id_tag` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `songs`
+--
+
+INSERT INTO `songs` (`id_song`, `name`, `artist`, `lyric`, `chords_guitar`, `tab_guitar`, `chords_bass`, `tab_bass`, `chords_piano`, `tab_piano`, `tempo`, `id_band`, `id_tag`) VALUES
+(1, 'Dare Post man', 'Gorillaz', 'Lalala lalasm sa laa la...', 0, 0, 0, 0, 0, 0, 140, 19, 1),
+(2, 'Dare Post man 2', 'Gorillaz', 'Lalala lalasm sa laa la...', 0, 0, 0, 0, 0, 0, 140, 19, 1),
+(3, 'Dare', 'Gorrillaz', 'Lalalala laa la..', 0, 1, 1, 0, 1, 0, 140, 19, 1),
+(4, 'Daredadsdad', 'Gorrillaz', 'Lalalala laa la..', 0, 0, 0, 0, 0, 0, 140, 19, 1),
+(5, 'Dare test', 'Gorrillaz', 'Lalalala laa la..', 0, 0, 0, 0, 0, 0, 140, 19, 1);
 
 -- --------------------------------------------------------
 
@@ -554,9 +552,11 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id_user`, `name`, `email`, `password`, `type`, `username`, `have_image`, `role`, `description`) VALUES
 (1, 'Luismiguel Ortiz Alvarez', 'luismi.luu@gmail.com', '$2b$10$shAm0H4ghZWZxaQUzB7ldeaVQp340SS3/NiY6/nA0hDj3MnQ3ZPd6', 1, 'hipsy-luu', 1, 0, ''),
-(8, 'Luismi designer simon', 'hipsy-luud@gmail.com', '$2b$10$hoP/SS2HKNHva48s/NBZC.LsfCng/T9PaS/F1nlZlBwHvfJS6bhN.', 2, 'hipsy-luud', 1, 0, NULL),
+(8, 'Luismi designer simosssn', 'hipsy-luud@gmail.com', '$2b$10$hoP/SS2HKNHva48s/NBZC.LsfCng/T9PaS/F1nlZlBwHvfJS6bhN.', 2, 'hipsy-luud', 1, 0, ''),
 (9, 'Jenny Rivera', 'jennyrivera@gmail.com', '$2b$10$20HgA3gwkdHSq70cImvy/uZJRhYYIx59a/5bsHrnvA4x7lhrwg.72', 0, 'jennyrivera', 1, 0, 'Cantante en la banda mas prra'),
-(10, 'Jeny Andrea', 'lajenyandrea@gmail.com', '$2b$10$SK5p4SCxA2JafcQ9rdMps.VRX8VkSp/HpGnVea5nkgE5aMaWJojXy', 0, 'lajenyandrea', 0, 0, '');
+(10, 'Jeny Andrea', 'lajenyandrea@gmail.com', '$2b$10$WbHUyUjiOhGZwZRDORcKquGQp/Sw/ojoYwBhqbCVy/le651dirQJW', 0, 'lajenyandrea', 0, 0, ''),
+(11, 'Lupillo Rivera', 'lupillos.music@hotmail.com', '$2b$10$9Ze89BvPMjKb.GEzq1.qdeSWK0gE4Y4bX66CzqLBjHGTtHbfMb3W6', 2, 'lupillos.music', 0, 0, ''),
+(12, 'Lupillo Rivera', 'lupillos.manager@hotmail.com', '$2b$10$0Ti6GJ6mqjEp9.dhHBnpQuQ4TBjVZDQhYUp.lvtIWKrZzqRF3Rjha', 1, 'lupillos.manager', 0, 0, '');
 
 -- --------------------------------------------------------
 
@@ -578,7 +578,20 @@ CREATE TABLE `user_history` (
 
 INSERT INTO `user_history` (`id_user_history`, `date`, `description`, `id_user`, `band_name`) VALUES
 (1, '2020-05-28 00:47:44', 'Toco el instrumento como ningun otro bunny', 9, 'LA BUNNY BANDA'),
-(2, '2020-05-28 00:48:47', 'Cantante de rap ', 9, 'GRUPO VERSATIL DE BUNNY');
+(2, '2020-05-28 00:48:47', 'Cantante de rap ', 9, 'GRUPO VERSATIL DE BUNNY'),
+(7, '2020-06-01 16:08:13', 'Salio de la banda', 9, 'La bunny banda'),
+(8, '2020-06-01 16:09:07', 'Se unio a la banda como vocalista.', 9, 'La bunny banda'),
+(9, '2020-06-01 16:18:01', 'Se unio a la banda como vocalista.', 10, 'La bunny banda'),
+(10, '2020-06-01 16:19:09', 'Salio de la banda', 9, 'La bunny banda'),
+(11, '2020-06-01 16:20:44', 'Se unio a la banda como vocalista.', 9, 'La bunny banda'),
+(12, '2020-06-01 16:20:44', 'Se convirtio en el live designer.', 9, 'La bunny banda'),
+(13, '2020-06-01 16:23:11', 'Salio de la banda', 9, 'La bunny banda'),
+(14, '2020-06-01 17:00:54', 'Se unio a la banda como vocalista.', 9, 'La bunny banda'),
+(15, '2020-06-01 17:01:07', 'Salio de la banda', 9, 'La bunny banda'),
+(16, '2020-06-01 17:01:08', 'Dejo de ser el live designer.', 9, 'La bunny banda'),
+(17, '2020-06-01 18:38:31', 'Se unio a la banda como vocalista.', 10, 'La bunny bandatrty 2222222'),
+(18, '2020-06-01 18:39:29', 'Se unio a la banda como vocalista.', 10, 'siimnooookkennee'),
+(19, '2020-06-01 18:39:29', 'Se convirtio en el live designer.', 10, 'siimnooookkennee');
 
 --
 -- Índices para tablas volcadas
@@ -704,13 +717,13 @@ ALTER TABLE `bands`
 -- AUTO_INCREMENT de la tabla `band_genres`
 --
 ALTER TABLE `band_genres`
-  MODIFY `id_band_genre` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=606;
+  MODIFY `id_band_genre` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=692;
 
 --
 -- AUTO_INCREMENT de la tabla `band_members`
 --
 ALTER TABLE `band_members`
-  MODIFY `id_member` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
+  MODIFY `id_member` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
 
 --
 -- AUTO_INCREMENT de la tabla `genres`
@@ -722,7 +735,7 @@ ALTER TABLE `genres`
 -- AUTO_INCREMENT de la tabla `live_designers`
 --
 ALTER TABLE `live_designers`
-  MODIFY `id_live_designer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=981;
+  MODIFY `id_live_designer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=984;
 
 --
 -- AUTO_INCREMENT de la tabla `live_events`
@@ -752,7 +765,7 @@ ALTER TABLE `set_songs`
 -- AUTO_INCREMENT de la tabla `songs`
 --
 ALTER TABLE `songs`
-  MODIFY `id_song` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_song` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `tags`
@@ -764,13 +777,13 @@ ALTER TABLE `tags`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `user_history`
 --
 ALTER TABLE `user_history`
-  MODIFY `id_user_history` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_user_history` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Restricciones para tablas volcadas

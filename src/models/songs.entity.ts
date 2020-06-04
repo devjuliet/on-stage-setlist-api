@@ -104,9 +104,6 @@ export class Song extends Model<Song> {
   })
   public idBand: number;
 
-  @BelongsTo(() => Band, 'idBand')
-  band: Band;
-
   @Column({
     type: DataType.INTEGER({ length: 11 }),
     allowNull: false,
@@ -114,6 +111,9 @@ export class Song extends Model<Song> {
   })
   public idTag: number;
   
+  @BelongsTo(() => Band, 'idBand')
+  band: Band;
+
   @BelongsTo(() => Tag, 'idTag')
   tag: Tag;
 
