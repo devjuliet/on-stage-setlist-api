@@ -49,13 +49,13 @@ class Genre {
 class Set {
     idSet: Number;
     name: String;
-    urlImage : string;
+    haveImage : Boolean;
     description : string;
 
     constructor() {
         this.idSet = 0;
         this.name = "";
-        this.urlImage = "";
+        this.haveImage = false;
         this.description = "";
     }
 }
