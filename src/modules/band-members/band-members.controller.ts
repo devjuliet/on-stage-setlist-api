@@ -47,4 +47,18 @@ export class BandMembersController {
   ): Promise<ServerMessages> {
     return await this.BandMembersService.findSetById(idSet, req.user.idUser);
   }
+
+  @Get('sets')
+  @UseGuards(AuthGuard())
+  async findAllSetsByUserId(@Request() req): Promise<ServerMessages> {
+    return await this.BandMembersService.findAllSetsByUserId(req.user.idUser);
+  }
+
+  @Get('sets/:id/songs')
+  @UseGuards(AuthGuard())
+  async counterOfSongsBySetId(
+    @Param('id') idSet: number,
+  ): Promise<ServerMessages> {
+    return await this.BandMembersService.counterOfSongsBySetId(idSet);
+  }
 }

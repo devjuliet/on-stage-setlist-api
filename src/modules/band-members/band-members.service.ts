@@ -45,8 +45,7 @@ export class BandMembersService {
         return new ServerMessages(false, 'Song id ' + songId, {});
       }
 
-      let bandId = song.idBand;
-      console.log(bandId);
+      const bandId = song.idBand;
       const bandMember = await this.bandMemberRepository.findOne({
         where: {
           idBand: bandId,
@@ -127,7 +126,83 @@ export class BandMembersService {
         ],
       });
 
-      return new ServerMessages(false, 'Success', set);
+      const bandId = set.idBand;
+      const bandMember = await this.bandMemberRepository.findOne({
+        where: {
+          idBand: bandId,
+          [Op.and]: [{ idUser: userId }],
+        },
+      });
+
+      if (bandMember == null) {
+        return new ServerMessages(false, 'You dont belong to this band', {});
+      } else if (set == null) {
+        return new ServerMessages(false, 'Not found', {});
+      } else {
+        return new ServerMessages(false, 'Success', set);
+      }
+    } catch (error) {
+      console.log(error);
+      return new ServerMessages(true, 'Error ocurred', error);
+    }
+  }
+
+  async findAllSetsByUserId(userId): Promise<ServerMessages> {
+    const setsOfMember = [];
+    try {
+      //encontrar todas la bands que pertenece el usuario
+      const bands = await this.bandMemberRepository.findAll({
+        attributes: ['idBand'],
+        where: { idUser: userId },
+      });
+
+      return Promise.all(
+        bands.map(band =>
+          this.setRepository.findAll({
+            where: { idBand: band.idBand },
+          }),
+        ),
+      )
+        .then(allSets => {
+          allSets.forEach(setsPerBand => {
+            setsPerBand.forEach(set => {
+              setsOfMember.push(set);
+            });
+          });
+        })
+        .then(
+          //regresar eventos
+          () => new ServerMessages(false, 'Songs not saved', setsOfMember),
+        );
+    } catch (error) {
+      console.log(error);
+      return new ServerMessages(true, 'Error ocurred', error);
+    }
+  }
+
+  async counterOfSongsBySetId(setId): Promise<ServerMessages> {
+    let counter = 0;
+    try {
+      const set = await this.setRepository.findOne({
+        where: { idSet: setId },
+        include: [
+          {
+            model: Song,
+            as: 'songs',
+          },
+        ],
+      });
+
+      if (set == null) {
+        return new ServerMessages(false, 'Number of Songs of Set ' + setId, {});
+      } else {
+        counter = set.songs.length;
+        return new ServerMessages(
+          false,
+          'Number of Songs of Set ' + setId,
+          counter,
+        );
+      }
     } catch (error) {
       console.log(error);
       return new ServerMessages(true, 'Error ocurred', error);
