@@ -211,7 +211,7 @@ export class UploadsController {
         return await this.deleteFile('storage/sets/'+idSet+'.jpg');
     }
     //////////////////////////////////////CANCIONES/////////////////////////////////////////////////
-    //Crea y guarda la imagen del usuario y su directorio
+    //Crea y guarda la imagen de la cancion y su directorio
     @Post('song-image/')
     @UseGuards(AuthGuard())
     @UseInterceptors(FilesInterceptor('files[]', 1, {
@@ -254,7 +254,7 @@ export class UploadsController {
         return new Promise((resolve,reject)=>{
             fs.unlink(namePath , (error) => {
                 if (error) {
-                    reject( new ServerMessages(true,"Imagen no existe.",{}) );
+                    resolve( new ServerMessages(true,"Imagen no existe.",{}) );
                 }else{
                     resolve( new ServerMessages(false,"Imagen eliminada.",{}));
                 };
