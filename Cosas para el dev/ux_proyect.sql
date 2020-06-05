@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 03-06-2020 a las 23:28:59
+-- Tiempo de generación: 05-06-2020 a las 03:37:41
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.2.27
 
@@ -281,7 +281,7 @@ INSERT INTO `live_designers` (`id_live_designer`, `id_user_designer`, `id_band`)
 (4, 9, 25),
 (5, 9, 30),
 (980, 10, 19),
-(983, 10, 30);
+(983, 9, 30);
 
 -- --------------------------------------------------------
 
@@ -352,6 +352,20 @@ CREATE TABLE `sets` (
   `id_band` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `sets`
+--
+
+INSERT INTO `sets` (`id_set`, `name`, `description`, `have_image`, `id_band`) VALUES
+(2, 'La primera lista', 'descripcion de prueba', 0, 19),
+(3, 'dsasdad', 'fdsfdsaf', 0, 19),
+(4, 'sads', 'fdsadfa', 0, 19),
+(5, 'esteeeeeeeeeee', 'asdfadf', 0, 30),
+(6, 'lista para el kokoro', 'dsadd simonki', 1, 19),
+(7, 'tes con imagen', 'rewfdsfa', 1, 20),
+(8, 'ñññññññññññppppppppppppppppp', 'mmmmmmmmmmmmmmmmmmmmmmmmmm', 0, 19),
+(9, 'Como hacerte loco', 'fdsfafafd', 1, 19);
+
 -- --------------------------------------------------------
 
 --
@@ -363,6 +377,23 @@ CREATE TABLE `set_songs` (
   `id_set` int(11) NOT NULL,
   `id_song` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `set_songs`
+--
+
+INSERT INTO `set_songs` (`id_set_songs`, `id_set`, `id_song`) VALUES
+(2, 4, 1),
+(3, 4, 7),
+(4, 5, 6),
+(6, 7, 8),
+(7, 8, 1),
+(8, 8, 6),
+(9, 8, 9),
+(21, 6, 5),
+(23, 6, 7),
+(24, 9, 8),
+(25, 9, 3);
 
 -- --------------------------------------------------------
 
@@ -394,8 +425,14 @@ INSERT INTO `songs` (`id_song`, `name`, `artist`, `lyric`, `chords_guitar`, `tab
 (1, 'Dare Post man', 'Gorillaz', 'Lalala lalasm sa laa la...', 0, 0, 0, 0, 0, 0, 140, 19, 1),
 (2, 'Dare Post man 2', 'Gorillaz', 'Lalala lalasm sa laa la...', 0, 0, 0, 0, 0, 0, 140, 19, 1),
 (3, 'Dare', 'Gorrillaz', 'Lalalala laa la..', 0, 1, 1, 0, 1, 0, 140, 19, 1),
-(4, 'Daredadsdad', 'Gorrillaz', 'Lalalala laa la..', 0, 0, 0, 0, 0, 0, 140, 19, 1),
-(5, 'Dare test', 'Gorrillaz', 'Lalalala laa la..', 0, 0, 0, 0, 0, 0, 140, 19, 1);
+(4, 'Daredadsdad', 'Gorrillaz', 'Lalalala laa la..', 1, 0, 0, 0, 0, 1, 140, 19, 1),
+(5, 'Dare test', 'Gorrillaz', 'Lalalala laa la..', 0, 0, 0, 0, 0, 0, 140, 19, 1),
+(6, 'Dare Post man 2 update', 'Gorillaz', 'Lalala lalasm sa laa la...fdsa', 0, 1, 0, 1, 1, 0, 130, 19, 3),
+(7, 'cancion de prueba en live', 'fdafa', 'fdasdadfdf', 1, 1, 1, 1, 1, 1, 626, 19, 15),
+(8, 'cancion de test chidote', 'fdsd', 'fdsadfdsfadfadf', 1, 1, 1, 0, 0, 1, 152, 19, 2),
+(9, 'hfghdh', 'hfhh', 'hghfh', 1, 0, 1, 0, 1, 1, 786, 19, 2),
+(10, 'fsfd', 'cxzvz', 'fdfa', 1, 0, 0, 1, 1, 0, 343, 19, 2),
+(11, 'nueva simonki', 'simonki ', 'simonki letra', 1, 0, 0, 0, 0, 0, 55, 19, 3);
 
 -- --------------------------------------------------------
 
@@ -753,19 +790,19 @@ ALTER TABLE `setlists`
 -- AUTO_INCREMENT de la tabla `sets`
 --
 ALTER TABLE `sets`
-  MODIFY `id_set` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_set` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `set_songs`
 --
 ALTER TABLE `set_songs`
-  MODIFY `id_set_songs` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_set_songs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT de la tabla `songs`
 --
 ALTER TABLE `songs`
-  MODIFY `id_song` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_song` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `tags`

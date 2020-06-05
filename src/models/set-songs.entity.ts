@@ -30,9 +30,6 @@ export class SetSong extends Model<SetSong> {
   })
   public idSet: number;
 
-  @BelongsTo(() => Set, 'idSet')
-  onSet: Set;
-
   @ForeignKey(() => Song)
   @Column({
     type: DataType.INTEGER({ length: 11 }),
@@ -43,4 +40,7 @@ export class SetSong extends Model<SetSong> {
 
   @BelongsTo(() => Song, 'idSong')
   song: Song;
+
+  @BelongsTo(() => Set, 'idSet')
+  onSet: Set;
 }
