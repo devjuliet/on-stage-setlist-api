@@ -6,10 +6,12 @@ import {
   HasMany,
   ForeignKey,
   BelongsTo,
+  BelongsToMany,
 } from 'sequelize-typescript';
 import { SetSong } from './set-songs.entity';
 import { Band } from './bands.entity';
 import { Tag } from './tags.entity';
+import { Set } from './sets.entity';
 @Table({
   tableName: 'songs',
 })
@@ -40,7 +42,7 @@ export class Song extends Model<Song> {
     allowNull: false,
   })
   public lyric: string;
-  
+
   @Column({
     type: DataType.BOOLEAN,
     allowNull: true,
@@ -110,13 +112,22 @@ export class Song extends Model<Song> {
     field: 'id_tag',
   })
   public idTag: number;
-  
+
   @BelongsTo(() => Band, 'idBand')
   band: Band;
 
   @BelongsTo(() => Tag, 'idTag')
   tag: Tag;
 
-  @HasMany(() => SetSong, 'idSetSong')
-  setSongs: SetSong[];
+  /*@HasMany(() => SetSong, 'idSetSong')
+  setSongs: SetSong[];*/
+
+  /* @HasMany(() => BandGenre, 'idBandGenre')
+  bandGenres: BandGenre[];*/
+
+  @BelongsToMany(
+    () => Set,
+    () => SetSong,
+  )
+  sets: Set[];
 }

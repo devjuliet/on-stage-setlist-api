@@ -38,9 +38,6 @@ export class SetSong extends Model<SetSong> {
   })
   public idSong: number;
 
-  @BelongsTo(() => Song, 'idSong')
-  song: Song;
-
-  @BelongsTo(() => Set, 'idSet')
-  onSet: Set;
+  /*@BelongsTo(() => Song, 'idSong')
+  song: Song;*/
 }
