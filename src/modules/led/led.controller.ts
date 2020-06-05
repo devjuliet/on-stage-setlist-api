@@ -21,10 +21,42 @@ export class LedController {
         this.ledService.findSongsBandByIdBandId(idBand);
     }
 
+    @Get('get-song/:idSong')
+    @UseGuards(AuthGuard())
+    async findSongsByIdSong(@Param('idSong') idSong: number,): Promise<ServerMessages> {
+      return await 
+        this.ledService.findSongsByIdSong(idSong);
+    }
+
     @Post('create-song')
     @UseGuards(AuthGuard())
     public async createSong(@Body() body): Promise<ServerMessages> {
       return this.ledService.createSong(body);
+    }
+
+    @Post('update-song')
+    @UseGuards(AuthGuard())
+    public async updateSong(@Body() body): Promise<ServerMessages> {
+      return this.ledService.updateSong(body);
+    }
+
+    @Post('create-set')
+    @UseGuards(AuthGuard())
+    public async createList(@Body() body): Promise<ServerMessages> {
+      return this.ledService.createSet(body);
+    }
+
+    @Post('update-set')
+    @UseGuards(AuthGuard())
+    public async updateSet(@Body() body): Promise<ServerMessages> {
+      return this.ledService.updateSet(body);
+    }
+
+    @Get('set-list')
+    @UseGuards(AuthGuard())
+    async findSetsOfLedByLedId( @Request() req ): Promise<ServerMessages> {
+      return await 
+        this.ledService.findSetsOfLedByLedId(req.user.idUser);
     }
   
 }

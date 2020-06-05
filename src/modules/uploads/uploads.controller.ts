@@ -134,12 +134,7 @@ export class UploadsController {
     @Get('user-delete-image/:idUser')
     @UseGuards(AuthGuard())
     async deleteUserImage(@Param('idUser') idUser : String): Promise<any> {
-        fs.unlink( 'storage/users/'+idUser+'.jpg', (error) => {
-            if (error) {
-                return new ServerMessages(true,"Imagen del usuario " + idUser + " no existe.",{});
-            };
-            return new ServerMessages(false,"Imagen del usuario " + idUser + " se elimino.",{});
-        });
+        return await this.deleteFile('storage/users/'+idUser+'.jpg');
     }
 
     //////////////////////////////////////BANDAS/////////////////////////////////////////////////
@@ -176,12 +171,7 @@ export class UploadsController {
     @Get('band-delete-image/:idBand')
     @UseGuards(AuthGuard())
     async deleteBandImage(@Param('idBand') idBand : String): Promise<any> {
-        fs.unlink( 'storage/bands/'+idBand+'.jpg', (error) => {
-            if (error) {
-                return new ServerMessages(true,"Imagen de la banda " + idBand + " no existe.",{});
-            };
-            return new ServerMessages(false,"Imagen de la banda " + idBand + " se elimino.",{});
-        });
+        return await this.deleteFile('storage/songs/'+idBand+'.jpg');
     }
 
     //////////////////////////////////////Sets/////////////////////////////////////////////////
@@ -218,12 +208,7 @@ export class UploadsController {
     @Get('set-delete-image/:idSet')
     @UseGuards(AuthGuard())
     async deleteSetImage(@Param('idSet') idSet : String): Promise<any> {
-        fs.unlink( 'storage/sets/'+idSet+'.jpg', (error) => {
-            if (error) {
-                return new ServerMessages(true,"Imagen del set " + idSet + " no existe.",{});
-            };
-            return new ServerMessages(false,"Imagen del set " + idSet + " se elimino.",{});
-        });
+        return await this.deleteFile('storage/sets/'+idSet+'.jpg');
     }
     //////////////////////////////////////CANCIONES/////////////////////////////////////////////////
     //Crea y guarda la imagen del usuario y su directorio
@@ -260,11 +245,20 @@ export class UploadsController {
     @Get('song-delete-image/:idSong/:nameFile')
     @UseGuards(AuthGuard())
     async deleteSongImage(@Param('idSong') idSong : String,@Param('nameFile') nameFile : String): Promise<any> {
-        fs.unlink( 'storage/songs/'+idSong+'/'+nameFile+'.jpg', (error) => {
-            if (error) {
-                return new ServerMessages(true,"Imagen de la cancion " + idSong + " no existe.",{});
-            };
-            return new ServerMessages(false,"Imagen de la cancion " + idSong + " se elimino.",{});
-        });
+        return await this.deleteFile('storage/songs/'+idSong+'/'+nameFile+'.jpg');
     } 
+
+    //Esta funcion ayuda a varios controladores a borrar los archivos solo debe recibir el path relativo con 
+    //su nombre
+    deleteFile(namePath : string) : Promise<any>{
+        return new Promise((resolve,reject)=>{
+            fs.unlink(namePath , (error) => {
+                if (error) {
+                    reject( new ServerMessages(true,"Imagen no existe.",{}) );
+                }else{
+                    resolve( new ServerMessages(false,"Imagen eliminada.",{}));
+                };
+            });
+        })
+    }
 }
