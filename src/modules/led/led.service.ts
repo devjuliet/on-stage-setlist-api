@@ -15,6 +15,9 @@ import { Tag } from '../../models/tags.entity';
 import { SetDto } from './dto/set.dto';
 import { async } from 'rxjs/internal/scheduler/async';
 import { SetSong } from '../../models/set-songs.entity';
+import { Setlist } from '../../models/setlists.entity';
+import { RepertorieDto } from './dto/repertorie.dto';
+import { SetlistSet } from '../../models/setlist-sets.entity';
 
 @Injectable()
 export class LedService {
@@ -37,6 +40,10 @@ export class LedService {
     private readonly songRepository: typeof Song,
     @Inject('SetRepository')
     private readonly setRepository: typeof Set,
+    @Inject('SetlistRepository')
+    private readonly setlistRepository: typeof Setlist,
+    @Inject('SetlistSetRepository')
+    private readonly setlistSetRepository: typeof SetlistSet,
     @Inject('SetSongRepository')
     private readonly setSongRepository: typeof SetSong,
   ) { }
@@ -79,56 +86,6 @@ export class LedService {
 
   async findSetsOfLedByLedId(idUser: number): Promise<ServerMessages> {
     try {
-      /*const setLists : any[]  = await this.liveDesignerRepository.findAll({
-        attributes: [
-          'idLiveDesigner',
-          'idBand',
-          'idUserDesigner',
-        ],
-        where: { idUserDesigner: idUser },
-        include: [{
-          model: Band,
-          as: 'band',
-          include: [{
-            model: Set,
-            as: 'sets',
-            include:[{
-              model: SetSong,
-              as: 'setSongs',
-              include: [{
-                model : Song,
-                as: 'song'
-              }]
-            }]
-          }],
-        },
-        ],
-      }) .map((liveDesigner: LiveDesigner) => {
-        return Object.assign(
-           liveDesigner.band.sets
-        )
-      }) */;
-
-
-
-      /* let allSets : any[] = [];
-      setLists.forEach((setListBand : any)=>{
-        setListBand.forEach((set : any) => {
-          allSets.push(set);
-        });
-      });
-
-      allSets.map((set: any) => {
-        return Object.assign({
-          idSet : set.idSet,
-          name : set.name,
-          description : set.description,
-          haveImage : set.haveImage,
-          idBand : set.idBand,
-          songs : set.set
-        })
-      }); */
-
       const setLists: any[] = await this.setRepository.findAll({
         attributes: [
           'idSet',
@@ -483,36 +440,36 @@ export class LedService {
         listFindedForUpdate.haveImage = newSetData.haveImage;
         listFindedForUpdate.idBand = newSetData.idBand;
         await listFindedForUpdate.save();
-        
+
         //Se buscan las canciones actuales de la lista
         let actualSongs: SetSong[] = await this.setSongRepository.findAll(
           {
-              where: { idSet: newSetData.idSet.toString() },
-              include: [
-                  {
-                      model: Song,
-                      as: 'song',
-                  },
-              ],
+            where: { idSet: newSetData.idSet.toString() },
+            include: [
+              {
+                model: Song,
+                as: 'song',
+              },
+            ],
           },
-      );
-      //Eliminar todas las canciones de la lista que no estan en la nueva lista
-      let fixActual: any[] = Array.from(actualSongs);
-      actualSongs.forEach(async actualSong => {
+        );
+        //Eliminar todas las canciones de la lista que no estan en la nueva lista
+        let fixActual: any[] = Array.from(actualSongs);
+        actualSongs.forEach(async actualSong => {
           let finded = newSetData.songs.find(song => {
-              return song.idSong == actualSong.idSong;
+            return song.idSong == actualSong.idSong;
           });
           if (finded == null && finded == undefined) {
-              await actualSong.destroy();
+            await actualSong.destroy();
           } else {
             //console.log("no se borro" + finded.idSong);
           }
-      });
+        });
 
-      //Se crean las nuevas canciones de la lista que no estan actualmente registradas
-      newSetData.songs.forEach(async newSong => {
+        //Se crean las nuevas canciones de la lista que no estan actualmente registradas
+        newSetData.songs.forEach(async newSong => {
           let finded = actualSongs.find(element => {
-              return element.idSong == newSong.idSong;
+            return element.idSong == newSong.idSong;
           });
           if (finded == null && finded == undefined) {
             let newData = {
@@ -521,9 +478,9 @@ export class LedService {
             };
             await this.setSongRepository.create<SetSong>(newData, {});
           } else {
-              //console.log("no se creo" + finded.idSong);
+            //console.log("no se creo" + finded.idSong);
           }
-      });
+        });
 
         return new ServerMessages(false, 'Lista actualizada con exito', listFindedForUpdate);
       } catch (error) {
@@ -531,6 +488,316 @@ export class LedService {
       }
     } else {
       return new ServerMessages(true, 'La lista no existe.', {});
+    }
+  }
+
+  async findLiveEventsOfBandsAvailableForRepertories(idBand: number): Promise<ServerMessages> {
+    try {
+      const events: any[] = await this.liveEventRepository.findAll({
+        attributes: ['idLiveEvent', 'name'],
+        where: { idBand: idBand },
+        include: [{
+          model: Setlist,
+          as: 'setlist'
+        }]
+      });
+
+      let dataEvents = [];
+
+      events.forEach((event) => {
+        if (event.setlist == null) {
+          dataEvents.push({ idLiveEvent: event.idLiveEvent, name: event.name });
+        }
+      })
+
+      const sets: any[] = await this.setRepository.findAll({
+        where: { idBand: idBand },
+        include: [{
+          model: Song,
+          as: 'songs',
+          attributes: ['idSong']
+        }]
+      }).map((set: Set) => {
+        return Object.assign({
+          idSet: set.idSet,
+          name: set.name,
+          haveImage: set.haveImage,
+          numberSongs: set.songs.length,
+          selected: false
+        })
+      });;
+
+      let response = { events: dataEvents, sets: sets };
+      return new ServerMessages(false, 'Eventos sin repositorios y sets de la banda obtenidas con exito', response);
+    } catch (error) {
+      console.log(error);
+      return new ServerMessages(true, 'A ocurrido un error obteniendo las listas', error);
+    }
+  }
+
+  async createRepertorie(newRepertorieData: RepertorieDto): Promise<ServerMessages> {
+    if (
+      newRepertorieData.name == null ||
+      newRepertorieData.name == undefined ||
+      newRepertorieData.event == null ||
+      newRepertorieData.event == undefined ||
+      newRepertorieData.band == null ||
+      newRepertorieData.band == undefined ||
+      newRepertorieData.tag == null ||
+      newRepertorieData.tag == undefined ||
+      newRepertorieData.idLiveDesigner == null ||
+      newRepertorieData.idLiveDesigner == undefined ||
+      newRepertorieData.sets == null ||
+      newRepertorieData.sets == undefined
+    ) {
+      return new ServerMessages(true, 'Peticion incompleta', {});
+    } else if (newRepertorieData.name.length < 1) {
+      return new ServerMessages(
+        true,
+        'El nombre del repertorio debe contener almenos 1 caracteres.',
+        {},
+      );
+    } else if (newRepertorieData.sets.length < 1) {
+      return new ServerMessages(
+        true,
+        'El repertorio debe contener almenos una lista.',
+        {},
+      );
+    }
+
+    var listFinded = await this.setlistRepository.findOne<Setlist>({
+      attributes: [
+        'name',
+      ],
+      where: {
+        name: newRepertorieData.name.toString(),
+        idLiveDesigner: newRepertorieData.idLiveDesigner.toString()
+      },
+    });
+
+    if (listFinded) {
+      return new ServerMessages(true, 'Existe otro repertorio con el mismo nombre.', {});
+    } else {
+      try {
+        let newData: any = {
+          name: newRepertorieData.name,
+          idBand: newRepertorieData.band.idBand,
+          idTag: newRepertorieData.tag.idTag,
+          idLiveDesigner: newRepertorieData.idLiveDesigner,
+          //idLiveEvent : newRepertorieData.event.idLiveEvent
+        };
+        //En caso de que venga con un evento
+        if (newRepertorieData.event.name.length != 0) {
+          newData.idLiveEvent = newRepertorieData.event.idLiveEvent;
+        }
+        var newSetList: Setlist = await this.setlistRepository.create<Setlist>(newData, {});
+
+        //Se guardan las nuevas canciones de la lista
+        newRepertorieData.sets.forEach(async (newSet) => {
+          var savedSet: SetlistSet = await this.setlistSetRepository.create<SetlistSet>({
+            idSetlist: newSetList.idSetlist,
+            idSet: newSet.idSet
+          }, {});
+        });
+
+        return new ServerMessages(false, 'Lista creada con exito', newSetList);
+      } catch (error) {
+        console.log(error);
+        return new ServerMessages(true, 'A ocurrido un error guardando el repertorio', error);
+      }
+    }
+  }
+
+  async updateRepertorie(newRepertorieData: RepertorieDto): Promise<ServerMessages> {
+    if (
+      newRepertorieData.idSetlist == null ||
+      newRepertorieData.idSetlist == undefined ||
+      newRepertorieData.name == null ||
+      newRepertorieData.name == undefined ||
+      newRepertorieData.event == null ||
+      newRepertorieData.event == undefined ||
+      newRepertorieData.band == null ||
+      newRepertorieData.band == undefined ||
+      newRepertorieData.tag == null ||
+      newRepertorieData.tag == undefined ||
+      newRepertorieData.idLiveDesigner == null ||
+      newRepertorieData.idLiveDesigner == undefined ||
+      newRepertorieData.sets == null ||
+      newRepertorieData.sets == undefined
+    ) {
+      return new ServerMessages(true, 'Peticion incompleta', {});
+    } else if (newRepertorieData.name.length < 1) {
+      return new ServerMessages(
+        true,
+        'El nombre del repertorio debe contener almenos 1 caracteres.',
+        {},
+      );
+    } else if (newRepertorieData.sets.length < 1) {
+      return new ServerMessages(
+        true,
+        'El repertorio debe contener almenos una lista.',
+        {},
+      );
+    }
+
+    var repertorieFinded = await this.setlistRepository.findOne<Setlist>({
+      where: {
+        idSetlist: newRepertorieData.idSetlist.toString(),
+        idLiveDesigner: newRepertorieData.idLiveDesigner.toString()
+      },
+    });
+
+    if (repertorieFinded) {
+      try {
+        repertorieFinded.name = newRepertorieData.name;
+        //Si no tiene un evento este se marca como null
+        if (newRepertorieData.event.name.length == 0) {
+          repertorieFinded.idLiveEvent = null;
+        } else {
+          repertorieFinded.idLiveEvent = newRepertorieData.event.idLiveEvent;
+        }
+        repertorieFinded.idBand = newRepertorieData.band.idBand;
+        repertorieFinded.idTag = newRepertorieData.tag.idTag;
+        repertorieFinded.idLiveDesigner = newRepertorieData.idLiveDesigner;
+        await repertorieFinded.save();
+
+        //Se buscan los sets actuales del repertorio
+        let actualSets: SetlistSet[] = await this.setlistSetRepository.findAll(
+          {
+            where: { idSetlist: repertorieFinded.idSetlist.toString() },
+          },
+        );
+        //Eliminar todos los set que no se encuentran en repertorio de sets
+        let fixActual: any[] = Array.from(actualSets);
+        actualSets.forEach(async actualSet => {
+          let finded = newRepertorieData.sets.find(set => {
+            return set.idSet == actualSet.idSet;
+          });
+          if (finded == null && finded == undefined) {
+            await actualSet.destroy();
+          } else {
+            //console.log("no se borro" + finded.idSong);
+          }
+        });
+
+        //Se crean los nuevos sets del repertorio que no estan actualmente registradas
+        newRepertorieData.sets.forEach(async newSet => {
+          let finded = actualSets.find(element => {
+            return element.idSet == newSet.idSet;
+          });
+          if (finded == null && finded == undefined) {
+            let newData = {
+              idSetlist: newRepertorieData.idSetlist,
+              idSet: newSet.idSet,
+            };
+            await this.setlistSetRepository.create<SetlistSet>(newData, {});
+          } else {
+            //console.log("no se creo" + finded.idSong);
+          }
+        });
+
+        return new ServerMessages(false, 'Repertorio actualizado con exito', repertorieFinded);
+      } catch (error) {
+        return new ServerMessages(true, 'A ocurrido un error guardando el repertorio', error);
+      }
+    } else {
+      return new ServerMessages(true, 'La lista no existe.', {});
+    }
+  }
+
+  async deleteRepertorie(idSetlist: number): Promise<ServerMessages> {
+    if (
+      idSetlist == null ||
+      idSetlist == undefined 
+    ) {
+      return new ServerMessages(true, 'Peticion incompleta', {});
+    }
+
+    var repertorieFinded = await this.setlistRepository.findOne<Setlist>({
+      where: {
+        idSetlist: idSetlist.toString()
+      },
+    });
+
+    if (repertorieFinded) {
+      try {
+        //Eliminar todos los set del repertorio
+        await this.setlistSetRepository.destroy({
+          where: { idSetlist: repertorieFinded.idSetlist.toString() },
+        });
+        //eliminando el repertorio
+        repertorieFinded.destroy();
+
+        return new ServerMessages(false, 'Repertorio eliminado con exito', repertorieFinded);
+      } catch (error) {
+        return new ServerMessages(true, 'A ocurrido un error guardando el repertorio', error);
+      }
+    } else {
+      return new ServerMessages(true, 'La lista no existe.', {});
+    }
+  }
+
+  async getRepertories(idUser: number): Promise<ServerMessages> {
+    try {
+      const repertories: any[] = await this.setlistRepository.findAll({
+        /* attributes: ['idLiveEvent','name'], */
+        where: { idLiveDesigner: idUser },
+        include: [{
+          attributes: ['idSet', 'name'],
+          model: Set,
+          as: 'sets'
+        }, {
+          model: Tag,
+          as: 'tag'
+        }, {
+          model: Band,
+          as: 'band'
+        }, {
+          model: LiveEvent,
+          as: 'liveEvent'
+        }]
+      }).map((set: Setlist) => {
+        let event = {
+          idLiveEvent: 0,
+          name: "",
+          location: "",
+          tour: "",
+          date: new Date(),
+          place: ""
+        };
+        if (set.liveEvent != null) {
+          event = {
+            idLiveEvent: set.liveEvent.idLiveEvent,
+            name: set.liveEvent.name,
+            location: set.liveEvent.location,
+            tour: set.liveEvent.tour,
+            date: set.liveEvent.date,
+            place: set.liveEvent.place
+          }
+        }
+
+        let sets = set.sets.map((set: Set) => {
+          return Object.assign({
+            idSet: set.idSet,
+            name: set.name,
+          })
+        });
+
+        return Object.assign({
+          idSetlist: set.idSetlist,
+          name: set.name,
+          event: event,
+          band: { idBand: set.band.idBand, name: set.band.name },
+          tag: { idTag: set.tag.idTag, name: set.tag.name },
+          idLiveDesigner: set.idLiveDesigner,
+          sets: sets
+        })
+      });
+
+      return new ServerMessages(false, 'Repertorios obtenidos con exito', repertories);
+    } catch (error) {
+      console.log(error);
+      return new ServerMessages(true, 'A ocurrido un error obteniendo los repertorios', error);
     }
   }
 }

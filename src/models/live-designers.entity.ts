@@ -5,9 +5,11 @@ import {
   DataType,
   ForeignKey,
   BelongsTo,
+  HasMany,
 } from 'sequelize-typescript';
 import { User } from './users.entity';
 import { Band } from './bands.entity';
+import { Setlist } from './setlists.entity';
 
 @Table({
   tableName: 'live_designers',
@@ -43,5 +45,8 @@ export class LiveDesigner extends Model<LiveDesigner> {
 
   @BelongsTo(() => User, 'idUserDesigner')
   user: User;
+
+  /* @HasMany(() => Setlist, 'idLiveDesigner')
+  setlists: Setlist[]; */
   
 }

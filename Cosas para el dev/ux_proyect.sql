@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 05-06-2020 a las 03:37:41
+-- Tiempo de generación: 06-06-2020 a las 19:03:44
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.2.27
 
@@ -41,7 +41,7 @@ CREATE TABLE `bands` (
 --
 
 INSERT INTO `bands` (`id_band`, `name`, `url_logo`, `description`, `id_user_manager`) VALUES
-(19, 'La bunny bandatrty 2222222', 'band-image/19', 'Banda mamalona que puede tocar musica pal corazonhgfhg', 1),
+(19, 'La bunny bandatrty 2222222', '', 'Banda mamalona que puede tocar musica pal corazonhgfhg', 1),
 (20, 'La bunny bandatrtydsd', 'bands/20', 'Banda mamalona que puede tocar musica pal corazonhgfhg', 1),
 (21, 'La bunny banda', 'band-image/21', 'Banda mamalona que puede tocar musica pal corazonnneeeeeee', 1),
 (22, 'La bunny bandafdaaa', 'bands/22', 'Banda mamalona que puede tocar musica pal corazonnnvnn', 1),
@@ -85,9 +85,6 @@ INSERT INTO `band_genres` (`id_band_genre`, `id_band`, `id_genre`) VALUES
 (600, 23, 4),
 (601, 23, 7),
 (602, 23, 12),
-(678, 21, 6),
-(679, 21, 1),
-(680, 21, 5),
 (681, 19, 1),
 (682, 19, 3),
 (683, 19, 5),
@@ -98,7 +95,10 @@ INSERT INTO `band_genres` (`id_band_genre`, `id_band`, `id_genre`) VALUES
 (688, 30, 1),
 (689, 30, 2),
 (690, 30, 11),
-(691, 30, 8);
+(691, 30, 8),
+(692, 21, 6),
+(693, 21, 1),
+(694, 21, 5);
 
 -- --------------------------------------------------------
 
@@ -126,9 +126,9 @@ INSERT INTO `band_members` (`id_member`, `id_user`, `id_band`) VALUES
 (31, 9, 30),
 (97, 10, 23),
 (99, 11, 21),
-(102, 10, 21),
 (105, 10, 19),
-(106, 10, 30);
+(106, 10, 30),
+(107, 10, 21);
 
 -- --------------------------------------------------------
 
@@ -281,7 +281,8 @@ INSERT INTO `live_designers` (`id_live_designer`, `id_user_designer`, `id_band`)
 (4, 9, 25),
 (5, 9, 30),
 (980, 10, 19),
-(983, 9, 30);
+(983, 9, 30),
+(984, 10, 21);
 
 -- --------------------------------------------------------
 
@@ -309,7 +310,7 @@ INSERT INTO `live_events` (`id_live_event`, `location`, `name`, `tour`, `date`, 
 (2, 'Chihuahua', 'Tecate Live', 'Tecate Tour', '2020-05-31 03:41:21', 'Don Burro', 24, 2),
 (3, 'Ubicacion chidota', 'Concierto chidote1133', 'El tour de las bunyys', '2020-02-28 00:00:00', 'Concierto chidote', 21, 2),
 (4, 'Ubicacion chidota44', 'Concierto chidote2', 'El tour de las bunyys', '2020-04-30 00:00:00', 'Concierto chidote', 19, 1),
-(5, 'Ubicacion chidota', 'Concierto chidote', 'El tour de las bunyys', '2020-05-31 06:18:18', 'Concierto chidote', 20, 2),
+(5, 'Ubicacion chidota', 'Concierto chidote', 'El tour de las bunyys', '2020-06-26 00:00:00', 'Concierto chidote', 20, 2),
 (6, 'Ubicacion chidotaqqqq', 'Concierto chidoteqqqqqq', 'El tour de las bunyysqqqqqqqq', '2020-06-26 00:00:00', 'Concierto chidote', 21, 2);
 
 -- --------------------------------------------------------
@@ -320,11 +321,21 @@ INSERT INTO `live_events` (`id_live_event`, `location`, `name`, `tour`, `date`, 
 
 CREATE TABLE `setlists` (
   `id_setlist` int(11) NOT NULL,
-  `id_live_event` int(11) NOT NULL,
+  `id_live_event` int(11) DEFAULT NULL,
   `id_band` int(11) NOT NULL,
   `name` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-  `id_tag` int(11) NOT NULL
+  `id_tag` int(11) NOT NULL,
+  `id_live_designer` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `setlists`
+--
+
+INSERT INTO `setlists` (`id_setlist`, `id_live_event`, `id_band`, `name`, `id_tag`, `id_live_designer`) VALUES
+(15, 1, 21, 'Repertorio 3 simonki', 4, 10),
+(16, 3, 21, 'repertorio 4 despues de todo', 3, 10),
+(17, NULL, 21, 'Repertorio 5', 3, 10);
 
 -- --------------------------------------------------------
 
@@ -337,6 +348,16 @@ CREATE TABLE `setlist_sets` (
   `id_setlist` int(11) NOT NULL,
   `id_set` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `setlist_sets`
+--
+
+INSERT INTO `setlist_sets` (`id_setlist_set`, `id_setlist`, `id_set`) VALUES
+(13, 15, 16),
+(15, 16, 15),
+(16, 16, 16),
+(17, 17, 16);
 
 -- --------------------------------------------------------
 
@@ -357,14 +378,21 @@ CREATE TABLE `sets` (
 --
 
 INSERT INTO `sets` (`id_set`, `name`, `description`, `have_image`, `id_band`) VALUES
-(2, 'La primera lista', 'descripcion de prueba', 0, 19),
-(3, 'dsasdad', 'fdsfdsaf', 0, 19),
+(2, 'La primera lista', 'descripcion de prueba', 1, 19),
+(3, 'nooooooddddddd', 'fdsfdsaf', 1, 19),
 (4, 'sads', 'fdsadfa', 0, 19),
 (5, 'esteeeeeeeeeee', 'asdfadf', 0, 30),
 (6, 'lista para el kokoro', 'dsadd simonki', 1, 19),
 (7, 'tes con imagen', 'rewfdsfa', 1, 20),
 (8, 'ñññññññññññppppppppppppppppp', 'mmmmmmmmmmmmmmmmmmmmmmmmmm', 0, 19),
-(9, 'Como hacerte loco', 'fdsfafafd', 1, 19);
+(9, 'Como hacerte loco', 'fdsfafafd', 1, 19),
+(10, 'sssssssssssss', 'fffffffffff', 0, 19),
+(11, 'fultima lista de prueba', 'fdsfa', 1, 19),
+(12, 'fdsafafaf', 'fffffffffffffffffff', 1, 19),
+(13, 'fsfa', 'fffffffffffff', 1, 19),
+(14, 'Feliz cumpleaños', 'Canciones para cumples', 1, 19),
+(15, 'lista 1 de prueba', 'test de la banda', 1, 21),
+(16, 'lista 2', 'simonki lista 2', 1, 21);
 
 -- --------------------------------------------------------
 
@@ -393,7 +421,19 @@ INSERT INTO `set_songs` (`id_set_songs`, `id_set`, `id_song`) VALUES
 (21, 6, 5),
 (23, 6, 7),
 (24, 9, 8),
-(25, 9, 3);
+(25, 9, 3),
+(26, 3, 6),
+(27, 3, 5),
+(28, 10, 12),
+(29, 11, 4),
+(30, 11, 13),
+(31, 12, 4),
+(32, 2, 3),
+(33, 13, 14),
+(34, 14, 16),
+(35, 15, 17),
+(36, 16, 17),
+(37, 16, 18);
 
 -- --------------------------------------------------------
 
@@ -424,15 +464,22 @@ CREATE TABLE `songs` (
 INSERT INTO `songs` (`id_song`, `name`, `artist`, `lyric`, `chords_guitar`, `tab_guitar`, `chords_bass`, `tab_bass`, `chords_piano`, `tab_piano`, `tempo`, `id_band`, `id_tag`) VALUES
 (1, 'Dare Post man', 'Gorillaz', 'Lalala lalasm sa laa la...', 0, 0, 0, 0, 0, 0, 140, 19, 1),
 (2, 'Dare Post man 2', 'Gorillaz', 'Lalala lalasm sa laa la...', 0, 0, 0, 0, 0, 0, 140, 19, 1),
-(3, 'Dare', 'Gorrillaz', 'Lalalala laa la..', 0, 1, 1, 0, 1, 0, 140, 19, 1),
+(3, 'Dare', 'Gorrillaz', 'It\'s coming up, it\'s coming up, it\'s coming up\nIt\'s coming up, it\'s coming up, it\'s coming up\nIt\'s dare\nIt\'s dare\nYou\'ve got to press it on you\nYou\'ve just been thinking\nThat\'s what you do, baby\nHold it down, dare\nJump with them all and move it\nJump back and forth\nIt feels like you were there yourself, work it out\nNever did no harm\nNever did no harm\nIt\'s dare\nIt\'s coming up, it\'s coming up, it\'s coming up\nIt\'s coming up, it\'s coming up\nIt\'s dare\nIt\'s dare\nYou\'ve got to press it on you\nYou\'ve just been thinking\nThat\'s what you do, baby\nHold it down, dare\nJump with the moon and move it\nJump back and forth\nIt feels like you were there yourself work it out\nNever did no harm\nNever did no harm\nIt\'s dare\nIt\'s coming up, it\'s coming up, it\'s coming up\nIt\'s coming up, it\'s…', 1, 1, 1, 0, 1, 0, 140, 19, 1),
 (4, 'Daredadsdad', 'Gorrillaz', 'Lalalala laa la..', 1, 0, 0, 0, 0, 1, 140, 19, 1),
 (5, 'Dare test', 'Gorrillaz', 'Lalalala laa la..', 0, 0, 0, 0, 0, 0, 140, 19, 1),
 (6, 'Dare Post man 2 update', 'Gorillaz', 'Lalala lalasm sa laa la...fdsa', 0, 1, 0, 1, 1, 0, 130, 19, 3),
 (7, 'cancion de prueba en live', 'fdafa', 'fdasdadfdf', 1, 1, 1, 1, 1, 1, 626, 19, 15),
-(8, 'cancion de test chidote', 'fdsd', 'fdsadfdsfadfadf', 1, 1, 1, 0, 0, 1, 152, 19, 2),
+(8, '19-2000', 'gorillaz', 'The world is spinning too fast\nI\'m buying lead nike shoes\nTo keep myself tethered\nTo the days I\'ve tried to lose\n\nMy mama said to slow down\nYou must make your own shoes\nStop dancing to the music\nOf Gorillaz in a happy mood\nKeeping my groove on\nBa ba ba (lalalalala)\nDay dee bop (lalalalala)\nDay dee bop (lalalalala)\nDay dee bop (lalalalala)\nYeah, yeah\n\nDay dee bop (lalalalala)\nDay dee bop (lalalalala)\nDay dee bop (lalalalala)\nDay dee bop (lalalalala)\n\nHere you go get the cool (lalalala)\nGet the cool shoeshine (lalalala)\nGet the cool (lalalala)\nGet the cool shoeshine (lalalala)\nGet the cool (lalalala)\nGet the cool shoeshine (lalalala)\nGet the cool (lalalala)\nGet the cool shoeshine (lalalala)\n\nThere\'s a monkey in the jungle\nWatching a vapor trail\nCaught up in the conflict…', 1, 1, 1, 0, 0, 1, 152, 19, 2),
 (9, 'hfghdh', 'hfhh', 'hghfh', 1, 0, 1, 0, 1, 1, 786, 19, 2),
 (10, 'fsfd', 'cxzvz', 'fdfa', 1, 0, 0, 1, 1, 0, 343, 19, 2),
-(11, 'nueva simonki', 'simonki ', 'simonki letra', 1, 0, 0, 0, 0, 0, 55, 19, 3);
+(11, 'nueva simonki', 'simonki ', 'simonki letra', 1, 0, 0, 0, 0, 0, 55, 19, 3),
+(12, 'fdsd', 'adfff', 'dafadf', 0, 0, 0, 0, 0, 0, 23, 19, 1),
+(13, 'fsaf', 'aaaaaaaa', 'fdsafafaf', 1, 0, 0, 0, 0, 1, 3232, 19, 1),
+(14, '2rw', 'fer', 'sa', 0, 1, 0, 0, 0, 0, 333, 19, 1),
+(15, 'aaaaaaa', 'ddddd', 'fdsfdsa', 0, 0, 0, 0, 0, 1, 45, 19, 1),
+(16, 'Feliz', 'Luismi', 'Feliz feliz cumple\nFeliz feliz cumple\nFeliz feliz cumple\n\nFeliz feliz cumple\nFeliz feliz cumple\nFeliz feliz cumple', 1, 1, 1, 0, 0, 1, 140, 19, 18),
+(17, 'cancion 1', 'asasa', 'afdsfadfafd', 0, 0, 0, 0, 0, 0, 23, 21, 2),
+(18, 'cancion 2', 'asas', 'fdfvv', 0, 0, 0, 0, 0, 0, 334, 21, 2);
 
 -- --------------------------------------------------------
 
@@ -628,7 +675,10 @@ INSERT INTO `user_history` (`id_user_history`, `date`, `description`, `id_user`,
 (16, '2020-06-01 17:01:08', 'Dejo de ser el live designer.', 9, 'La bunny banda'),
 (17, '2020-06-01 18:38:31', 'Se unio a la banda como vocalista.', 10, 'La bunny bandatrty 2222222'),
 (18, '2020-06-01 18:39:29', 'Se unio a la banda como vocalista.', 10, 'siimnooookkennee'),
-(19, '2020-06-01 18:39:29', 'Se convirtio en el live designer.', 10, 'siimnooookkennee');
+(19, '2020-06-01 18:39:29', 'Se convirtio en el live designer.', 10, 'siimnooookkennee'),
+(20, '2020-06-05 22:11:03', 'Salio de la banda', 10, 'La bunny banda'),
+(21, '2020-06-05 22:11:03', 'Se unio a la banda como vocalista.', 10, 'La bunny banda'),
+(22, '2020-06-05 22:11:03', 'Se convirtio en el live designer.', 10, 'La bunny banda');
 
 --
 -- Índices para tablas volcadas
@@ -686,7 +736,8 @@ ALTER TABLE `setlists`
   ADD PRIMARY KEY (`id_setlist`),
   ADD KEY `setlists_FK` (`id_live_event`),
   ADD KEY `setlists_FK_1` (`id_band`),
-  ADD KEY `setlists_FK_2` (`id_tag`);
+  ADD KEY `setlists_FK_2` (`id_tag`),
+  ADD KEY `setlists_FK_3` (`id_live_designer`);
 
 --
 -- Indices de la tabla `setlist_sets`
@@ -754,13 +805,13 @@ ALTER TABLE `bands`
 -- AUTO_INCREMENT de la tabla `band_genres`
 --
 ALTER TABLE `band_genres`
-  MODIFY `id_band_genre` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=692;
+  MODIFY `id_band_genre` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=695;
 
 --
 -- AUTO_INCREMENT de la tabla `band_members`
 --
 ALTER TABLE `band_members`
-  MODIFY `id_member` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
+  MODIFY `id_member` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
 
 --
 -- AUTO_INCREMENT de la tabla `genres`
@@ -772,7 +823,7 @@ ALTER TABLE `genres`
 -- AUTO_INCREMENT de la tabla `live_designers`
 --
 ALTER TABLE `live_designers`
-  MODIFY `id_live_designer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=984;
+  MODIFY `id_live_designer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=985;
 
 --
 -- AUTO_INCREMENT de la tabla `live_events`
@@ -784,25 +835,31 @@ ALTER TABLE `live_events`
 -- AUTO_INCREMENT de la tabla `setlists`
 --
 ALTER TABLE `setlists`
-  MODIFY `id_setlist` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_setlist` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT de la tabla `setlist_sets`
+--
+ALTER TABLE `setlist_sets`
+  MODIFY `id_setlist_set` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `sets`
 --
 ALTER TABLE `sets`
-  MODIFY `id_set` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_set` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `set_songs`
 --
 ALTER TABLE `set_songs`
-  MODIFY `id_set_songs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id_set_songs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT de la tabla `songs`
 --
 ALTER TABLE `songs`
-  MODIFY `id_song` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_song` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `tags`
@@ -820,7 +877,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `user_history`
 --
 ALTER TABLE `user_history`
-  MODIFY `id_user_history` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id_user_history` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- Restricciones para tablas volcadas
@@ -866,7 +923,8 @@ ALTER TABLE `live_events`
 ALTER TABLE `setlists`
   ADD CONSTRAINT `setlists_FK` FOREIGN KEY (`id_live_event`) REFERENCES `live_events` (`id_live_event`),
   ADD CONSTRAINT `setlists_FK_1` FOREIGN KEY (`id_band`) REFERENCES `bands` (`id_band`),
-  ADD CONSTRAINT `setlists_FK_2` FOREIGN KEY (`id_tag`) REFERENCES `tags` (`id_tag`);
+  ADD CONSTRAINT `setlists_FK_2` FOREIGN KEY (`id_tag`) REFERENCES `tags` (`id_tag`),
+  ADD CONSTRAINT `setlists_FK_3` FOREIGN KEY (`id_live_designer`) REFERENCES `users` (`id_user`);
 
 --
 -- Filtros para la tabla `setlist_sets`
