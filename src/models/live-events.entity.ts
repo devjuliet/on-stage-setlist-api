@@ -6,6 +6,7 @@ import {
   ForeignKey,
   BelongsTo,
   HasMany,
+  HasOne,
 } from 'sequelize-typescript';
 import { Band } from './bands.entity';
 import { Setlist } from './setlists.entity';
@@ -74,8 +75,8 @@ export class LiveEvent extends Model<LiveEvent> {
   @BelongsTo(() => Band, 'idBand')
   band: Band;
 
-  @HasMany(() => Setlist, 'idSetlist')
-  setlists: Setlist[];
+  @HasOne(() => Setlist, 'idLiveEvent')
+  setlist: Setlist;
 
   @BelongsTo(() => Tag, 'idTag')
   tag: Tag;

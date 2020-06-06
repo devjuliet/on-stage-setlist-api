@@ -58,5 +58,36 @@ export class LedController {
       return await 
         this.ledService.findSetsOfLedByLedId(req.user.idUser);
     }
+
+    @Get('events-bands-available/:idBand')
+    @UseGuards(AuthGuard())
+    async findLiveEventsOfBandsAvailableForRepertories(@Param('idBand') idBand): Promise<ServerMessages> {
+      return await 
+        this.ledService.findLiveEventsOfBandsAvailableForRepertories(idBand);
+    }
+
+    @Post('create-repertorie')
+    @UseGuards(AuthGuard())
+    public async createRepertorie(@Body() body): Promise<ServerMessages> {
+      return this.ledService.createRepertorie(body);
+    }
+
+    @Post('update-repertorie')
+    @UseGuards(AuthGuard())
+    public async updateRepertorie(@Body() body): Promise<ServerMessages> {
+      return this.ledService.updateRepertorie(body);
+    }
+
+    @Get('delete-repertorie/:idSetlist')
+    @UseGuards(AuthGuard())
+    async deleteRepertorie(@Param('idSetlist') idSetlist): Promise<ServerMessages> {
+      return await this.ledService.deleteRepertorie(idSetlist);
+    }
+
+    @Get('get-repertories')
+    @UseGuards(AuthGuard())
+    public async getRepertories( @Request() req): Promise<ServerMessages> {
+      return this.ledService.getRepertories(req.user.idUser);
+    }
   
 }

@@ -5,6 +5,7 @@ import {
   DataType,
   ForeignKey,
   BelongsTo,
+  BelongsToMany,
 } from 'sequelize-typescript';
 import { Setlist } from './setlists.entity';
 import { Set } from './sets.entity';
@@ -29,9 +30,6 @@ export class SetlistSet extends Model<SetlistSet> {
   })
   public idSetlist: number;
 
-  @BelongsTo(() => Setlist, 'idSetlist')
-  setlist: Setlist;
-
   @ForeignKey(() => Set)
   @Column({
     type: DataType.INTEGER({ length: 11 }),
@@ -42,4 +40,13 @@ export class SetlistSet extends Model<SetlistSet> {
 
   @BelongsTo(() => Set, 'idSet')
   oneSet: Set;
+  
+  @BelongsTo(() => Setlist, 'idSetlist')
+  setlist: Setlist;
+
+  /* @BelongsToMany(
+    () => Set,
+    () => Setlist,
+  )
+  setsss: Set[]; */
 }

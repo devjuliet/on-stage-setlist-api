@@ -12,6 +12,7 @@ import { SetSong } from './set-songs.entity';
 import { SetlistSet } from './setlist-sets.entity';
 import { Band } from './bands.entity';
 import { Song } from './songs.entity';
+import { Setlist } from './setlists.entity';
 
 @Table({
   tableName: 'sets',
@@ -58,8 +59,11 @@ export class Set extends Model<Set> {
   @BelongsTo(() => Band, 'idBand')
   band: Band;
 
-  @HasMany(() => SetlistSet, 'idSetlistSet')
-  setlistSets: SetlistSet[];
+/*   @HasMany(() => SetlistSet, 'idSet')
+  setlistSets: SetlistSet[]; */
+
+  @BelongsToMany(() => Setlist, () => SetlistSet)
+  setslist: Setlist[];
 
   /*@HasMany(() => SetSong, 'idSetSong')
   setSongs: SetSong[];*/

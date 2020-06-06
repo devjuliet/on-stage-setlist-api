@@ -13,6 +13,7 @@ import {
   BeforeCreate,
   HasMany,
 } from 'sequelize-typescript';
+import { Setlist } from './setlists.entity';
 
 @Table({
   tableName: 'users',
@@ -98,6 +99,9 @@ export class User extends Model<User> {
 
   @HasMany(() => LiveDesigner, 'idUserDesigner')
   liveDesigners: LiveDesigner[];
+
+  @HasMany(() => Setlist, 'idLiveDesigner')
+  setLists: Setlist[];
 
   @BeforeCreate
   public static async hashPassword(user: User) {

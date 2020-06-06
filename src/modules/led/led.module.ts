@@ -15,6 +15,8 @@ import { liveDesignerProviders } from '../../models/repositoriesModels/live-desi
 import { setProviders } from '../../models/repositoriesModels/sets.providers';
 import { userHistoryProviders } from '../../models/repositoriesModels/user-history.providers';
 import { setSongProviders } from '../../models/repositoriesModels/set-songs.providers';
+import { setlistProviders } from '../../models/repositoriesModels/setlists.providers';
+import { setlistSetProviders } from '../../models/repositoriesModels/setlist-sets.providers';
 
 @Module({
   imports: [
@@ -33,7 +35,9 @@ import { setSongProviders } from '../../models/repositoriesModels/set-songs.prov
     ...bandGenreProviders,
     ...liveDesignerProviders,
     ...setProviders,
-    ...setSongProviders
+    ...setSongProviders,
+    ...setlistProviders,
+    ...setlistSetProviders
   ]
 })
 export class LedModule {}
