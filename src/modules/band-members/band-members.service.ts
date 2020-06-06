@@ -68,6 +68,7 @@ export class BandMembersService {
   }
 
   async findAllEventsByUserId(userId): Promise<ServerMessages> {
+    const today = new Date();
     //encontrar todas la bands que pertenece el usuario
     const eventsOfMember = [];
     try {
@@ -87,7 +88,10 @@ export class BandMembersService {
         .then(allEvents => {
           allEvents.forEach(eventsPerBand => {
             eventsPerBand.forEach(event => {
-              eventsOfMember.push(event);
+              let dayOfEvent = new Date(event.date);
+              if (dayOfEvent >= today) {
+                eventsOfMember.push(event);
+              }
             });
           });
         })
