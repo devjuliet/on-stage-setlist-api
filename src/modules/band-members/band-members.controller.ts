@@ -27,7 +27,7 @@ export class BandMembersController {
     return await this.BandMembersService.findSongById(idSong, req.user.idUser);
   }
 
-  @Get('events')
+  @Get('get-prox-events-data')
   @UseGuards(AuthGuard())
   async findAllEventsByUserId(@Request() req): Promise<ServerMessages> {
     return await this.BandMembersService.findAllEventsByUserId(req.user.idUser);
