@@ -1,0 +1,4 @@
+PassengerBaseURI /
+PassengerAppRoot /home/mqz5sby5d83r/administracion/ux_proyects/servidor-api/dist/
+PassengerAppType    node
+PassengerStartupFile main.js
