@@ -6,4 +6,5 @@ export class UpdatedUserDto {
   haveImage: boolean;
   role:number;
   description:string;
+  type : number;
 }
