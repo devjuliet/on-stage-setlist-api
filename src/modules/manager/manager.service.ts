@@ -713,58 +713,57 @@ export class ManagerService {
 
     async saveSongs(songs: SongDto[], bandId: number): Promise<ServerMessages> {
         try {
-            let songsNotSaved: Song[] = [];
+            let songsNames : string[] = songs.map((song: SongDto) => {
+                return Object.assign(song.name);
+            });
+            let songsAlreadySaved = await this.songRepository.findAll({
+                attributes: ['idSong','name'], 
+                where: { name: { [Op.in]: songsNames }, idBand : bandId },
+            });
 
-            return Promise.all(
-                songs.map(song =>
-                    this.songRepository.findOne({
-                        where: { name: song.name.toString() },
-                    }),
-                ),
-            )
-                .then(foundSongs => {
-                    foundSongs.forEach((song, index) => {
-                        if (song == null) {
-                            let originalSong = songs[index];
-                            let newSong = {
-                                name: originalSong.name,
-                                artist: originalSong.artist,
-                                lyric: originalSong.lyric,
-                                chordsGuitar: originalSong.chordsGuitar,
-                                tabGuitar: originalSong.tabGuitar,
-                                tabBass: originalSong.tabBass,
-                                chordsBass: originalSong.chordsBass,
-                                chordsPiano: originalSong.chordsPiano,
-                                tabPiano: originalSong.tabPiano,
-                                tempo: originalSong.tempo,
-                                idTag: originalSong.idTag,
-                                idBand: bandId,
-                            };
-                            this.songRepository.create<Song>(newSong, {});
-                        } else {
-                            songsNotSaved.push(song);
-                        }
-                    });
-                })
-                .then(
-                    () => new ServerMessages(false, 'Songs not saved', songsNotSaved),
-                );
+            let songsForSave : any[] = [];
+
+            songs.forEach((song: SongDto) => {
+                let finded = songsAlreadySaved.find((alreadySong)=>{
+                    return alreadySong.name == song.name;
+                });
+                if(finded == null || finded == undefined){
+                    songsForSave.push({
+                        name: song.name,
+                        artist: song.artist,
+                        lyric: song.lyric,
+                        chordsGuitar: false,
+                        tabGuitar: false,
+                        chordsBass: false,
+                        tabBass: false,
+                        chordsPiano: false,
+                        tabPiano: false,
+                        tempo: song.tempo,
+                        idTag: song.idTag,
+                        idBand: parseInt(bandId.toString()),
+                    })
+                }
+            });
+            let savedSongs = await this.songRepository.bulkCreate(songsForSave);
+
+            let dataResponse = { songsNotSaved : songsAlreadySaved , saved : savedSongs };
+            return new ServerMessages(false, 'Lista de canciones subida con exito', dataResponse)
         } catch (error) {
             console.log(error);
-            return new ServerMessages(true, 'Error ocurred', error);
+            return new ServerMessages(true, 'Ocurrio un error guardando las canciones', error);
         }
     }
 
-    async getSongsByBandId(bandId: number): Promise<ServerMessages> {
+    async getSongsBandsByUserId(idUser: number): Promise<ServerMessages> {
         try {
-            const songs = await this.songRepository.findAll({
-                where: { idBand: bandId },
+            var songsBandsCatalog : Band[] = await this.bandRepository.findAll({
+                where: { idUserManager: idUser },
+                include:[{
+                    model : Song,
+                    as: 'songs'
+                }]
             });
-            if (songs == null || undefined) {
-                return new ServerMessages(false, 'Songs of Band ' + bandId, {});
-            } else {
-                return new ServerMessages(false, 'Songs of Band ' + bandId, songs);
-            }
+            return new ServerMessages(false, 'Songs of Band ' + idUser, songsBandsCatalog);
         } catch (error) {
             return new ServerMessages(true, 'Error ocurred', error);
         }
