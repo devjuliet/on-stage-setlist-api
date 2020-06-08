@@ -99,18 +99,18 @@ export class ManagerController {
     return await this.managerService.updateLiveEvent(event);
   }
 
-  @Post('bands-save-songs/:id')
+  @Post('bands-save-songs/:idBand')
   @UseGuards(AuthGuard())
   async saveSongs(
     @Body() songs: SongDto[],
-    @Param('id') idBand: number,
+    @Param('idBand') idBand: number
   ): Promise<ServerMessages> {
     return await this.managerService.saveSongs(songs, idBand);
   }
 
-  @Get('bands/:id/songs')
+  @Get('bands-song-catalog')
   @UseGuards(AuthGuard())
-  async getSongsByBandId(@Param('id') idBand: number): Promise<ServerMessages> {
-    return await this.managerService.getSongsByBandId(idBand);
+  async getSongsBandsByUserId(@Request() req): Promise<ServerMessages> {
+    return await this.managerService.getSongsBandsByUserId(req.user.idUser,);
   }
 }
