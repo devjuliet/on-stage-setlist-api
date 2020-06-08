@@ -212,12 +212,15 @@ export class UserService {
     updatedUser.username = updatedUser.username.toLowerCase();
     updatedUser.email = updatedUser.email.toLowerCase();
 
-    var user = await this.findOneByUsername(updatedUser.username.toString());
+    var user : User = await this.userRepository.findOne<User>({
+      where: { idUser: updatedUser.idUser },
+    });
     //TO DO - Falta verificar que el correo y el usuario no lo tenga otro usuario
     try {
       user.name = updatedUser.name.toString();
       user.email = updatedUser.email.toString();
       user.haveImage = updatedUser.haveImage;
+      user.type = updatedUser.type;
       user.username = updatedUser.username.toString();
       user.role = updatedUser.role;
       user.description = updatedUser.description;
